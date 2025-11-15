@@ -127,23 +127,23 @@ export default function PrijavaPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-3 sm:p-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="bg-primary/10 p-3 rounded-full">
-              <Truck className="h-8 w-8 text-primary" />
+        <CardHeader className="space-y-1 text-center pb-4 sm:pb-6">
+          <div className="flex justify-center mb-3 sm:mb-4">
+            <div className="bg-primary/10 p-2.5 sm:p-3 rounded-full">
+              <Truck className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
             </div>
           </div>
-          <CardTitle className="text-3xl font-bold">Prijavi se</CardTitle>
-          <CardDescription className="text-base">
+          <CardTitle className="text-2xl sm:text-3xl font-bold">Prijavi se</CardTitle>
+          <CardDescription className="text-sm sm:text-base px-2">
             Unesite svoje podatke da pristupite nalogu
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email adresa</Label>
+        <CardContent className="px-4 sm:px-6">
+          <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
+            <div className="space-y-1.5 sm:space-y-2">
+              <Label htmlFor="email" className="text-sm sm:text-base">Email adresa</Label>
               <Input
                 id="email"
                 type="email"
@@ -152,10 +152,11 @@ export default function PrijavaPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={loading}
+                className="h-10 sm:h-11 text-base"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Lozinka</Label>
+            <div className="space-y-1.5 sm:space-y-2">
+              <Label htmlFor="password" className="text-sm sm:text-base">Lozinka</Label>
               <Input
                 id="password"
                 type="password"
@@ -164,14 +165,15 @@ export default function PrijavaPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={loading}
+                className="h-10 sm:h-11 text-base"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full h-10 sm:h-11 text-sm sm:text-base touch-manipulation" disabled={loading}>
               {loading ? 'Prijavljivanje...' : 'Prijavi se'}
             </Button>
           </form>
 
-          <div className="relative my-6">
+          <div className="relative my-5 sm:my-6">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
@@ -183,11 +185,11 @@ export default function PrijavaPage() {
           <Button
             type="button"
             variant="outline"
-            className="w-full"
+            className="w-full h-10 sm:h-11 text-sm sm:text-base touch-manipulation"
             onClick={handleGoogleLogin}
             disabled={loading}
           >
-            <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+            <svg className="mr-2 h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 24 24">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                 fill="#4285F4"
@@ -208,15 +210,15 @@ export default function PrijavaPage() {
             Nastavi sa Google
           </Button>
 
-          <div className="mt-6 text-center text-sm">
+          <div className="mt-5 sm:mt-6 text-center text-xs sm:text-sm">
             <span className="text-gray-600">Nemaš nalog? </span>
-            <Link href="/registracija" className="text-primary hover:underline font-medium">
+            <Link href="/registracija" className="text-primary hover:underline font-medium inline-block min-h-[44px] flex items-center justify-center touch-manipulation">
               Registruj se ovde
             </Link>
           </div>
 
-          <div className="mt-4 text-center">
-            <Link href="/" className="text-sm text-gray-600 hover:text-primary">
+          <div className="mt-3 sm:mt-4 text-center">
+            <Link href="/" className="text-xs sm:text-sm text-gray-600 hover:text-primary inline-block min-h-[44px] flex items-center justify-center touch-manipulation">
               ← Nazad na početnu
             </Link>
           </div>

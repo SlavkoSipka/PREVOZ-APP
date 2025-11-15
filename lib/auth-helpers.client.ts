@@ -63,10 +63,14 @@ export async function signOut() {
 
 export async function signInWithGoogle() {
   const supabase = createClient()
+  
+  // Koristi env varijablu za produkciju ili trenutni origin za development
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
+  
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: `${baseUrl}/auth/callback`,
       queryParams: {
         prompt: 'select_account', // PRISILNO prikazuj izbor naloga
       },

@@ -192,7 +192,7 @@ export default async function AdminDashboard() {
           <TabsList>
             <TabsTrigger value="prijave" className="relative">
               Prijave vozača
-              {cekaPrijave > 0 && (
+              {(cekaPrijave ?? 0) > 0 && (
                 <span className="ml-2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">
                   {cekaPrijave}
                 </span>
@@ -200,7 +200,7 @@ export default async function AdminDashboard() {
             </TabsTrigger>
             <TabsTrigger value="ture-cekanje" className="relative">
               Ture na čekanju
-              {cekaTure > 0 && (
+              {(cekaTure ?? 0) > 0 && (
                 <span className="ml-2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">
                   {cekaTure}
                 </span>

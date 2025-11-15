@@ -22,7 +22,19 @@ export function usePushNotifications(userId?: string) {
   // Proveri da li browser podržava notifikacije
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const supported = 'Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window
+      const hasNotification = 'Notification' in window
+      const hasServiceWorker = 'serviceWorker' in navigator
+      const hasPushManager = 'PushManager' in window
+      const supported = hasNotification && hasServiceWorker && hasPushManager
+      
+      console.log('🔍 Browser Support Check:', {
+        hasNotification,
+        hasServiceWorker,
+        hasPushManager,
+        supported,
+        currentPermission: supported ? Notification.permission : 'N/A'
+      })
+      
       setIsSupported(supported)
       
       if (supported) {

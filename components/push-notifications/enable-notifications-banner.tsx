@@ -26,19 +26,31 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
 
   // Proveri da li treba prikazati banner
   useEffect(() => {
+    console.log('🔔 Push Banner Check:', { isSupported, permission })
+    
     if (!isSupported) {
+      console.log('❌ Browser ne podržava push notifikacije')
       return
     }
 
     // Proveri localStorage da li je korisnik već odbio ili omogućio
     const dismissed = localStorage.getItem('push-notifications-dismissed')
+    console.log('📦 LocalStorage dismissed:', dismissed)
+    
     if (dismissed === 'true') {
+      console.log('ℹ️ Banner je već dismissed')
       return
     }
 
     // Prikaži banner samo ako dozvola nije data
+    console.log('🔍 Permission status:', permission)
     if (permission === 'default') {
+      console.log('✅ Prikazujem banner!')
       setShowBanner(true)
+    } else if (permission === 'granted') {
+      console.log('✅ Notifikacije već omogućene')
+    } else if (permission === 'denied') {
+      console.log('❌ Notifikacije odbijene')
     }
   }, [isSupported, permission])
 

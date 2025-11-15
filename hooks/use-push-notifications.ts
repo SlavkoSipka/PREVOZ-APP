@@ -157,7 +157,7 @@ export function usePushNotifications(userId?: string) {
 
       const newSubscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: convertedVapidKey
+        applicationServerKey: convertedVapidKey as BufferSource
       })
 
       console.log('✅ Push subscription created:', newSubscription)

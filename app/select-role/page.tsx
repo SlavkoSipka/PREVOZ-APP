@@ -101,49 +101,49 @@ export default function SelectRolePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-3 sm:p-4 md:p-6">
       <div className="w-full max-w-4xl">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4">Izaberite tip naloga</h1>
-          <p className="text-lg text-gray-600">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 px-2">Izaberite tip naloga</h1>
+          <p className="text-base sm:text-lg text-gray-600 px-2">
             Kako planirate da koristite TransLink?
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
           {/* Vozač */}
           <Card className="border-2 hover:border-primary hover:shadow-xl transition-all">
-            <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 bg-primary/10 p-6 rounded-full">
-                <Truck className="h-16 w-16 text-primary" />
+            <CardHeader className="text-center pb-3 sm:pb-4">
+              <div className="mx-auto mb-3 sm:mb-4 bg-primary/10 p-4 sm:p-5 md:p-6 rounded-full">
+                <Truck className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 text-primary" />
               </div>
-              <CardTitle className="text-3xl mb-2">Vozač</CardTitle>
-              <CardDescription className="text-base">
+              <CardTitle className="text-2xl sm:text-3xl mb-2">Vozač</CardTitle>
+              <CardDescription className="text-sm sm:text-base px-2">
                 Pronađite poslove i zaradite prihvatanjem tura
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <ul className="space-y-3 text-sm text-gray-600">
+            <CardContent className="space-y-3 sm:space-y-4">
+              <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-600">
                 <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Pristup aktivnim turama
+                  <span className="text-green-500 mr-2 text-base sm:text-lg">✓</span>
+                  <span>Pristup aktivnim turama</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Fleksibilan raspored
+                  <span className="text-green-500 mr-2 text-base sm:text-lg">✓</span>
+                  <span>Fleksibilan raspored</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Brza isplata
+                  <span className="text-green-500 mr-2 text-base sm:text-lg">✓</span>
+                  <span>Brza isplata</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Provizija samo 15€ po turi
+                  <span className="text-green-500 mr-2 text-base sm:text-lg">✓</span>
+                  <span>Provizija samo 15€ po turi</span>
                 </li>
               </ul>
               <Button 
                 size="lg" 
-                className="w-full"
+                className="w-full h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
                 onClick={() => handleSelectRole('vozac')}
                 disabled={loading}
               >
@@ -154,37 +154,37 @@ export default function SelectRolePage() {
 
           {/* Poslodavac */}
           <Card className="border-2 hover:border-primary hover:shadow-xl transition-all">
-            <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 bg-primary/10 p-6 rounded-full">
-                <Building2 className="h-16 w-16 text-primary" />
+            <CardHeader className="text-center pb-3 sm:pb-4">
+              <div className="mx-auto mb-3 sm:mb-4 bg-primary/10 p-4 sm:p-5 md:p-6 rounded-full">
+                <Building2 className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 text-primary" />
               </div>
-              <CardTitle className="text-3xl mb-2">Poslodavac</CardTitle>
-              <CardDescription className="text-base">
+              <CardTitle className="text-2xl sm:text-3xl mb-2">Poslodavac</CardTitle>
+              <CardDescription className="text-sm sm:text-base px-2">
                 Pronađite pouzdane vozače za vaše transportne potrebe
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <ul className="space-y-3 text-sm text-gray-600">
+            <CardContent className="space-y-3 sm:space-y-4">
+              <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-600">
                 <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Brzo objavljivanje tura
+                  <span className="text-green-500 mr-2 text-base sm:text-lg">✓</span>
+                  <span>Brzo objavljivanje tura</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Verifikovani vozači
+                  <span className="text-green-500 mr-2 text-base sm:text-lg">✓</span>
+                  <span>Verifikovani vozači</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Praćenje statusa tura
+                  <span className="text-green-500 mr-2 text-base sm:text-lg">✓</span>
+                  <span>Praćenje statusa tura</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Bez skrivenih troškova
+                  <span className="text-green-500 mr-2 text-base sm:text-lg">✓</span>
+                  <span>Bez skrivenih troškova</span>
                 </li>
               </ul>
               <Button 
                 size="lg" 
-                className="w-full"
+                className="w-full h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
                 onClick={() => handleSelectRole('poslodavac')}
                 disabled={loading}
               >

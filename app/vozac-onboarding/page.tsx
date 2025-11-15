@@ -238,30 +238,31 @@ export default function VozacOnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-3 sm:p-4 py-6 sm:py-8">
       <Card className="w-full max-w-2xl">
-        <CardHeader>
-          <div className="flex items-center gap-4 mb-2">
+        <CardHeader className="px-4 sm:px-6">
+          <div className="flex items-center gap-2 sm:gap-4 mb-2">
             <Button 
               variant="ghost" 
               size="sm"
               onClick={() => router.push('/select-role')}
               type="button"
+              className="text-xs sm:text-sm"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               Nazad
             </Button>
           </div>
-          <CardTitle className="text-3xl">Popunite vaš profil - Vozač</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-xl sm:text-2xl md:text-3xl">Popunite vaš profil - Vozač</CardTitle>
+          <CardDescription className="text-sm sm:text-base">
             Pre nego što nastavite, potrebno je da popunite osnovne informacije
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="ime">Ime *</Label>
+        <CardContent className="px-4 sm:px-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="ime" className="text-sm sm:text-base">Ime *</Label>
                 <Input
                   id="ime"
                   placeholder="Marko"
@@ -269,11 +270,12 @@ export default function VozacOnboardingPage() {
                   onChange={(e) => setFormData({ ...formData, ime: e.target.value })}
                   required
                   disabled={loading}
+                  className="h-10 sm:h-11 text-base"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="prezime">Prezime *</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="prezime" className="text-sm sm:text-base">Prezime *</Label>
                 <Input
                   id="prezime"
                   placeholder="Marković"
@@ -281,13 +283,14 @@ export default function VozacOnboardingPage() {
                   onChange={(e) => setFormData({ ...formData, prezime: e.target.value })}
                   required
                   disabled={loading}
+                  className="h-10 sm:h-11 text-base"
                 />
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="telefon">Broj telefona *</Label>
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="telefon" className="text-sm sm:text-base">Broj telefona *</Label>
                 <Input
                   id="telefon"
                   type="tel"
@@ -296,11 +299,12 @@ export default function VozacOnboardingPage() {
                   onChange={(e) => setFormData({ ...formData, telefon: e.target.value })}
                   required
                   disabled={loading}
+                  className="h-10 sm:h-11 text-base"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="grad">Grad *</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="grad" className="text-sm sm:text-base">Grad *</Label>
                 <Input
                   id="grad"
                   placeholder="Beograd"
@@ -308,12 +312,13 @@ export default function VozacOnboardingPage() {
                   onChange={(e) => setFormData({ ...formData, grad: e.target.value })}
                   required
                   disabled={loading}
+                  className="h-10 sm:h-11 text-base"
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="opis">Kratak opis *</Label>
+            <div className="space-y-1.5 sm:space-y-2">
+              <Label htmlFor="opis" className="text-sm sm:text-base">Kratak opis *</Label>
               <Textarea
                 id="opis"
                 placeholder="Opišite vaše iskustvo u prevozu, tip vozila kojim raspolažete..."
@@ -322,29 +327,30 @@ export default function VozacOnboardingPage() {
                 required
                 disabled={loading}
                 rows={4}
+                className="text-base"
               />
             </div>
 
             {/* Saobraćajna dozvola sekcija */}
-            <div className="border-t pt-6 space-y-4">
-              <div className="flex items-center gap-3 mb-4">
-                <Shield className="h-6 w-6 text-primary" />
+            <div className="border-t pt-4 sm:pt-6 space-y-3 sm:space-y-4">
+              <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-primary flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-lg">Saobraćajna dozvola</h3>
-                  <p className="text-sm text-gray-500">Fotografije prednje i zadnje strane</p>
+                  <h3 className="font-semibold text-base sm:text-lg">Saobraćajna dozvola</h3>
+                  <p className="text-xs sm:text-sm text-gray-500">Fotografije prednje i zadnje strane</p>
                 </div>
               </div>
 
               {/* Privacy Notice */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
-                <div className="flex items-start gap-3">
-                  <Shield className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-blue-900">
-                    <p className="font-medium mb-2">O zaštiti vaših podataka:</p>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 space-y-2 sm:space-y-3">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-xs sm:text-sm text-blue-900">
+                    <p className="font-medium mb-1.5 sm:mb-2">O zaštiti vaših podataka:</p>
                     <p className="leading-relaxed">
                       <strong>TransLink</strong> koristi fotografiju vaše saobraćajne dozvole <strong>isključivo radi provere verodostojnosti naloga</strong> i sprečavanja zloupotreba (višestrukih registracija).
                     </p>
-                    <p className="mt-2 leading-relaxed">
+                    <p className="mt-1.5 sm:mt-2 leading-relaxed">
                       Podaci se čuvaju bezbedno i <strong>ne dele se sa trećim licima</strong>. Slanjem fotografije saglasni ste sa ovim uslovima.
                     </p>
                   </div>
@@ -352,35 +358,35 @@ export default function VozacOnboardingPage() {
               </div>
 
               {/* Upload Napred */}
-              <div className="space-y-2">
-                <Label htmlFor="saobracajna-napred" className="text-base">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="saobracajna-napred" className="text-sm sm:text-base">
                   Prednja strana dozvole *
                 </Label>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <label 
                     htmlFor="saobracajna-napred"
                     className={`
-                      flex-1 flex items-center justify-center gap-3 
-                      border-2 border-dashed rounded-lg p-6 cursor-pointer
-                      transition-all hover:border-primary hover:bg-primary/5
+                      flex-1 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 
+                      border-2 border-dashed rounded-lg p-4 sm:p-6 cursor-pointer
+                      transition-all hover:border-primary hover:bg-primary/5 min-h-[80px] sm:min-h-0
                       ${formData.saobracajna_napred ? 'border-green-500 bg-green-50' : 'border-gray-300'}
                       ${uploadingNapred ? 'opacity-50 cursor-wait' : ''}
                     `}
                   >
                     {uploadingNapred ? (
                       <>
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                        <span className="text-sm font-medium">Uploadovanje...</span>
+                        <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-primary"></div>
+                        <span className="text-xs sm:text-sm font-medium text-center">Uploadovanje...</span>
                       </>
                     ) : formData.saobracajna_napred ? (
                       <>
-                        <CheckCircle2 className="h-6 w-6 text-green-600" />
-                        <span className="text-sm font-medium text-green-700">Prednja strana uploadovana ✓</span>
+                        <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-green-600 flex-shrink-0" />
+                        <span className="text-xs sm:text-sm font-medium text-green-700 text-center">Prednja strana uploadovana ✓</span>
                       </>
                     ) : (
                       <>
-                        <Upload className="h-6 w-6 text-gray-400" />
-                        <span className="text-sm font-medium text-gray-600">Kliknite da uploadujete sliku</span>
+                        <Upload className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 flex-shrink-0" />
+                        <span className="text-xs sm:text-sm font-medium text-gray-600 text-center">Kliknite da uploadujete sliku</span>
                       </>
                     )}
                   </label>
@@ -399,35 +405,35 @@ export default function VozacOnboardingPage() {
               </div>
 
               {/* Upload Pozadi */}
-              <div className="space-y-2">
-                <Label htmlFor="saobracajna-pozadi" className="text-base">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="saobracajna-pozadi" className="text-sm sm:text-base">
                   Zadnja strana dozvole *
                 </Label>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <label 
                     htmlFor="saobracajna-pozadi"
                     className={`
-                      flex-1 flex items-center justify-center gap-3 
-                      border-2 border-dashed rounded-lg p-6 cursor-pointer
-                      transition-all hover:border-primary hover:bg-primary/5
+                      flex-1 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 
+                      border-2 border-dashed rounded-lg p-4 sm:p-6 cursor-pointer
+                      transition-all hover:border-primary hover:bg-primary/5 min-h-[80px] sm:min-h-0
                       ${formData.saobracajna_pozadi ? 'border-green-500 bg-green-50' : 'border-gray-300'}
                       ${uploadingPozadi ? 'opacity-50 cursor-wait' : ''}
                     `}
                   >
                     {uploadingPozadi ? (
                       <>
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                        <span className="text-sm font-medium">Uploadovanje...</span>
+                        <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-primary"></div>
+                        <span className="text-xs sm:text-sm font-medium text-center">Uploadovanje...</span>
                       </>
                     ) : formData.saobracajna_pozadi ? (
                       <>
-                        <CheckCircle2 className="h-6 w-6 text-green-600" />
-                        <span className="text-sm font-medium text-green-700">Zadnja strana uploadovana ✓</span>
+                        <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-green-600 flex-shrink-0" />
+                        <span className="text-xs sm:text-sm font-medium text-green-700 text-center">Zadnja strana uploadovana ✓</span>
                       </>
                     ) : (
                       <>
-                        <Upload className="h-6 w-6 text-gray-400" />
-                        <span className="text-sm font-medium text-gray-600">Kliknite da uploadujete sliku</span>
+                        <Upload className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 flex-shrink-0" />
+                        <span className="text-xs sm:text-sm font-medium text-gray-600 text-center">Kliknite da uploadujete sliku</span>
                       </>
                     )}
                   </label>
@@ -446,17 +452,18 @@ export default function VozacOnboardingPage() {
               </div>
 
               {/* Checkbox za saglasnost */}
-              <div className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg border">
+              <div className="flex items-start space-x-2.5 sm:space-x-3 bg-gray-50 p-3 sm:p-4 rounded-lg border">
                 <Checkbox
                   id="saglasnost"
                   checked={saglasnost}
                   onCheckedChange={(checked) => setSaglasnost(checked as boolean)}
                   disabled={loading}
+                  className="mt-0.5"
                 />
                 <div className="flex-1">
                   <label
                     htmlFor="saglasnost"
-                    className="text-sm font-medium leading-relaxed cursor-pointer"
+                    className="text-xs sm:text-sm font-medium leading-relaxed cursor-pointer"
                   >
                     Saglasan sam sa obradom ovih podataka u navedene svrhe. *
                   </label>
@@ -467,7 +474,7 @@ export default function VozacOnboardingPage() {
             <Button 
               type="submit" 
               disabled={loading || uploadingNapred || uploadingPozadi || !saglasnost || !formData.saobracajna_napred || !formData.saobracajna_pozadi}
-              className="w-full"
+              className="w-full h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
               size="lg"
             >
               {loading ? 'Čuvanje...' : 'Sačuvaj i nastavi'}

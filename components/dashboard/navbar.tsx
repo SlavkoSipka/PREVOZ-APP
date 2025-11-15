@@ -105,11 +105,11 @@ export function Navbar({ user, currentPage }: NavbarProps) {
 
   return (
     <nav className="border-b bg-background">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="flex items-center gap-6">
-          <div className="flex items-center space-x-2">
-            <Truck className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold">TransLink</span>
+      <div className="container mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex justify-between items-center">
+        <div className="flex items-center gap-3 sm:gap-6">
+          <div className="flex items-center space-x-1.5 sm:space-x-2">
+            <Truck className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+            <span className="text-lg sm:text-xl font-bold">TransLink</span>
           </div>
 
           {/* Navigacioni linkovi za poslodavce */}
@@ -165,14 +165,14 @@ export function Navbar({ user, currentPage }: NavbarProps) {
           )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Notifikacije za vozače */}
           {user.uloga === 'vozac' && (
-            <Button variant="ghost" size="icon" asChild className="relative">
+            <Button variant="ghost" size="icon" asChild className="relative h-9 w-9 sm:h-10 sm:w-10 touch-manipulation">
               <Link href="/vozac/notifikacije">
-                <Bell className="h-5 w-5" />
+                <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
                 {neprocitaneNotifikacije > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
+                  <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-red-500 text-white text-[10px] sm:text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center font-semibold">
                     {neprocitaneNotifikacije > 9 ? '9+' : neprocitaneNotifikacije}
                   </span>
                 )}
@@ -182,11 +182,11 @@ export function Navbar({ user, currentPage }: NavbarProps) {
 
           {/* Notifikacije za poslodavce */}
           {user.uloga === 'poslodavac' && (
-            <Button variant="ghost" size="icon" asChild className="relative">
+            <Button variant="ghost" size="icon" asChild className="relative h-9 w-9 sm:h-10 sm:w-10 touch-manipulation">
               <Link href="/poslodavac/notifikacije">
-                <Bell className="h-5 w-5" />
+                <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
                 {neprocitaneNotifikacije > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
+                  <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-red-500 text-white text-[10px] sm:text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center font-semibold">
                     {neprocitaneNotifikacije > 9 ? '9+' : neprocitaneNotifikacije}
                   </span>
                 )}
@@ -196,16 +196,16 @@ export function Navbar({ user, currentPage }: NavbarProps) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2">
-                <User className="h-5 w-5" />
-                <span className="hidden sm:inline">{user.puno_ime}</span>
+              <Button variant="ghost" className="flex items-center gap-1.5 sm:gap-2 h-9 px-2 sm:h-10 sm:px-3 touch-manipulation">
+                <User className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="hidden sm:inline text-sm sm:text-base truncate max-w-[120px] md:max-w-[200px]">{user.puno_ime}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align="end" className="w-56 max-w-[calc(100vw-2rem)]">
               <DropdownMenuLabel>
                 <div className="flex flex-col">
-                  <span className="font-semibold">{user.puno_ime}</span>
-                  <span className="text-xs text-gray-500">{user.email}</span>
+                  <span className="font-semibold text-sm sm:text-base truncate">{user.puno_ime}</span>
+                  <span className="text-xs text-gray-500 truncate">{user.email}</span>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -270,16 +270,16 @@ export function Navbar({ user, currentPage }: NavbarProps) {
                 </>
               )}
               
-              <DropdownMenuItem asChild>
-                <Link href={`/${user.uloga}/profil`}>
+              <DropdownMenuItem asChild className="touch-manipulation">
+                <Link href={`/${user.uloga}/profil`} className="min-h-[44px] flex items-center">
                   <User className="mr-2 h-4 w-4" />
-                  Profil
+                  <span className="text-sm sm:text-base">Profil</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
+              <DropdownMenuItem onClick={handleSignOut} className="text-red-600 touch-manipulation min-h-[44px]">
                 <LogOut className="mr-2 h-4 w-4" />
-                Odjavi se
+                <span className="text-sm sm:text-base">Odjavi se</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

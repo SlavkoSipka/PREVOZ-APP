@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { XCircle } from 'lucide-react'
 import Link from 'next/link'
+import { EnableNotificationsBanner } from '@/components/push-notifications/enable-notifications-banner'
 
 // Onemogući cache za real-time
 export const revalidate = 0
@@ -136,6 +137,9 @@ export default async function VozacDashboard() {
             </CardContent>
           </Card>
         )}
+
+        {/* Push Notifications Banner */}
+        <EnableNotificationsBanner userId={userData.user.id} />
 
         {/* Dashboard content sa real-time */}
         <DashboardContent 

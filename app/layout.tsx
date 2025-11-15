@@ -9,6 +9,20 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'TransLink - Platforma za transport',
   description: 'Povežite poslodavce i vozače - brzo, efikasno, sigurno',
+  manifest: '/manifest.json',
+  themeColor: '#16a34a',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'TransLink'
+  },
+  formatDetection: {
+    telephone: false
+  },
+  icons: {
+    icon: '/icon-192x192.png',
+    apple: '/icon-192x192.png'
+  }
 }
 
 export default function RootLayout({

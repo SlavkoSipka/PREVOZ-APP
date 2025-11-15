@@ -66,15 +66,25 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
   }, [error, toast])
 
   const handleEnable = async () => {
-    const sub = await subscribe()
+    console.log('🔔 Korisnik kliknuo "Omogući"')
     
-    if (sub) {
-      toast({
-        title: '✅ Notifikacije omogućene!',
-        description: 'Sada ćete primati obaveštenja na ovom uređaju.',
-      })
-      setShowBanner(false)
-      localStorage.setItem('push-notifications-dismissed', 'true')
+    try {
+      const sub = await subscribe()
+      console.log('📦 Subscribe rezultat:', sub)
+      
+      if (sub) {
+        console.log('✅ Subscription uspešan!')
+        toast({
+          title: '✅ Notifikacije omogućene!',
+          description: 'Sada ćete primati obaveštenja na ovom uređaju.',
+        })
+        setShowBanner(false)
+        localStorage.setItem('push-notifications-dismissed', 'true')
+      } else {
+        console.log('❌ Subscription nije uspeo, ali nema error-a')
+      }
+    } catch (err) {
+      console.error('❌ Exception u handleEnable:', err)
     }
   }
 

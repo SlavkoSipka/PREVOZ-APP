@@ -85,22 +85,38 @@ export function usePushNotifications(userId?: string) {
       setError(null)
 
       console.log('🔔 Tražim dozvolu za notifikacije...')
+      console.log('🔍 Permission pre traženja:', Notification.permission)
+      
       const result = await Notification.requestPermission()
+      
+      console.log('🔍 Permission rezultat:', result)
+      console.log('🔍 Notification.permission posle:', Notification.permission)
+      
       setPermission(result)
 
-      if (result === 'granted') {
-        console.log('✅ Dozvola odobrena')
+      // Čekaj malo da se browser updatuje (za iOS/Safari)
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
+      // Proveri ponovo
+      const finalPermission = Notification.permission
+      console.log('🔍 Finalna permission posle čekanja:', finalPermission)
+      
+      if (finalPermission === 'granted' || result === 'granted') {
+        console.log('✅ Dozvola ODOBRENA!')
+        setPermission('granted')
         return true
-      } else if (result === 'denied') {
+      } else if (finalPermission === 'denied' || result === 'denied') {
+        console.log('❌ Dozvola ODBIJENA')
         setError('Odbili ste notifikacije. Omogućite ih u podešavanjima browsera.')
         return false
       } else {
-        setError('Niste dali dozvolu za notifikacije')
+        console.log('⚠️ Permission status:', finalPermission, '| Result:', result)
+        setError(`Nepoznat status dozvole: ${finalPermission}`)
         return false
       }
     } catch (err: any) {
       console.error('❌ Error requesting permission:', err)
-      setError('Greška pri traženju dozvole')
+      setError('Greška pri traženju dozvole: ' + err.message)
       return false
     } finally {
       setIsLoading(false)
@@ -123,20 +139,34 @@ export function usePushNotifications(userId?: string) {
       setIsLoading(true)
       setError(null)
 
+      console.log('🚀 === SUBSCRIBE PROCES ZAPOČET ===')
+      console.log('📋 User ID:', userId)
+
       // 1. Traži dozvolu
+      console.log('📍 KORAK 1: Tražim dozvolu...')
       const hasPermission = await requestPermission()
+      console.log('📍 KORAK 1 - Rezultat:', hasPermission)
+      
       if (!hasPermission) {
+        console.log('❌ KORAK 1 FAILED - Nema dozvole!')
         return null
       }
 
       // 2. Registruj Service Worker
+      console.log('📍 KORAK 2: Registrujem Service Worker...')
       const registration = await registerServiceWorker()
+      console.log('📍 KORAK 2 - Registration:', registration ? '✅ Uspešno' : '❌ Failed')
+      
       if (!registration) {
+        console.log('❌ KORAK 2 FAILED - Service Worker nije registrovan!')
         return null
       }
 
       // 3. Proveri postojeći subscription
+      console.log('📍 KORAK 3: Proveravam postojeći subscription...')
       let existingSubscription = await registration.pushManager.getSubscription()
+      console.log('📍 KORAK 3 - Postojeći subscription:', existingSubscription ? 'Postoji' : 'Ne postoji')
+      
       if (existingSubscription) {
         console.log('ℹ️ Već postoji subscription, koristim postojeći')
         setSubscription(existingSubscription)
@@ -145,6 +175,7 @@ export function usePushNotifications(userId?: string) {
       }
 
       // 4. Kreiraj novi subscription
+      console.log('📍 KORAK 4: Kreiram novi subscription...')
       console.log('📝 Creating new push subscription...')
       
       // VAPID Public Key - generisaćemo ga sa web-push library

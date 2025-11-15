@@ -221,7 +221,7 @@ export default async function AdminDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <PrijaveList prijave={prijave || []} />
+                <PrijaveList prijave={(prijave as any) || []} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -235,7 +235,7 @@ export default async function AdminDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <TureApprovalList ture={tureNaCekanju || []} />
+                <TureApprovalList ture={(tureNaCekanju as any) || []} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -344,7 +344,7 @@ export default async function AdminDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <UplateList uplate={uplate || []} />
+                <UplateList uplate={(uplate as any) || []} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -358,7 +358,7 @@ export default async function AdminDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <KorisniciList korisnici={korisnici || []} />
+                <KorisniciList korisnici={(korisnici as any) || []} />
               </CardContent>
             </Card>
           </TabsContent>

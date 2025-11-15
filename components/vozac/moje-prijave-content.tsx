@@ -57,7 +57,7 @@ export function MojePrijaveContent({ initialPrijave, userId }: MojePrijaveConten
         .order('created_at', { ascending: false })
 
       if (data) {
-        setPrijave(data as Prijava[])
+        setPrijave(data as any)
       }
       setIsLoading(false)
     }

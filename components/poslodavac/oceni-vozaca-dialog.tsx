@@ -26,10 +26,23 @@ interface OceniVozacaDialogProps {
     ocena: number
     komentar?: string | null
   } | null
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  onOcenaSubmit?: () => void
 }
 
-export function OceniVozacaDialog({ turaId, vozacId, vozacIme, postojecaOcena }: OceniVozacaDialogProps) {
-  const [open, setOpen] = useState(false)
+export function OceniVozacaDialog({ 
+  turaId, 
+  vozacId, 
+  vozacIme, 
+  postojecaOcena,
+  open: externalOpen,
+  onOpenChange: externalOnOpenChange,
+  onOcenaSubmit
+}: OceniVozacaDialogProps) {
+  const [internalOpen, setInternalOpen] = useState(false)
+  const open = externalOpen !== undefined ? externalOpen : internalOpen
+  const setOpen = externalOnOpenChange || setInternalOpen
   const [ocena, setOcena] = useState(postojecaOcena?.ocena || 0)
   const [hoverOcena, setHoverOcena] = useState(0)
   const [komentar, setKomentar] = useState(postojecaOcena?.komentar || '')
@@ -169,6 +182,7 @@ export function OceniVozacaDialog({ turaId, vozacId, vozacIme, postojecaOcena }:
 
       setOpen(false)
       router.refresh()
+      onOcenaSubmit?.()
     } catch (error: any) {
       console.error('❌ Error ocenjivanja:', error)
       

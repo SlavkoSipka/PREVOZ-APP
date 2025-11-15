@@ -45,8 +45,8 @@ export default async function VozacPrijavePage() {
         </div>
 
         {/* Prijave content sa tabovima */}
-        <MojePrijaveContent 
-          initialPrijave={prijave || []}
+        <MojePrijaveContent
+          initialPrijave={(prijave as any) || []}
           userId={userData.user.id}
         />
       </div>

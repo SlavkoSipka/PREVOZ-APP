@@ -69,7 +69,7 @@ export function NotifikacijeContent({ initialNotifikacije, userId }: Notifikacij
         .order('created_at', { ascending: false })
 
       if (data) {
-        setNotifikacije(data as Notifikacija[])
+        setNotifikacije(data as any)
       }
     }
 

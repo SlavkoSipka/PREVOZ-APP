@@ -34,7 +34,7 @@ export default async function NotifikacijePage() {
 
       <div className="container mx-auto px-4 py-8">
         <NotifikacijeContent 
-          initialNotifikacije={notifikacije || []}
+          initialNotifikacije={(notifikacije as any) || []}
           userId={userData.user.id}
         />
       </div>

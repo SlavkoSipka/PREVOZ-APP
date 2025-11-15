@@ -76,7 +76,7 @@ export function NotifikacijeContentPoslodavac({ initialNotifikacije, userId }: N
         .order('created_at', { ascending: false })
 
       if (data) {
-        setNotifikacije(data as Notifikacija[])
+        setNotifikacije(data as any)
       }
     }
 
@@ -254,12 +254,6 @@ export function NotifikacijeContentPoslodavac({ initialNotifikacije, userId }: N
                         vozacId={notifikacija.tura.dodeljeni_vozac_id!}
                         vozacIme={notifikacija.tura.dodeljeni_vozac?.puno_ime || 'Vozač'}
                         postojecaOcena={null}
-                        trigger={
-                          <Button variant="default" size="sm">
-                            <Star className="h-4 w-4 mr-2" />
-                            Ocenite vozača
-                          </Button>
-                        }
                       />
                     )}
 

@@ -54,9 +54,9 @@ export default async function PoslodavacNotifikacijePage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <NotifikacijeContentPoslodavac 
-              initialNotifikacije={notifikacije || []} 
-              userId={userData.user.id} 
+            <NotifikacijeContentPoslodavac
+              initialNotifikacije={(notifikacije as any) || []}
+              userId={userData.user.id}
             />
           </CardContent>
         </Card>

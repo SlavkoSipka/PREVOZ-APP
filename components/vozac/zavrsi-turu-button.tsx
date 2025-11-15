@@ -35,7 +35,7 @@ export function ZavrsiTuruButton({ turaId, vozacId, iznos }: ZavrsiTuruButtonPro
       // Prvo dobij podatke o turi za razlog blokiranja
       const { data: turaData } = await supabase
         .from('ture')
-        .select('polazak, destinacija, datum, vreme_polaska')
+        .select('polazak, destinacija, datum, vreme_polaska, firma_id')
         .eq('id', turaId)
         .single()
 

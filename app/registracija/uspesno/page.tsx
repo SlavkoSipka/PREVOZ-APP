@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Mail, CheckCircle } from 'lucide-react'
 
-export default function RegistracijaUspesnoPage() {
+function RegistracijaContent() {
   const searchParams = useSearchParams()
   const email = searchParams.get('email') || ''
   const [timeLeft, setTimeLeft] = useState(60)
@@ -99,6 +99,27 @@ export default function RegistracijaUspesnoPage() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+export default function RegistracijaUspesnoPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-4">
+        <Card className="w-full max-w-lg">
+          <CardHeader className="text-center space-y-4">
+            <div className="flex justify-center">
+              <div className="bg-green-100 p-6 rounded-full">
+                <Mail className="h-16 w-16 text-green-600" />
+              </div>
+            </div>
+            <CardTitle className="text-3xl font-bold">Učitavanje...</CardTitle>
+          </CardHeader>
+        </Card>
+      </div>
+    }>
+      <RegistracijaContent />
+    </Suspense>
   )
 }
 

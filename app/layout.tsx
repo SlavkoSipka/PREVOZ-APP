@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
 import { ClearCacheOnMount } from '@/components/clear-cache-on-mount'
+import { MobileConsole } from '@/components/mobile-console'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,6 +40,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ClearCacheOnMount />
+        <MobileConsole />
         {children}
         <Toaster />
       </body>

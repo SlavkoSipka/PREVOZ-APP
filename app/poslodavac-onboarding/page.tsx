@@ -112,30 +112,31 @@ export default function PoslodavacOnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-3 sm:p-4 py-6 sm:py-8">
       <Card className="w-full max-w-2xl">
-        <CardHeader>
-          <div className="flex items-center gap-4 mb-2">
+        <CardHeader className="px-4 sm:px-6">
+          <div className="flex items-center gap-2 sm:gap-4 mb-2">
             <Button 
               variant="ghost" 
               size="sm"
               onClick={() => router.push('/select-role')}
               type="button"
+              className="text-xs sm:text-sm"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               Nazad
             </Button>
           </div>
-          <CardTitle className="text-3xl">Popunite vaš profil - Poslodavac</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-xl sm:text-2xl md:text-3xl">Popunite vaš profil - Poslodavac</CardTitle>
+          <CardDescription className="text-sm sm:text-base">
             Pre nego što nastavite, potrebno je da popunite osnovne informacije
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="ime">Ime *</Label>
+        <CardContent className="px-4 sm:px-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="ime" className="text-sm sm:text-base">Ime *</Label>
                 <Input
                   id="ime"
                   placeholder="Marko"
@@ -143,11 +144,12 @@ export default function PoslodavacOnboardingPage() {
                   onChange={(e) => setFormData({ ...formData, ime: e.target.value })}
                   required
                   disabled={loading}
+                  className="h-10 sm:h-11 text-base"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="prezime">Prezime *</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="prezime" className="text-sm sm:text-base">Prezime *</Label>
                 <Input
                   id="prezime"
                   placeholder="Marković"
@@ -155,13 +157,14 @@ export default function PoslodavacOnboardingPage() {
                   onChange={(e) => setFormData({ ...formData, prezime: e.target.value })}
                   required
                   disabled={loading}
+                  className="h-10 sm:h-11 text-base"
                 />
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="telefon">Broj telefona *</Label>
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="telefon" className="text-sm sm:text-base">Broj telefona *</Label>
                 <Input
                   id="telefon"
                   type="tel"
@@ -170,11 +173,12 @@ export default function PoslodavacOnboardingPage() {
                   onChange={(e) => setFormData({ ...formData, telefon: e.target.value })}
                   required
                   disabled={loading}
+                  className="h-10 sm:h-11 text-base"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="grad">Grad *</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="grad" className="text-sm sm:text-base">Grad *</Label>
                 <Input
                   id="grad"
                   placeholder="Beograd"
@@ -182,26 +186,28 @@ export default function PoslodavacOnboardingPage() {
                   onChange={(e) => setFormData({ ...formData, grad: e.target.value })}
                   required
                   disabled={loading}
+                  className="h-10 sm:h-11 text-base"
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="naziv_firme">Naziv firme (opciono)</Label>
+            <div className="space-y-1.5 sm:space-y-2">
+              <Label htmlFor="naziv_firme" className="text-sm sm:text-base">Naziv firme (opciono)</Label>
               <Input
                 id="naziv_firme"
                 placeholder="Moja Firma d.o.o."
                 value={formData.naziv_firme}
                 onChange={(e) => setFormData({ ...formData, naziv_firme: e.target.value })}
                 disabled={loading}
+                className="h-10 sm:h-11 text-base"
               />
-              <p className="text-sm text-gray-500">
+              <p className="text-xs sm:text-sm text-gray-500">
                 Naziv firme će biti vidljiv samo dodeljenom vozaču nakon prihvatanja ture
               </p>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="opis">Kratak opis *</Label>
+            <div className="space-y-1.5 sm:space-y-2">
+              <Label htmlFor="opis" className="text-sm sm:text-base">Kratak opis *</Label>
               <Textarea
                 id="opis"
                 placeholder="Opišite vašu delatnost, šta radite, kakve ste poslove obavljali..."
@@ -210,13 +216,14 @@ export default function PoslodavacOnboardingPage() {
                 required
                 disabled={loading}
                 rows={4}
+                className="text-base"
               />
             </div>
 
             <Button 
               type="submit" 
               disabled={loading}
-              className="w-full"
+              className="w-full h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
               size="lg"
             >
               {loading ? 'Čuvanje...' : 'Sačuvaj i nastavi'}

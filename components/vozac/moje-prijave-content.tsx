@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Calendar, Package, CheckCircle, XCircle, Clock, TruckIcon } from 'lucide-react'
 import Link from 'next/link'
 import { formatVreme } from '@/lib/utils'
+import { ZavrsiTuruButton } from './zavrsi-turu-button'
 
 interface Prijava {
   id: string
@@ -179,11 +180,20 @@ export function MojePrijaveContent({ initialPrijave, userId }: MojePrijaveConten
           </div>
         </CardHeader>
         <CardContent>
-          <Button asChild variant={variant === 'odbijeno' ? 'outline' : 'default'}>
-            <Link href={`/vozac/ture/${prijava.tura.id}`}>
-              Pogledaj detalje
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            <Button asChild variant={variant === 'odbijeno' ? 'outline' : 'default'}>
+              <Link href={`/vozac/ture/${prijava.tura.id}`}>
+                Pogledaj detalje
+              </Link>
+            </Button>
+            {variant === 'odobreno' && (
+              <ZavrsiTuruButton 
+                turaId={prijava.tura.id} 
+                vozacId={userId} 
+                iznos={15}
+              />
+            )}
+          </div>
         </CardContent>
       </Card>
     )
@@ -200,7 +210,7 @@ export function MojePrijaveContent({ initialPrijave, userId }: MojePrijaveConten
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue="na_cekanju" className="w-full">
+      <Tabs defaultValue="odobrene" className="w-full">
         <TabsList className="grid w-full max-w-2xl grid-cols-4">
           <TabsTrigger value="na_cekanju">
             Na čekanju ({naCekanju.length})

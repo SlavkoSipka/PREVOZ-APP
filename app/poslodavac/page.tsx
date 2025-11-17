@@ -72,17 +72,7 @@ export default async function PoslodavacDashboard() {
     <div className="min-h-screen bg-gray-50">
       <Navbar user={{ ...userData.profile, id: userData.user.id }} currentPage="dashboard" />
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">
-            Dobrodošli, {userData.profile.puno_ime}!
-          </h1>
-          <p className="text-gray-600">
-            Pronađite vozače za svoje ture
-          </p>
-        </div>
-
+      <div className="container mx-auto px-4 py-6">
         {/* Push Notifications Banner */}
         <EnableNotificationsBanner userId={userData.user.id} />
 

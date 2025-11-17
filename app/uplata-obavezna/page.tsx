@@ -27,8 +27,8 @@ export default async function UplataObaveznaPage() {
     .eq('status', 'u_toku')
     .order('created_at', { ascending: false })
 
-  // Ako nema neplaćenih uplata i nije blokiran, preusmerava nazad
-  if (!userData.profile.blokiran && (!uplate || uplate.length === 0)) {
+  // Ako nema neplaćenih uplata, preusmerava nazad
+  if (!uplate || uplate.length === 0) {
     redirect(`/${userData.profile.uloga}`)
   }
 
@@ -53,9 +53,9 @@ export default async function UplataObaveznaPage() {
               <AlertCircle className="h-10 w-10 sm:h-12 sm:w-12 text-red-600" />
             </div>
           </div>
-          <CardTitle className="text-2xl sm:text-3xl text-red-700">Nalog je blokiran</CardTitle>
-          <CardDescription className="text-sm sm:text-base text-red-600 px-2">
-            Morate izvršiti uplatu provizije da biste nastavili korišćenje platforme
+          <CardTitle className="text-2xl sm:text-3xl text-orange-700">Potrebna uplata provizije</CardTitle>
+          <CardDescription className="text-sm sm:text-base text-orange-600 px-2">
+            Potrebno je da izvršite uplatu provizije za završene ture
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6">
@@ -70,13 +70,12 @@ export default async function UplataObaveznaPage() {
             </div>
           )}
 
-          {/* Info o blokiranju */}
-          <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4">
-            <h3 className="font-semibold text-red-800 mb-1.5 sm:mb-2 text-sm sm:text-base">Zašto je moj nalog blokiran?</h3>
-            <p className="text-xs sm:text-sm text-red-700">
-              Nakon završetka ture, svi vozači su dužni da plate proviziju kako bi nastavili 
-              korišćenje TransLink platforme. Vaš nalog će biti automatski odblokiran čim 
-              uplata bude potvrđena.
+          {/* Info o plaćanju */}
+          <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 sm:p-4">
+            <h3 className="font-semibold text-orange-800 mb-1.5 sm:mb-2 text-sm sm:text-base">Potrebno plaćanje provizije</h3>
+            <p className="text-xs sm:text-sm text-orange-700">
+              Nakon završetka ture, svi vozači su dužni da plate proviziju od 15€ po turi. 
+              Molimo izvršite uplatu kako biste nastavili da prihvatate nove ture na TransLink platformi.
             </p>
           </div>
 

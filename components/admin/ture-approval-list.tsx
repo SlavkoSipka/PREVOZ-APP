@@ -83,7 +83,13 @@ export function TureApprovalList({ ture: initialTure }: TureApprovalListProps) {
         if (error) throw error
 
         // Pošalji notifikaciju poslodavcu da je tura odobrena
-        await supabase
+        console.log('🔔 Kreiram notifikaciju za poslodavca:', {
+          vozac_id: turaData.firma_id,
+          tip: 'tura_odobrena',
+          tura_id: selectedTura.id
+        })
+        
+        const { data: notifData, error: notifError } = await supabase
           .from('notifikacije')
           .insert({
             vozac_id: turaData.firma_id,
@@ -91,6 +97,13 @@ export function TureApprovalList({ ture: initialTure }: TureApprovalListProps) {
             tura_id: selectedTura.id,
             poruka: `✅ Vaša tura ${selectedTura.polazak} → ${selectedTura.destinacija} je odobrena od strane administratora i sada je vidljiva vozačima!`
           })
+          .select()
+        
+        if (notifError) {
+          console.error('❌ Greška pri kreiranju notifikacije:', notifError)
+        } else {
+          console.log('✅ Notifikacija kreirana:', notifData)
+        }
 
         toast({
           title: 'Tura odobrena!',

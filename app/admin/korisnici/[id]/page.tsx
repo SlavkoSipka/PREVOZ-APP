@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Truck, Mail, Phone, Calendar, MapPin, Package, Euro, CheckCircle, Clock, XCircle } from 'lucide-react'
 import Link from 'next/link'
+import { PosaljiNotifikacijuDialog } from '@/components/admin/posalji-notifikaciju-dialog'
+import { ToggleBlokiranjeButton } from '@/components/admin/toggle-blokiranje-button'
 
 export default async function KorisnikProfilPage({ params }: { params: { id: string } }) {
   const userData = await getUserWithProfile()
@@ -92,7 +94,7 @@ export default async function KorisnikProfilPage({ params }: { params: { id: str
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar user={userData.profile} />
+      <Navbar user={{ ...userData.profile, id: userData.user.id }} />
 
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <Button variant="ghost" asChild className="mb-6">
@@ -115,17 +117,31 @@ export default async function KorisnikProfilPage({ params }: { params: { id: str
                   {jeVozac ? 'Detaljan pregled vozača' : 'Detaljan pregled poslodavca'}
                 </CardDescription>
               </div>
-              <div className="flex gap-2">
-                {korisnik.blokiran ? (
-                  <Badge variant="destructive">Blokiran</Badge>
-                ) : (
-                  <Badge variant="default">Aktivan</Badge>
-                )}
-                {korisnik.verifikovan && (
-                  <Badge variant="secondary">
-                    <CheckCircle className="mr-1 h-3 w-3" />
-                    Verifikovan
-                  </Badge>
+              <div className="flex flex-col gap-2 items-end">
+                <div className="flex gap-2">
+                  {korisnik.blokiran ? (
+                    <Badge variant="destructive">Blokiran</Badge>
+                  ) : (
+                    <Badge variant="default">Aktivan</Badge>
+                  )}
+                  {korisnik.verifikovan && (
+                    <Badge variant="secondary">
+                      <CheckCircle className="mr-1 h-3 w-3" />
+                      Verifikovan
+                    </Badge>
+                  )}
+                </div>
+                <PosaljiNotifikacijuDialog
+                  korisnikId={korisnik.id}
+                  korisnikIme={korisnik.puno_ime || korisnik.naziv_firme}
+                  korisnikUloga={korisnik.uloga as 'vozac' | 'poslodavac'}
+                />
+                {jeVozac && (
+                  <ToggleBlokiranjeButton
+                    userId={korisnik.id}
+                    userName={korisnik.puno_ime}
+                    blokiran={korisnik.blokiran}
+                  />
                 )}
               </div>
             </div>

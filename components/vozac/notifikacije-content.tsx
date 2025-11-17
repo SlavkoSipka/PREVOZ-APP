@@ -10,7 +10,7 @@ import { formatVreme } from '@/lib/utils'
 
 interface Notifikacija {
   id: string
-  tip: 'odobreno' | 'odbijeno'
+  tip: 'odobreno' | 'odbijeno' | 'nova_ocena' | 'uplata_potrebna' | 'admin_poruka'
   poruka: string
   procitano: boolean
   created_at: string

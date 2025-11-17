@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   title: 'TransLink - Platforma za transport',
   description: 'Povežite poslodavce i vozače - brzo, efikasno, sigurno',
   manifest: '/manifest.json',
-  themeColor: '#16a34a',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -19,11 +18,11 @@ export const metadata: Metadata = {
   },
   formatDetection: {
     telephone: false
-  },
-  icons: {
-    icon: '/icon-192x192.png',
-    apple: '/icon-192x192.png'
   }
+}
+
+export const viewport: Viewport = {
+  themeColor: '#16a34a',
 }
 
 export default function RootLayout({

@@ -3,11 +3,9 @@ import { getUserWithProfile } from '@/lib/auth-helpers.server'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { Navbar } from '@/components/dashboard/navbar'
 import { DashboardContent } from '@/components/vozac/dashboard-content'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { XCircle } from 'lucide-react'
-import Link from 'next/link'
 import { EnableNotificationsBanner } from '@/components/push-notifications/enable-notifications-banner'
+import { BlokiranBanner } from '@/components/vozac/blokiran-banner'
+import { HelpCard } from '@/components/support/help-card'
 
 // Onemogući cache za real-time
 export const revalidate = 0
@@ -32,7 +30,8 @@ export default async function VozacDashboard() {
     { data: prijave },
     { data: odbijenePrijave },
     { count: brojZavrsenihTura },
-    { data: zavrseneTure }
+    { data: zavrseneTure },
+    { data: uplate }
   ] = await Promise.all([
     // Aktivne ture - default sortiranje po najnovijim (created_at DESC)
     supabase
@@ -86,60 +85,36 @@ export default async function VozacDashboard() {
       .eq('dodeljeni_vozac_id', userData.user.id)
       .eq('status', 'zavrsena')
       .order('created_at', { ascending: false })
-      .limit(10)
+      .limit(10),
+
+    // Neplaćene uplate
+    supabase
+      .from('uplate')
+      .select('iznos')
+      .eq('vozac_id', userData.user.id)
+      .eq('status', 'u_toku')
   ])
+
+  // Izračunaj ukupan dug
+  const ukupnoDug = uplate?.reduce((sum: number, u: any) => sum + parseFloat(u.iznos), 0) || 0
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar user={{ ...userData.profile, id: userData.user.id }} />
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">
-            Dobrodošao, {userData.profile.puno_ime}!
-          </h1>
-          <p className="text-gray-600">
-            Pronađi i prihvati ture koje ti odgovaraju
-          </p>
-        </div>
-
+      <div className="container mx-auto px-4 py-6">
         {/* Upozorenje ako je vozač blokiran */}
         {userData.profile.blokiran && (
-          <Card className="mb-8 border-red-500 bg-red-50">
-            <CardHeader>
-              <CardTitle className="text-red-700 flex items-center gap-2">
-                <XCircle className="h-5 w-5" />
-                ⚠️ Nalog je blokiran
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-red-800 mb-3">
-                <strong>Razlog:</strong> {userData.profile.razlog_blokiranja || 'Kontaktirajte administratora'}
-              </p>
-              <div className="bg-white p-4 rounded-lg border border-red-200">
-                <h4 className="font-semibold mb-2 text-red-900">📢 Važno:</h4>
-                <ul className="list-disc list-inside text-sm text-red-800 space-y-1">
-                  <li>Ne možete se prijavljivati za nove ture dok ne platite proviziju</li>
-                  <li>Provizija se plaća nakon završetka svake odobrene ture</li>
-                  <li>Kontaktirajte administratora za više informacija</li>
-                </ul>
-              </div>
-              {zavrseneTure && zavrseneTure.length > 0 && zavrseneTure.some((t: any) => 
-                t.uplata && t.uplata.length > 0 && t.uplata[0].status !== 'placeno'
-              ) && (
-                <Link href="/uplata-obavezna">
-                  <Button variant="destructive" className="mt-4">
-                    Plati proviziju i deblokiraj nalog
-                  </Button>
-                </Link>
-              )}
-            </CardContent>
-          </Card>
+          <BlokiranBanner ukupnoDug={ukupnoDug} />
         )}
 
         {/* Push Notifications Banner */}
         <EnableNotificationsBanner userId={userData.user.id} />
+
+        {/* Pomoć banner - iznad dashboard-a */}
+        <div className="mb-6">
+          <HelpCard />
+        </div>
 
         {/* Dashboard content sa real-time */}
         <DashboardContent 

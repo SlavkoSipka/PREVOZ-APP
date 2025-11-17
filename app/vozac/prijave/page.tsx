@@ -44,6 +44,14 @@ export default async function VozacPrijavePage() {
           </p>
         </div>
 
+        {/* Info poruka */}
+        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-sm text-blue-800">
+            <strong>💡 Važno:</strong> Nakon izvezene ture obavezno potvrdite da je tura završena klikom na dugme "Završio sam turu". 
+            To je neophodno kako biste mogli da prihvatate nove ture.
+          </p>
+        </div>
+
         {/* Prijave content sa tabovima */}
         <MojePrijaveContent
           initialPrijave={(prijave as any) || []}

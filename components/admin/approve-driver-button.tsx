@@ -84,7 +84,13 @@ export function ApproveDriverButton({ prijavaId, vozacId, turaId, turaInfo, voza
 
       // 4b. Kreiraj notifikaciju za poslodavca da je vozač dodeljen
       if (turaData?.firma_id) {
-        await supabase
+        console.log('🔔 Kreiram notifikaciju za poslodavca:', {
+          vozac_id: turaData.firma_id,
+          tip: 'vozac_dodeljen',
+          tura_id: turaId
+        })
+        
+        const { data: notifData, error: notifError } = await supabase
           .from('notifikacije')
           .insert({
             vozac_id: turaData.firma_id,
@@ -92,6 +98,13 @@ export function ApproveDriverButton({ prijavaId, vozacId, turaId, turaInfo, voza
             tip: 'vozac_dodeljen',
             poruka: `🚚 Vozač ${vozacIme || 'je'} dodeljen vašoj turi ${turaInfo.polazak} → ${turaInfo.destinacija}! Možete ga kontaktirati putem aplikacije.`
           })
+          .select()
+        
+        if (notifError) {
+          console.error('❌ Greška pri kreiranju notifikacije za poslodavca:', notifError)
+        } else {
+          console.log('✅ Notifikacija za poslodavca kreirana:', notifData)
+        }
       }
 
       // 5. Kreiraj notifikacije za odbijene vozače

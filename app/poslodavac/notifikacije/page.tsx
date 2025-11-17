@@ -17,23 +17,33 @@ export default async function PoslodavacNotifikacijePage() {
 
   const supabase = await createServerSupabaseClient()
 
-  const { data: notifikacije } = await supabase
+  // Debug: Proveri auth
+  const { data: { user } } = await supabase.auth.getUser()
+  console.log('🔍 AUTH USER:', user?.id)
+  console.log('🔍 PROFILE USER:', userData.user.id)
+  console.log('🔍 MATCH:', user?.id === userData.user.id)
+
+  const { data: notifikacije, error } = await supabase
     .from('notifikacije')
     .select(`
       id, tip, poruka, procitano, created_at, tura_id,
       tura:ture(
         id, polazak, destinacija, datum, ponudjena_cena, dodeljeni_vozac_id,
-        dodeljeni_vozac:users!ture_dodeljeni_vozac_id_fkey(id, puno_ime)
-      ),
-      ocene(id, ocena)
+        dodeljeni_vozac:users!ture_dodeljeni_vozac_id_fkey(id, puno_ime),
+        ocene(id, ocena)
+      )
     `)
     .eq('vozac_id', userData.user.id)
     .order('created_at', { ascending: false })
     .limit(50)
 
+  // Debug: Proveri rezultat
+  console.log('🔍 NOTIFIKACIJE COUNT:', notifikacije?.length || 0)
+  console.log('🔍 ERROR:', error)
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar user={userData.profile} />
+      <Navbar user={{ ...userData.profile, id: userData.user.id }} currentPage="notifikacije" />
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Button variant="ghost" asChild className="mb-6">

@@ -91,7 +91,13 @@ export function ZavrsiTuruButton({ turaId, vozacId, iznos }: ZavrsiTuruButtonPro
 
       // Pošalji notifikaciju poslodavcu da je tura završena
       if (turaData?.firma_id) {
-        await supabase
+        console.log('🔔 Kreiram notifikaciju za poslodavca o završenoj turi:', {
+          vozac_id: turaData.firma_id,
+          tip: 'tura_zavrsena',
+          tura_id: turaId
+        })
+        
+        const { data: notifData, error: notifError } = await supabase
           .from('notifikacije')
           .insert({
             vozac_id: turaData.firma_id,
@@ -99,6 +105,15 @@ export function ZavrsiTuruButton({ turaId, vozacId, iznos }: ZavrsiTuruButtonPro
             tip: 'tura_zavrsena',
             poruka: `🎉 Tura ${turaData.polazak} → ${turaData.destinacija} je uspešno završena! Hvala vam što koristite TransLink. Možete oceniti vozača kako biste pomogli drugim korisnicima.`
           })
+          .select()
+        
+        if (notifError) {
+          console.error('❌ Greška pri kreiranju notifikacije za poslodavca:', notifError)
+        } else {
+          console.log('✅ Notifikacija za poslodavca o završenoj turi kreirana:', notifData)
+        }
+      } else {
+        console.warn('⚠️ turaData.firma_id nije pronađen, notifikacija NIJE kreirana!')
       }
 
       // Samo prebaci vozača na plaćanje - BEZ blokiranja
@@ -141,11 +156,10 @@ export function ZavrsiTuruButton({ turaId, vozacId, iznos }: ZavrsiTuruButtonPro
                 Da li ste sigurni da ste završili ovu turu?
               </p>
               <p className="font-semibold text-foreground">
-                Nakon potvrde, biće vam potrebno da platite proviziju od {iznos} € 
-                kako biste nastavili korišćenje platforme.
+                Nakon potvrde, biće vam potrebno da platite proviziju od {iznos} €.
               </p>
               <p className="text-sm">
-                Vaš nalog će biti privremeno blokiran dok ne izvršite uplatu.
+                Nećete moći da prihvatite nove ture dok ne izvršite uplatu provizije.
               </p>
             </div>
           </DialogHeader>

@@ -26,11 +26,11 @@ interface Notifikacija {
       id: string
       puno_ime: string
     }
+    ocene?: Array<{
+      id: string
+      ocena: number
+    }>
   } | null
-  ocene?: Array<{
-    id: string
-    ocena: number
-  }>
 }
 
 interface NotifikacijeContentProps {
@@ -179,7 +179,8 @@ export function NotifikacijeContentPoslodavac({ initialNotifikacije, userId }: N
       ) : (
         <div className="space-y-4">
           {notifikacije.map((notifikacija) => {
-            const vecOcenjen = notifikacija.ocene && notifikacija.ocene.length > 0
+            // Ocene su sada u tura objektu
+            const vecOcenjen = notifikacija.tura?.ocene && notifikacija.tura.ocene.length > 0
             const mozeOceniti = notifikacija.tip === 'tura_zavrsena' && notifikacija.tura?.dodeljeni_vozac_id && !vecOcenjen
 
             return (

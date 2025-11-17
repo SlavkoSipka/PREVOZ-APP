@@ -122,15 +122,7 @@ export default async function AdminDashboard() {
     <div className="min-h-screen bg-gray-50">
       <Navbar user={{ ...userData.profile, id: userData.user.id }} />
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Admin Panel</h1>
-          <p className="text-gray-600">
-            Upravljanje korisnicima, turama i uplatama
-          </p>
-        </div>
-
+      <div className="container mx-auto px-4 py-6">
         {/* Push Notifications Banner */}
         <EnableNotificationsBanner userId={userData.user.id} />
 

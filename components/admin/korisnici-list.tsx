@@ -178,34 +178,34 @@ export function KorisniciList({ korisnici }: { korisnici: Korisnik[] }) {
 
             {korisnik.uloga !== 'admin' && (
               <div className="flex flex-col gap-2">
+                <Button asChild size="sm" variant="outline">
+                  <Link href={`/admin/korisnici/${korisnik.id}`}>
+                    <Eye className="mr-2 h-4 w-4" />
+                    Pogledaj profil
+                  </Link>
+                </Button>
                 {korisnik.uloga === 'vozac' && (
-                  <Button asChild size="sm" variant="outline">
-                    <Link href={`/admin/korisnici/${korisnik.id}`}>
-                      <Eye className="mr-2 h-4 w-4" />
-                      Pogledaj profil
-                    </Link>
-                  </Button>
-                )}
-                {korisnik.blokiran ? (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleDeblokiraj(korisnik.id)}
-                    disabled={loading === korisnik.id}
-                  >
-                    <Unlock className="mr-2 h-4 w-4" />
-                    Deblokiraj
-                  </Button>
-                ) : (
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleBlokiraj(korisnik.id)}
-                    disabled={loading === korisnik.id}
-                  >
-                    <Ban className="mr-2 h-4 w-4" />
-                    Blokiraj
-                  </Button>
+                  korisnik.blokiran ? (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleDeblokiraj(korisnik.id)}
+                      disabled={loading === korisnik.id}
+                    >
+                      <Unlock className="mr-2 h-4 w-4" />
+                      Deblokiraj
+                    </Button>
+                  ) : (
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleBlokiraj(korisnik.id)}
+                      disabled={loading === korisnik.id}
+                    >
+                      <Ban className="mr-2 h-4 w-4" />
+                      Blokiraj
+                    </Button>
+                  )
                 )}
               </div>
             )}

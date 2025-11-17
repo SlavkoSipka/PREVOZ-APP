@@ -5,8 +5,9 @@ import { Navbar } from '@/components/dashboard/navbar'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { User, Mail, Phone, Truck, Calendar, Shield, ArrowLeft, TruckIcon, Euro, CheckCircle, XCircle, Clock, Star } from 'lucide-react'
+import { User, Mail, Phone, Calendar, Shield, ArrowLeft, TruckIcon, Euro, CheckCircle, XCircle, Clock, Star } from 'lucide-react'
 import Link from 'next/link'
+import { UploadDokumenataDialog } from '@/components/vozac/upload-dokumenata-dialog'
 
 export default async function VozacProfilPage() {
   const userData = await getUserWithProfile()
@@ -103,10 +104,7 @@ export default async function VozacProfilPage() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold mb-2">{profile.puno_ime}</h1>
-              <p className="text-blue-100 flex items-center gap-2">
-                <Truck className="h-4 w-4" />
-                {profile.registarske_tablice}
-              </p>
+              <p className="text-blue-100">Profesionalni vozač</p>
             </div>
             <Badge className={`${profile.verifikovan ? 'bg-green-500' : 'bg-yellow-500'} text-white px-4 py-2 text-base`}>
               {profile.verifikovan ? '✅ Verifikovan vozač' : '⏳ Čeka verifikaciju'}
@@ -255,14 +253,6 @@ export default async function VozacProfilPage() {
                 </div>
 
                 <div className="flex items-start">
-                  <Truck className="h-5 w-5 mr-3 mt-0.5 text-primary" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Registarske tablice</p>
-                    <p className="font-semibold">{profile.registarske_tablice}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
                   <Calendar className="h-5 w-5 mr-3 mt-0.5 text-primary" />
                   <div>
                     <p className="text-sm font-medium text-gray-500">Član od</p>
@@ -347,24 +337,20 @@ export default async function VozacProfilPage() {
             </Card>
           )}
 
-          {/* Akcije */}
+          {/* Upload dokumenata */}
           <Card>
             <CardHeader>
-              <CardTitle>Podešavanja</CardTitle>
+              <CardTitle>Dokumenta</CardTitle>
               <CardDescription>
-                Upravljanje nalogom i dokumentima
+                Upload saobracajne dozvole za verifikaciju naloga
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <Button variant="outline" className="w-full justify-start">
-                Ažuriraj profil
-              </Button>
-              <Button variant="outline" className="w-full justify-start">
-                Promeni lozinku
-              </Button>
-              <Button variant="outline" className="w-full justify-start">
-                Upload dokumenata
-              </Button>
+            <CardContent>
+              <UploadDokumenataDialog
+                userId={userData.user.id}
+                postojecaNapred={profile.saobracajna_napred}
+                postojecaNazad={profile.saobracajna_pozadi}
+              />
             </CardContent>
           </Card>
         </div>

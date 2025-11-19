@@ -101,21 +101,24 @@ export function usePushNotifications(userId?: string) {
       console.log('🔔 Tražim dozvolu za notifikacije...')
       console.log('🔍 Permission pre traženja:', Notification.permission)
       
+      // Proveri početno stanje
+      const initialPermission = Notification.permission
+      
       // Ako je već odobreno, vrati true odmah
-      if (Notification.permission === 'granted') {
+      if (initialPermission === 'granted') {
         console.log('✅ Dozvola već ODOBRENA!')
         setPermission('granted')
         return true
       }
 
       // Ako je već odbijeno, ne pokušavaj ponovo
-      if (Notification.permission === 'denied') {
+      if (initialPermission === 'denied') {
         console.log('❌ Dozvola već ODBIJENA')
         setError('Notifikacije su blokirane. Omogućite ih u podešavanjima browsera.')
         return false
       }
       
-      const result = await Notification.requestPermission()
+      const result: NotificationPermission = await Notification.requestPermission()
       
       console.log('🔍 Permission rezultat:', result)
       console.log('🔍 Notification.permission posle:', Notification.permission)
@@ -126,7 +129,7 @@ export function usePushNotifications(userId?: string) {
       await new Promise(resolve => setTimeout(resolve, 500))
       
       // Proveri finalno stanje više puta za mobilne uređaje
-      let finalPermission = Notification.permission
+      const finalPermission: NotificationPermission = Notification.permission
       console.log('🔍 Finalna permission posle čekanja:', finalPermission)
       
       // Na nekim mobilnim uređajima može ostati 'default' ako korisnik nije odgovorio

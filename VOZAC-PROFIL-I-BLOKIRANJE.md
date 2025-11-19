@@ -1,8 +1,11 @@
-# 🚗 Vozač Profil & Sistem Blokiranja - Kompletna Dokumentacija
+# 🚗 Vozač Profil - Kompletna Dokumentacija
 
 ## 📋 Pregled Sistema
 
-Kompletno rešenje za upravljanje profilima vozača, automatsko blokiranje nakon završenih tura i deblokiranje nakon uplate provizije.
+⚠️ **NAPOMENA**: Automatsko blokiranje je **UKLONJENO**!
+Sada samo **admin** može ručno da blokira/deblokira korisnike.
+
+Kompletno rešenje za upravljanje profilima vozača i prikaz statusa naloga.
 
 ---
 
@@ -39,32 +42,27 @@ Lep, moderan i funkcionalan profil sa svim statistikama:
 
 ---
 
-## 🔒 Kako Sistem Blokiranja Radi?
+## 🔒 Kako Manuelno Blokiranje Radi?
 
-### **Scenario 1: Vozač završava turu**
+### **Scenario 1: Admin blokira vozača**
 
 ```
-1. Vozač klikne "Završio sam turu"
+1. Admin ide na Admin Dashboard
          ↓
-2. Dialog za potvrdu
-   "Da li ste sigurni?"
-   "Nakon potvrde, morate platiti proviziju od 15€"
+2. Otvori "Korisnici" tab
          ↓
-3. Vozač klikne "Potvrdi"
+3. Klikne na profil vozača
          ↓
-4. Sistem izvršava sledeće:
-   a) Učitava podatke o turi (polazak, destinacija, datum)
-   b) Menja status ture na "zavrsena"
-   c) Kreira zapis uplate (iznos: 15€, status: "u_toku")
-   d) BLOKIRA VOZAČA:
-      - blokiran = true
-      - razlog_blokiranja = "⚠️ Završili ste turu X→Y (datum). Platite 15€"
-      - vreme_automatske_blokade = NOW()
-   e) Kreira notifikaciju
-   f) Prikazuje poruku
-   g) Preusmerava na /uplata-obavezna
+4. Unese razlog blokiranja
          ↓
-5. Vozač sada:
+5. Klikne "Blokiraj korisnika"
+         ↓
+6. Sistem postavlja:
+   - blokiran = true
+   - razlog_blokiranja = "razlog koji je admin uneo"
+   - vreme_automatske_blokade = NOW()
+         ↓
+7. Vozač sada:
    ✅ MOŽE da gleda ture
    ❌ NE MOŽE da se prijavljuje na ture
    ✅ Vidi razlog blokiranja svuda
@@ -77,35 +75,27 @@ Lep, moderan i funkcionalan profil sa svim statistikama:
          ↓
 2. Provera: Da li je blokiran?
          ↓
-   DA → Greška: "Nalog je blokiran. Platite proviziju!"
+   DA → Greška: "Nalog je blokiran. Razlog: ..."
          Dugme je disabled (ne može kliknuti)
          ↓
    NE → Prijava se šalje
 ```
 
-### **Scenario 3: Vozač plaća proviziju**
+### **Scenario 3: Admin deblokira vozača**
 
 ```
-1. Vozač klikne "Plati proviziju"
+1. Admin ide na profil vozača
          ↓
-2. Otvara se 2Checkout stranica
+2. Vidi da je vozač blokiran
          ↓
-3. Vozač plaća 15€
+3. Klikne "Deblokiraj korisnika"
          ↓
-4. 2Checkout šalje webhook na:
-   /api/webhook/2checkout
+4. Sistem postavlja:
+   - blokiran = false
+   - razlog_blokiranja = null
+   - vreme_automatske_blokade = null
          ↓
-5. Webhook izvršava:
-   a) Pronalazi vozača po email-u
-   b) Ažurira uplatu: status = "placeno"
-   c) DEBLOKIRA VOZAČA:
-      - blokiran = false
-      - razlog_blokiranja = null
-      - vreme_automatske_blokade = null
-   d) Kreira notifikaciju:
-      "✅ Uplata potvrđena! Nalog je aktivan!"
-         ↓
-6. Vozač može ponovo da se prijavljuje na ture! 🎉
+5. Vozač može ponovo da se prijavljuje na ture! 🎉
 ```
 
 ---
@@ -189,64 +179,84 @@ Lep, moderan i funkcionalan profil sa svim statistikama:
 
 ## 🗄️ SQL Fajlovi Za Pokretanje
 
-### 1. **`supabase-ture-dodatna-polja.sql`**
-Dodaje kolone za detaljnije informacije o turama:
-- `tacna_adresa_polazak`
-- `tacna_adresa_destinacija`
-- `vreme_polaska`
-- `kontakt_telefon`
-- `dodatne_napomene`
+### 1. **`UKLONI-AUTOMATSKO-BLOKIRANJE.sql`** ⭐ PRVO OVO!
+Briše sve automatske funkcije i triggere:
+- `auto_blokiraj_vozaca_za_odbijenu_turu()`
+- `proveri_i_blokiraj_vozaca()`
+- `proveri_sve_odobrene_ture_vozaca()`
+- `moze_se_prijaviti_na_turu()`
+- `trigger_proveri_vozaca_pre_prijave`
+- pg_cron job-ove
 
-### 2. **`supabase-vozac-blokiranje-NO-CRON.sql`** ⭐ GLAVNO REŠENJE
-Dodaje:
-- Kolone: `razlog_blokiranja`, `vreme_automatske_blokade`, `razlog_odbijanja`
-- Funkciju: `proveri_i_blokiraj_vozaca()` - blokira vozača
-- Funkciju: `moze_se_prijaviti_na_turu()` - proverava da li može da se prijavi
-- Trigger: `proveri_vozaca_pre_prijave` - automatski sprečava prijavu
+### 2. **`FIX-ADMIN-UPDATE-BLOKIRAN.sql`** ⭐
+Dodaje RLS politike:
+- Admin može da UPDATE-uje sve korisnike
+- Admin može da menja `blokiran` status
+
+### 3. **`POKRENI-OVO-U-SUPABASE-CLEAN.sql`** ✅
+Čist SQL bez automatskog blokiranja:
+- Dodatna polja za ture
+- Kolone za manuelno blokiranje
+- Indeksi za performanse
 
 ---
 
 ## 🚀 Kako Pokrenuti Sve?
 
-### **Korak 1: Pokreni SQL-ove u Supabase**
+### **Korak 1: Ukloni automatsko blokiranje**
 
 1. Otvori **Supabase Dashboard** → **SQL Editor**
-2. Otvori `supabase-ture-dodatna-polja.sql` → **RUN**
-3. Otvori `supabase-vozac-blokiranje-NO-CRON.sql` → **RUN**
+2. Otvori `UKLONI-AUTOMATSKO-BLOKIRANJE.sql` → **RUN** ⚠️ VAŽNO!
 
-### **Korak 2: Restartuj Dev Server**
+### **Korak 2: Omogući admin da menja blokiran status**
+
+1. U **SQL Editor** otvori `FIX-ADMIN-UPDATE-BLOKIRAN.sql` → **RUN**
+
+### **Korak 3: Setup kolone i indexe**
+
+1. U **SQL Editor** otvori `POKRENI-OVO-U-SUPABASE-CLEAN.sql` → **RUN**
+
+### **Korak 4: Restartuj Dev Server**
 ```bash
 npm run dev
 ```
 
-### **Korak 3: Testiraj!**
+### **Korak 5: Testiraj!**
 
-1. **Uloguj se kao vozač**
-2. **Završi neku turu** → Trebalo bi da se blokiraš
-3. **Idi na profil** → Vidi statistike i razlog blokiranja
-4. **Pokušaj da se prijaviš na novu turu** → Trebalo bi da ne možeš
-5. **Plati proviziju** (ili testiraj webhook)
-6. **Nalog je deblokiran!** ✅
+1. **Uloguj se kao admin**
+2. **Idi na "Korisnici"** tab
+3. **Klikni na profil vozača**
+4. **Blokiraj vozača** → Unesi razlog i klikni "Blokiraj"
+5. **Uloguj se kao taj vozač** → Vidi razlog blokiranja
+6. **Pokušaj da se prijaviš na turu** → Ne možeš (dugme disabled)
+7. **Nazad kao admin** → Deblokiraj vozača
+8. **Nazad kao vozač** → Sada možeš da se prijaviš! ✅
 
 ---
 
 ## 🎯 Rezultati
 
+### **Admin Može:**
+- ✅ **Blokirati vozača** - ručno, sa razlogom
+- ✅ **Deblokirati vozača** - ručno, bilo kada
+- ✅ **Promeniti razlog blokiranja** - UPDATE bilo kada
+- ✅ **Videti sve blokirane korisnike** - filter na "Korisnici" tab
+
 ### **Vozač Vidi:**
-- ✅ **Broj izvezenih tura** - raste posle svake završene ture
-- ✅ **Ukupna zarada** - raste posle svake plaćene provizije
+- ✅ **Broj izvezenih tura** - ukupno završenih tura
+- ✅ **Aktivne prijave** - trenutne prijave koje čekaju ili su odobrene
+- ✅ **Ukupna zarada** - suma svih plaćenih provizija
 - ✅ **Status naloga** - aktivan ili blokiran sa razlogom
 - ✅ **Poslednje ture** - istorija sa statusima
 - ✅ **Jasno upozorenje** ako je blokiran
 
 ### **Vozač NE MOŽE:**
 - ❌ **Da se prijavljuje na ture** ako je blokiran
-- ❌ **Da zaobiđe proveru** - trigger sprečava INSERT u bazu
+- ❌ **Da zaobiđe proveru** - UI sprečava prijavljivanje
 
 ### **Vozač MOŽE:**
 - ✅ **Da gleda sve ture** čak i dok je blokiran
 - ✅ **Da vidi svoj profil** i statistike
-- ✅ **Da plati proviziju** i deblokira se
 
 ---
 
@@ -268,11 +278,14 @@ npm run dev
 - [x] Profil prikazuje neplaćene provizije
 - [x] Profil prikazuje razlog blokiranja
 - [x] Profil prikazuje poslednje ture
-- [x] Vozač se blokira pri završetku ture
+- [x] Admin može ručno da blokira vozača
+- [x] Admin može ručno da deblokira vozača
+- [x] Admin može da unese razlog blokiranja
 - [x] Razlog blokiranja je jasan i detaljan
-- [x] Webhook deblokira vozača nakon plaćanja
-- [x] Trigger sprečava prijavljivanje dok je blokiran
+- [x] UI sprečava prijavljivanje dok je blokiran
 - [x] UI je lep, moderan i funkcionalan
+- [x] Obrisane sve automatske funkcije blokiranja
+- [x] Obrisan frontend poziv automatske funkcije
 
 ---
 
@@ -280,11 +293,12 @@ npm run dev
 
 Sada imaš kompletan sistem koji:
 1. ✅ Prati statistike vozača
-2. ✅ Automatski blokira nakon završenih tura
+2. ✅ **Admin ručno blokira** vozača
 3. ✅ Jasno komunicira razlog blokiranja
-4. ✅ Automatski deblokira nakon uplate
+4. ✅ **Admin ručno deblokira** vozača
 5. ✅ Sprečava prijavljivanje dok je blokiran
 6. ✅ Izgleda profesionalno i moderno
+7. ❌ **NEMA automatskog blokiranja**
 
 **Samo pokreni SQL-ove i sve radi! 🚀**
 

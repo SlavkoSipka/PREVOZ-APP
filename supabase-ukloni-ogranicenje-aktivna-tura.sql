@@ -1,10 +1,12 @@
 -- ========================================
--- UKLANJANJE OGRANIČENJA - VOZAČ MOŽE IMATI VIŠE AKTIVNIH TURA
+-- ⚠️ OVAJ FAJL JE ZASTAREO!
 -- ========================================
--- Ova skripta ažurira funkciju da dozvoli vozačima da se prijavljuju
--- za više tura istovremeno, čak i ako već imaju aktivnu dodeljenu turu.
+-- Automatske funkcije za blokiranje su UKLONJENE!
+-- Koristi umesto ovog: UKLONI-AUTOMATSKO-BLOKIRANJE.sql
+-- ========================================
 
-CREATE OR REPLACE FUNCTION moze_se_prijaviti_na_turu(p_vozac_id UUID, p_tura_id UUID)
+-- OVAJ KOD JE ZASTAREO - NE KORISTI GA!
+-- CREATE OR REPLACE FUNCTION moze_se_prijaviti_na_turu(p_vozac_id UUID, p_tura_id UUID)
 RETURNS jsonb AS $$
 DECLARE
   v_blokiran boolean;

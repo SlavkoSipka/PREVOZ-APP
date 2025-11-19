@@ -19,11 +19,6 @@ export default async function VozacDashboard() {
 
   const supabase = await createServerSupabaseClient()
 
-  // Proveri da li vozač treba da bude blokiran zbog propuštenih tura
-  await supabase.rpc('proveri_sve_odobrene_ture_vozaca', {
-    p_vozac_id: userData.user.id
-  })
-
   // OPTIMIZED: Paralelno učitavanje
   const [
     { data: ture },

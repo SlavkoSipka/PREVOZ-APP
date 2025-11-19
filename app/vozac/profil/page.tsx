@@ -5,7 +5,7 @@ import { Navbar } from '@/components/dashboard/navbar'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { User, Mail, Phone, Calendar, Shield, ArrowLeft, TruckIcon, Euro, CheckCircle, XCircle, Clock, Star } from 'lucide-react'
+import { User, Mail, Phone, Calendar, Shield, ArrowLeft, TruckIcon, CheckCircle, XCircle, Star } from 'lucide-react'
 import Link from 'next/link'
 import { UploadDokumenataDialog } from '@/components/vozac/upload-dokumenata-dialog'
 
@@ -22,7 +22,6 @@ export default async function VozacProfilPage() {
   // Učitaj statistike vozača
   const [
     { count: zavrseneTure },
-    { count: aktivnePrijave },
     { data: uplate },
     { data: poslednjeTure },
     { data: ocene }
@@ -33,13 +32,6 @@ export default async function VozacProfilPage() {
       .select('*', { count: 'exact', head: true })
       .eq('dodeljeni_vozac_id', userData.user.id)
       .eq('status', 'zavrsena'),
-
-    // Broj aktivnih prijava
-    supabase
-      .from('prijave')
-      .select('*', { count: 'exact', head: true })
-      .eq('vozac_id', userData.user.id)
-      .in('status', ['ceka_admina', 'odobreno']),
 
     // Uplate (plaćene i neplaćene)
     supabase
@@ -72,20 +64,9 @@ export default async function VozacProfilPage() {
   ])
 
   // Izračunaj statistike
-  const ukupnaZarada = uplate
-    ?.filter((u: any) => u.status === 'placeno')
-    .reduce((sum: number, u: any) => sum + parseFloat(u.iznos), 0) || 0
-  
   const neplaceneProvizije = uplate
     ?.filter((u: any) => u.status !== 'placeno')
     .reduce((sum: number, u: any) => sum + parseFloat(u.iznos), 0) || 0
-
-  // Izračunaj prosečnu ocenu
-  const prosecnaOcena = ocene && ocene.length > 0
-    ? (ocene.reduce((sum: number, o: any) => sum + o.ocena, 0) / ocene.length).toFixed(1)
-    : null
-  
-  const brojOcena = ocene?.length || 0
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -112,29 +93,11 @@ export default async function VozacProfilPage() {
           </div>
 
           {/* Statistike */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {prosecnaOcena && (
-              <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-                <Star className="h-6 w-6 mb-2 text-yellow-300 fill-yellow-300" />
-                <p className="text-2xl font-bold">{prosecnaOcena}</p>
-                <p className="text-xs text-blue-200">Prosečna ocena</p>
-                <p className="text-xs text-blue-100">({brojOcena} {brojOcena === 1 ? 'ocena' : brojOcena < 5 ? 'ocene' : 'ocena'})</p>
-              </div>
-            )}
+          <div className="grid grid-cols-2 gap-4">
             <div className="bg-white/10 backdrop-blur rounded-lg p-4">
               <TruckIcon className="h-6 w-6 mb-2 text-blue-200" />
               <p className="text-2xl font-bold">{zavrseneTure}</p>
               <p className="text-sm text-blue-100">Izvezenih tura</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-              <Clock className="h-6 w-6 mb-2 text-blue-200" />
-              <p className="text-2xl font-bold">{aktivnePrijave}</p>
-              <p className="text-sm text-blue-100">Aktivne prijave</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-              <Euro className="h-6 w-6 mb-2 text-green-300" />
-              <p className="text-2xl font-bold">{ukupnaZarada.toFixed(2)}€</p>
-              <p className="text-sm text-blue-100">Ukupna zarada</p>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-4">
               <XCircle className="h-6 w-6 mb-2 text-red-300" />
@@ -346,11 +309,52 @@ export default async function VozacProfilPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <UploadDokumenataDialog
-                userId={userData.user.id}
-                postojecaNapred={profile.saobracajna_napred}
-                postojecaNazad={profile.saobracajna_pozadi}
-              />
+              <div className="space-y-4">
+                {/* Status indikatori */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className={`flex items-center gap-2 p-3 rounded-lg border ${
+                    profile.saobracajna_napred 
+                      ? 'bg-green-50 border-green-200' 
+                      : 'bg-gray-50 border-gray-200'
+                  }`}>
+                    {profile.saobracajna_napred ? (
+                      <>
+                        <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                        <span className="text-xs font-medium text-green-700">Prednja strana ✓</span>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                        <span className="text-xs font-medium text-gray-600">Prednja strana</span>
+                      </>
+                    )}
+                  </div>
+                  <div className={`flex items-center gap-2 p-3 rounded-lg border ${
+                    profile.saobracajna_pozadi 
+                      ? 'bg-green-50 border-green-200' 
+                      : 'bg-gray-50 border-gray-200'
+                  }`}>
+                    {profile.saobracajna_pozadi ? (
+                      <>
+                        <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                        <span className="text-xs font-medium text-green-700">Zadnja strana ✓</span>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                        <span className="text-xs font-medium text-gray-600">Zadnja strana</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Upload dugme */}
+                <UploadDokumenataDialog
+                  userId={userData.user.id}
+                  postojecaNapred={profile.saobracajna_napred}
+                  postojecaNazad={profile.saobracajna_pozadi}
+                />
+              </div>
             </CardContent>
           </Card>
         </div>

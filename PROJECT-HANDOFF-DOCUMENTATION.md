@@ -284,22 +284,19 @@ Koristi se u:
 
 ## 🔧 KLJUČNE FUNKCIJE (PostgreSQL)
 
-### 1. `moze_se_prijaviti_na_turu(p_vozac_id, p_tura_id)`
-Proverava da li vozač može da se prijavi:
-- Da li je blokiran
-- Da li je već prijavljen
-- Da li je tura aktivna
+⚠️ **NAPOMENA**: Automatske funkcije za blokiranje su **UKLONJENE**!
 
-### 2. `proveri_i_blokiraj_vozaca(p_vozac_id, p_tura_id)`
-Proverava da li je vozač propustio turu i blokira ga ako jeste:
-- Poredi datum/vreme polaska sa trenutnim vremenom
-- Dodaje +1 sat tolerancije
-- Blokira vozača i šalje notifikaciju
+### Uklonjena automatska logika:
+- ❌ `auto_blokiraj_vozaca_za_odbijenu_turu()` - OBRISANA
+- ❌ `proveri_i_blokiraj_vozaca()` - OBRISANA
+- ❌ `proveri_sve_odobrene_ture_vozaca()` - OBRISANA
+- ❌ `moze_se_prijaviti_na_turu()` - OBRISANA
+- ❌ `trigger_proveri_vozaca_pre_prijave` - OBRISAN
 
-### 3. `proveri_sve_odobrene_ture_vozaca(p_vozac_id)`
-Iterira kroz sve odobrene ture vozača i poziva `proveri_i_blokiraj_vozaca`:
-- Poziva se kada vozač učita dashboard
-- Automatska provera svih tura
+### Kako sada radi blokiranje:
+- ✅ **Samo admin** može ručno da blokira/deblokira korisnike
+- ✅ Admin ima RLS politike da može da menja `blokiran` kolonu
+- ✅ UI sprečava vozača da se prijavljuje ako je blokiran
 
 ### 4. `prosecna_ocena_vozaca(p_vozac_id)`
 Vraća prosečnu ocenu vozača (NUMERIC, 2 decimale).

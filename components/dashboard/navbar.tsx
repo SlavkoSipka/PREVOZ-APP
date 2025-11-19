@@ -104,7 +104,7 @@ export function Navbar({ user, currentPage }: NavbarProps) {
   }
 
   return (
-    <nav className="border-b bg-background">
+    <nav className="sticky top-0 z-50 border-b bg-background shadow-sm">
       <div className="container mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex justify-between items-center">
         <div className="flex items-center gap-3 sm:gap-6">
           <div className="flex items-center space-x-1.5 sm:space-x-2">

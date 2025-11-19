@@ -119,7 +119,8 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
         .select(`
           id, polazak, destinacija, datum, ponudjena_cena, created_at,
           firma:users!ture_firma_id_fkey(puno_ime, naziv_firme),
-          uplata:uplate(status)
+          uplata:uplate(status),
+          ocene(ocena, komentar)
         `)
         .eq('dodeljeni_vozac_id', userId)
         .eq('status', 'zavrsena')
@@ -466,7 +467,7 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
                     </div>
                   </CardHeader>
                   <CardContent>
-                    {tura.vozac_rating ? (
+                    {tura.ocene && tura.ocene.length > 0 ? (
                       <div className="bg-white rounded-lg p-4 border border-yellow-200">
                         <div className="flex items-center gap-2 mb-2">
                           <span className="font-semibold">Ocena:</span>
@@ -475,18 +476,18 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
                               <Star
                                 key={star}
                                 className={`h-5 w-5 ${
-                                  star <= tura.vozac_rating
+                                  star <= tura.ocene[0].ocena
                                     ? 'fill-yellow-400 text-yellow-400'
                                     : 'text-gray-300'
                                 }`}
                               />
                             ))}
                           </div>
-                          <span className="font-bold text-lg">{tura.vozac_rating}/5</span>
+                          <span className="font-bold text-lg">{tura.ocene[0].ocena}/5</span>
                         </div>
-                        {tura.vozac_komentar && (
+                        {tura.ocene[0].komentar && (
                           <p className="text-sm text-gray-700 italic border-l-2 border-yellow-400 pl-3">
-                            "{tura.vozac_komentar}"
+                            "{tura.ocene[0].komentar}"
                           </p>
                         )}
                       </div>

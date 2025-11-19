@@ -14,6 +14,7 @@ interface EnableNotificationsBannerProps {
 export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerProps) {
   const [isDismissed, setIsDismissed] = useState(false)
   const [showBanner, setShowBanner] = useState(false)
+  const [showDebug, setShowDebug] = useState(false)
   const { toast } = useToast()
   
   const {
@@ -21,7 +22,8 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
     permission,
     subscribe,
     isLoading,
-    error
+    error,
+    debugInfo
   } = usePushNotifications(userId)
 
   // Proveri da li treba prikazati banner
@@ -120,7 +122,7 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
             </p>
 
             {/* Buttons */}
-            <div className="flex gap-2">
+            <div className="flex gap-2 mb-2">
               <Button
                 size="sm"
                 onClick={handleEnable}
@@ -148,9 +150,26 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
               </Button>
             </div>
 
+            {/* Debug Toggle Button - SAMO ZA TESTIRANJE */}
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setShowDebug(!showDebug)}
+              className="text-[10px] h-6 px-2 mb-2"
+            >
+              🐛 {showDebug ? 'Sakrij' : 'Prikaži'} Debug Info
+            </Button>
+
+            {/* Debug Info - Vidljiv na ekranu */}
+            {showDebug && debugInfo && (
+              <div className="mt-2 p-2 bg-gray-100 rounded text-[9px] font-mono overflow-auto max-h-40">
+                <pre className="whitespace-pre-wrap">{debugInfo}</pre>
+              </div>
+            )}
+
             {/* Info text */}
             <p className="text-[10px] sm:text-xs text-gray-500 mt-2">
-              💡 Možete promeniti ovo u podešavanjima profila
+              💡 Ako dijalog ne izlazi: Kliknite 🔒 → Site settings → Notifications → Allow
             </p>
           </div>
         </div>

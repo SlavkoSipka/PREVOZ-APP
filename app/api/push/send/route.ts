@@ -46,6 +46,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Učitaj push subscription za korisnika
+    console.log('🔍 Tražim push subscription za korisnika:', payload.userId)
+    
     const { data: subscriptionData, error: subError } = await supabase
       .from('push_subscriptions')
       .select('subscription')
@@ -53,12 +55,15 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (subError || !subscriptionData) {
-      console.log('ℹ️ Korisnik nema push subscription:', payload.userId)
+      console.log('❌ Korisnik nema push subscription:', payload.userId)
+      console.log('   Error:', subError?.message || 'No data')
       return NextResponse.json(
-        { message: 'Korisnik nema omogućene push notifikacije' },
+        { message: 'Korisnik nema omogućene push notifikacije', error: subError?.message },
         { status: 200 } // Ne vraćamo error jer ovo nije greška
       )
     }
+    
+    console.log('✅ Subscription pronađen za:', payload.userId)
 
     const pushSubscription = subscriptionData.subscription
 

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { usePushNotifications } from '@/hooks/use-push-notifications'
 import { useToast } from '@/hooks/use-toast'
+import { CheckSubscriptionButton } from './check-subscription-button'
 
 interface EnableNotificationsBannerProps {
   userId: string
@@ -39,18 +40,14 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
     const dismissed = localStorage.getItem('push-notifications-dismissed')
     console.log('📦 LocalStorage dismissed:', dismissed)
     
-    if (dismissed === 'true') {
-      console.log('ℹ️ Banner je već dismissed')
-      return
-    }
-
-    // Prikaži banner samo ako dozvola nije data
+    // Prikaži banner uvek ako je permission 'default' ili ako nije dismissed
     console.log('🔍 Permission status:', permission)
-    if (permission === 'default') {
+    if (permission === 'default' && dismissed !== 'true') {
       console.log('✅ Prikazujem banner!')
       setShowBanner(true)
     } else if (permission === 'granted') {
-      console.log('✅ Notifikacije već omogućene')
+      console.log('✅ Notifikacije već omogućene - prikazujem status')
+      setShowBanner(true) // Prikaži banner sa statusom
     } else if (permission === 'denied') {
       console.log('❌ Notifikacije odbijene')
     }
@@ -114,41 +111,57 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
 
           {/* Content */}
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-sm sm:text-base mb-1">
-              Omogućite obaveštenja
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-600 mb-3">
-              Primajte trenutna obaveštenja o novim turama, prijavama i porukama direktno na vaš uređaj.
-            </p>
+            {permission === 'granted' ? (
+              <>
+                <h3 className="font-semibold text-sm sm:text-base mb-1 text-green-600">
+                  ✅ Notifikacije omogućene
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 mb-3">
+                  Primaćete obaveštenja na ovom uređaju.
+                </p>
+                
+                {/* Status Check Button */}
+                <CheckSubscriptionButton userId={userId} />
+              </>
+            ) : (
+              <>
+                <h3 className="font-semibold text-sm sm:text-base mb-1">
+                  Omogućite obaveštenja
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 mb-3">
+                  Primajte trenutna obaveštenja o novim turama, prijavama i porukama direktno na vaš uređaj.
+                </p>
 
-            {/* Buttons */}
-            <div className="flex gap-2 mb-2">
-              <Button
-                size="sm"
-                onClick={handleEnable}
-                disabled={isLoading}
-                className="flex-1 sm:flex-initial touch-manipulation"
-              >
-                {isLoading ? (
-                  <span className="animate-spin">⏳</span>
-                ) : (
-                  <>
-                    <Check className="h-3.5 w-3.5 mr-1.5" />
-                    Omogući
-                  </>
-                )}
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleDismiss}
-                disabled={isLoading}
-                className="touch-manipulation"
-              >
-                <X className="h-3.5 w-3.5 mr-1.5" />
-                Ne sada
-              </Button>
-            </div>
+                {/* Buttons */}
+                <div className="flex gap-2 mb-2">
+                  <Button
+                    size="sm"
+                    onClick={handleEnable}
+                    disabled={isLoading}
+                    className="flex-1 sm:flex-initial touch-manipulation"
+                  >
+                    {isLoading ? (
+                      <span className="animate-spin">⏳</span>
+                    ) : (
+                      <>
+                        <Check className="h-3.5 w-3.5 mr-1.5" />
+                        Omogući
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleDismiss}
+                    disabled={isLoading}
+                    className="touch-manipulation"
+                  >
+                    <X className="h-3.5 w-3.5 mr-1.5" />
+                    Ne sada
+                  </Button>
+                </div>
+              </>
+            )}
 
             {/* Debug Toggle Button - SAMO ZA TESTIRANJE */}
             <Button

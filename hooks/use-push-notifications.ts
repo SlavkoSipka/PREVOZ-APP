@@ -25,14 +25,28 @@ export function usePushNotifications(userId?: string) {
       const hasNotification = 'Notification' in window
       const hasServiceWorker = 'serviceWorker' in navigator
       const hasPushManager = 'PushManager' in window
-      const supported = hasNotification && hasServiceWorker && hasPushManager
+      
+      // iOS/Safari specifične provere
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+      const iOSVersion = isIOS ? parseFloat((navigator.userAgent.match(/OS (\d+)_/) || [])[1]) : 0
+      
+      // iOS 16.4+ podržava web push
+      const iOSSupported = !isIOS || (isIOS && iOSVersion >= 16.4)
+      
+      const supported = hasNotification && hasServiceWorker && hasPushManager && iOSSupported
       
       console.log('🔍 Browser Support Check:', {
         hasNotification,
         hasServiceWorker,
         hasPushManager,
+        isIOS,
+        isSafari,
+        iOSVersion,
+        iOSSupported,
         supported,
-        currentPermission: supported ? Notification.permission : 'N/A'
+        currentPermission: supported ? Notification.permission : 'N/A',
+        userAgent: navigator.userAgent
       })
       
       setIsSupported(supported)
@@ -87,6 +101,20 @@ export function usePushNotifications(userId?: string) {
       console.log('🔔 Tražim dozvolu za notifikacije...')
       console.log('🔍 Permission pre traženja:', Notification.permission)
       
+      // Ako je već odobreno, vrati true odmah
+      if (Notification.permission === 'granted') {
+        console.log('✅ Dozvola već ODOBRENA!')
+        setPermission('granted')
+        return true
+      }
+
+      // Ako je već odbijeno, ne pokušavaj ponovo
+      if (Notification.permission === 'denied') {
+        console.log('❌ Dozvola već ODBIJENA')
+        setError('Notifikacije su blokirane. Omogućite ih u podešavanjima browsera.')
+        return false
+      }
+      
       const result = await Notification.requestPermission()
       
       console.log('🔍 Permission rezultat:', result)
@@ -94,13 +122,15 @@ export function usePushNotifications(userId?: string) {
       
       setPermission(result)
 
-      // Čekaj malo da se browser updatuje (za iOS/Safari)
-      await new Promise(resolve => setTimeout(resolve, 100))
+      // Daj više vremena mobilnim browserima da procesiraju (posebno iOS Safari)
+      await new Promise(resolve => setTimeout(resolve, 500))
       
-      // Proveri ponovo
-      const finalPermission = Notification.permission
+      // Proveri finalno stanje više puta za mobilne uređaje
+      let finalPermission = Notification.permission
       console.log('🔍 Finalna permission posle čekanja:', finalPermission)
       
+      // Na nekim mobilnim uređajima može ostati 'default' ako korisnik nije odgovorio
+      // ili ako browser ima specifično ponašanje
       if (finalPermission === 'granted' || result === 'granted') {
         console.log('✅ Dozvola ODOBRENA!')
         setPermission('granted')
@@ -110,13 +140,33 @@ export function usePushNotifications(userId?: string) {
         setError('Odbili ste notifikacije. Omogućite ih u podešavanjima browsera.')
         return false
       } else {
-        console.log('⚠️ Permission status:', finalPermission, '| Result:', result)
-        setError(`Nepoznat status dozvole: ${finalPermission}`)
+        // Status je ostao 'default' - korisnik možda nije odgovorio ili browser ima problem
+        console.log('⚠️ Permission status ostao:', finalPermission)
+        
+        // Na iOS/Safari, notifikacije možda nisu podržane u potpunosti
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+        
+        if (isIOS || isSafari) {
+          setError('Notifikacije možda nisu u potpunosti podržane na vašem uređaju. Pokušajte ponovo ili proverite podešavanja browsera.')
+        } else {
+          setError('Niste odgovorili na zahtev za notifikacije. Pokušajte ponovo.')
+        }
+        
         return false
       }
     } catch (err: any) {
       console.error('❌ Error requesting permission:', err)
-      setError('Greška pri traženju dozvole: ' + err.message)
+      
+      // Specifičnije poruke za različite tipove grešaka
+      if (err.name === 'NotAllowedError') {
+        setError('Notifikacije su blokirane. Omogućite ih u podešavanjima browsera.')
+      } else if (err.name === 'NotSupportedError') {
+        setError('Vaš browser ne podržava push notifikacije.')
+      } else {
+        setError('Greška pri traženju dozvole. Pokušajte ponovo.')
+      }
+      
       return false
     } finally {
       setIsLoading(false)

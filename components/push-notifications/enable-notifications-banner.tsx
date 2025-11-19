@@ -54,14 +54,17 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
     }
   }, [isSupported, permission])
 
-  // Handle greške
+  // Handle greške - prikaži samo jednom
   useEffect(() => {
     if (error) {
-      toast({
-        title: 'Greška',
-        description: error,
-        variant: 'destructive'
-      })
+      // Ne pokazuj grešku ako je samo 'default' status ostao
+      if (!error.includes('Nepoznat status dozvole: default')) {
+        toast({
+          title: 'Obaveštenje',
+          description: error,
+          variant: 'destructive'
+        })
+      }
     }
   }, [error, toast])
 

@@ -111,7 +111,13 @@ export function NotifikacijeContentPoslodavac({ initialNotifikacije, userId }: N
 
       if (error) throw error
 
-      setNotifikacije(notifikacije.filter(n => n.id !== notifikacijaId))
+      // Koristi callback funkciju da bi uvek imao najnoviju vrednost state-a
+      setNotifikacije(prev => prev.filter(n => n.id !== notifikacijaId))
+      
+      // Automatski refresh stranice posle kratke pauze da se vidi animacija
+      setTimeout(() => {
+        window.location.reload()
+      }, 300)
     } catch (error) {
       console.error('Error deleting notification:', error)
     } finally {

@@ -98,7 +98,7 @@ export function usePushNotifications(userId?: string) {
     }
   }
 
-  // Traži dozvolu za notifikacije - POJEDNOSTAVLJENA VERZIJA
+  // Traži dozvolu za notifikacije - ANDROID FIX
   const requestPermission = async (): Promise<boolean> => {
     const debug: string[] = []
     
@@ -110,6 +110,11 @@ export function usePushNotifications(userId?: string) {
       debug.push(`📱 User Agent: ${navigator.userAgent.substring(0, 50)}...`)
       debug.push(`🔒 isSecureContext: ${window.isSecureContext}`)
       debug.push(`🌐 Protocol: ${window.location.protocol}`)
+      
+      // Detektuj Android
+      const isAndroid = /Android/i.test(navigator.userAgent)
+      const isMobile = /Mobile|Android|iPhone|iPad/i.test(navigator.userAgent)
+      debug.push(`📱 Android: ${isAndroid}, Mobile: ${isMobile}`)
       
       if (!isSupported) {
         debug.push('❌ Browser nije podržan')
@@ -133,36 +138,67 @@ export function usePushNotifications(userId?: string) {
       if (initialPermission === 'denied') {
         debug.push('❌ Već DENIED - resetuj u browser settings')
         setDebugInfo(debug.join('\n'))
-        setError('Notifikacije su blokirane. Kliknite 🔒 pored adrese → Site settings → Notifications → Allow')
+        setError('Notifikacije blokirane. Chrome → ⋮ → Settings → Site settings → All sites → test.aislike.rs → Notifications → Allow')
         return false
+      }
+      
+      // ANDROID FIX: Prvo registruj Service Worker
+      if (isAndroid || isMobile) {
+        debug.push('🔧 Android detektovan - registrujem SW prvo...')
+        const sw = await registerServiceWorker()
+        if (sw) {
+          debug.push('✅ Service Worker registrovan')
+          // Sačekaj malo da se aktivira
+          await new Promise(resolve => setTimeout(resolve, 500))
+        } else {
+          debug.push('⚠️ SW registration failed, nastavljam...')
+        }
       }
       
       debug.push('🎯 Pozivam Notification.requestPermission()...')
       
-      // Traži dozvolu
-      const result: NotificationPermission = await Notification.requestPermission()
+      // POKUŠAJ 1: Standardni način
+      let result: NotificationPermission = await Notification.requestPermission()
       
-      debug.push(`📥 Rezultat: ${result}`)
-      debug.push(`🔍 Notification.permission: ${Notification.permission}`)
+      debug.push(`📥 Pokušaj 1 rezultat: ${result}`)
+      
+      // Ako je default, pokušaj ponovo nakon pauze (Android fix)
+      if (result === 'default' && isAndroid) {
+        debug.push('🔄 Android workaround - čekam 1s i pokušavam ponovo...')
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        
+        // POKUŠAJ 2: Ponovo pozovi
+        result = await Notification.requestPermission()
+        debug.push(`📥 Pokušaj 2 rezultat: ${result}`)
+      }
+      
+      debug.push(`🔍 Final Notification.permission: ${Notification.permission}`)
       
       setPermission(result)
       setDebugInfo(debug.join('\n'))
 
-      if (result === 'granted') {
+      if (result === 'granted' || Notification.permission === 'granted') {
         debug.push('✅ SUCCESS - GRANTED!')
         setDebugInfo(debug.join('\n'))
+        setPermission('granted')
         return true
-      } else if (result === 'denied') {
+      } else if (result === 'denied' || Notification.permission === 'denied') {
         debug.push('❌ User clicked DENY')
         setDebugInfo(debug.join('\n'))
         setError('Odbili ste notifikacije.')
         return false
       } else {
-        // Status 'default' - prompt nije izašao
-        debug.push('⚠️ Status ostao DEFAULT')
-        debug.push('💡 Možda je browser već blokirao notifikacije za ovaj sajt')
+        // Status 'default' - popup nije izašao
+        debug.push('⚠️ Status ostao DEFAULT - popup se nije pojavio')
+        debug.push('🔧 REŠENJE: Ručno omogući u Chrome-u:')
+        debug.push('1. Chrome → ⋮ (3 tačke gore)')
+        debug.push('2. Settings → Site settings')
+        debug.push('3. Notifications → Add site exception')
+        debug.push('4. Unesi: test.aislike.rs → Allow')
+        debug.push('5. Vrati se i refresh sajt')
         setDebugInfo(debug.join('\n'))
-        setError('Dijalog nije izašao. Kliknite 🔒 → Site settings → Notifications → Allow, pa probajte ponovo')
+        
+        setError('Popup nije izašao. Molimo omogućite RUČNO: Chrome → ⋮ → Settings → Site settings → Notifications → Add site → test.aislike.rs → Allow')
         return false
       }
     } catch (err: any) {

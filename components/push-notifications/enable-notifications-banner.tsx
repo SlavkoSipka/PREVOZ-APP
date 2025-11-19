@@ -167,9 +167,25 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
               </div>
             )}
 
+            {/* Ručno omogućavanje - za Android */}
+            {error && error.includes('RUČNO') && (
+              <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded">
+                <p className="text-xs font-semibold mb-2">📱 Kako ručno omogućiti na Android-u:</p>
+                <ol className="text-[10px] space-y-1 ml-4 list-decimal">
+                  <li>Kliknite <strong>⋮ (3 tačke)</strong> gore desno</li>
+                  <li>Kliknite <strong>Settings</strong></li>
+                  <li>Kliknite <strong>Site settings</strong></li>
+                  <li>Kliknite <strong>Notifications</strong></li>
+                  <li>Pod <strong>Allowed</strong> sekcijom kliknite <strong>Add site</strong></li>
+                  <li>Upišite: <code className="bg-gray-200 px-1">test.aislike.rs</code></li>
+                  <li>Vrati se na sajt i refresh (povuci dole)</li>
+                </ol>
+              </div>
+            )}
+
             {/* Info text */}
             <p className="text-[10px] sm:text-xs text-gray-500 mt-2">
-              💡 Ako dijalog ne izlazi: Kliknite 🔒 → Site settings → Notifications → Allow
+              💡 Ako dijalog ne izlazi, koristite ručno omogućavanje iznad
             </p>
           </div>
         </div>

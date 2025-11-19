@@ -17,6 +17,7 @@ import { Label } from '@/components/ui/label'
 import { Mail, Send } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
+import { createNotificationWithPush } from '@/lib/notification-helpers'
 
 interface PosaljiNotifikacijuDialogProps {
   korisnikId: string
@@ -49,24 +50,20 @@ export function PosaljiNotifikacijuDialog({
     setIsLoading(true)
 
     try {
-      // Kreiraj notifikaciju
-      const { error } = await supabase
-        .from('notifikacije')
-        .insert({
-          vozac_id: korisnikId,
-          tip: 'admin_poruka',
-          poruka: poruka.trim(),
-          procitano: false
-        })
+      // Kreiraj notifikaciju (sa push notifikacijom)
+      const success = await createNotificationWithPush({
+        userId: korisnikId,
+        tip: 'admin_poruka',
+        poruka: poruka.trim()
+      })
 
-      if (error) {
-        console.error('Greška pri slanju notifikacije:', error)
-        throw error
+      if (!success) {
+        throw new Error('Greška pri kreiranju notifikacije')
       }
 
       toast({
         title: '✅ Notifikacija poslata!',
-        description: `Poruka je uspešno poslata korisniku ${korisnikIme}.`,
+        description: `Poruka je uspešno poslata korisniku ${korisnikIme} (+ push notifikacija).`,
       })
 
       // Resetuj formu i zatvori dialog

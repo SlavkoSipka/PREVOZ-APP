@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { createNotificationWithPush } from '@/lib/notification-helpers'
 
 interface ApproveDriverButtonProps {
   prijavaId: string
@@ -67,47 +68,26 @@ export function ApproveDriverButton({ prijavaId, vozacId, turaId, turaInfo, voza
 
       if (odbijanjeError) throw odbijanjeError
 
-      // 4. Kreiraj notifikaciju za odobrenog vozača
-      const { error: notifikacijaError } = await supabase
-        .from('notifikacije')
-        .insert({
-          vozac_id: vozacId,
-          prijava_id: prijavaId,
-          tip: 'odobreno',
-          poruka: `Vaša prijava za turu ${turaInfo.polazak} → ${turaInfo.destinacija} (${new Date(turaInfo.datum).toLocaleDateString('sr-RS')}) je odobrena! 🎉`
-        })
+      // 4. Kreiraj notifikaciju za odobrenog vozača (sa push notifikacijom)
+      await createNotificationWithPush({
+        userId: vozacId,
+        tip: 'odobreno',
+        poruka: `Vaša prijava za turu ${turaInfo.polazak} → ${turaInfo.destinacija} (${new Date(turaInfo.datum).toLocaleDateString('sr-RS')}) je odobrena! 🎉`,
+        prijavaId: prijavaId,
+        turaId: turaId
+      })
 
-      if (notifikacijaError) {
-        console.error('Greška pri kreiranju notifikacije:', notifikacijaError)
-        // Ne prekidaj proces zbog greške u notifikaciji
-      }
-
-      // 4b. Kreiraj notifikaciju za poslodavca da je vozač dodeljen
+      // 4b. Kreiraj notifikaciju za poslodavca da je vozač dodeljen (sa push notifikacijom)
       if (turaData?.firma_id) {
-        console.log('🔔 Kreiram notifikaciju za poslodavca:', {
-          vozac_id: turaData.firma_id,
+        await createNotificationWithPush({
+          userId: turaData.firma_id,
           tip: 'vozac_dodeljen',
-          tura_id: turaId
+          poruka: `🚚 Vozač ${vozacIme || 'je'} dodeljen vašoj turi ${turaInfo.polazak} → ${turaInfo.destinacija}! Možete ga kontaktirati putem aplikacije.`,
+          turaId: turaId
         })
-        
-        const { data: notifData, error: notifError } = await supabase
-          .from('notifikacije')
-          .insert({
-            vozac_id: turaData.firma_id,
-            tura_id: turaId,
-            tip: 'vozac_dodeljen',
-            poruka: `🚚 Vozač ${vozacIme || 'je'} dodeljen vašoj turi ${turaInfo.polazak} → ${turaInfo.destinacija}! Možete ga kontaktirati putem aplikacije.`
-          })
-          .select()
-        
-        if (notifError) {
-          console.error('❌ Greška pri kreiranju notifikacije za poslodavca:', notifError)
-        } else {
-          console.log('✅ Notifikacija za poslodavca kreirana:', notifData)
-        }
       }
 
-      // 5. Kreiraj notifikacije za odbijene vozače
+      // 5. Kreiraj notifikacije za odbijene vozače (sa push notifikacijama)
       const { data: odbijeniVozaci } = await supabase
         .from('prijave')
         .select('vozac_id, id')
@@ -116,14 +96,16 @@ export function ApproveDriverButton({ prijavaId, vozacId, turaId, turaInfo, voza
         .neq('id', prijavaId)
 
       if (odbijeniVozaci && odbijeniVozaci.length > 0) {
-        const notifikacije = odbijeniVozaci.map((p: any) => ({
-          vozac_id: p.vozac_id,
-          prijava_id: p.id,
-          tip: 'odbijeno',
-          poruka: `Vaša prijava za turu ${turaInfo.polazak} → ${turaInfo.destinacija} (${new Date(turaInfo.datum).toLocaleDateString('sr-RS')}) je odbijena. Razlog: Odabran je drugi vozač za ovu turu.`
-        }))
-
-        await supabase.from('notifikacije').insert(notifikacije)
+        // Kreiraj notifikacije za sve odbijene vozače (sa push notifikacijama)
+        for (const p of odbijeniVozaci) {
+          await createNotificationWithPush({
+            userId: p.vozac_id,
+            tip: 'odbijeno',
+            poruka: `Vaša prijava za turu ${turaInfo.polazak} → ${turaInfo.destinacija} (${new Date(turaInfo.datum).toLocaleDateString('sr-RS')}) je odbijena. Razlog: Odabran je drugi vozač za ovu turu.`,
+            prijavaId: p.id,
+            turaId: turaId
+          })
+        }
       }
 
       router.refresh()
@@ -155,20 +137,14 @@ export function ApproveDriverButton({ prijavaId, vozacId, turaId, turaInfo, voza
 
       if (odbijanjeError) throw odbijanjeError
 
-      // 2. Kreiraj notifikaciju za odbijenog vozača
-      const { error: notifikacijaError } = await supabase
-        .from('notifikacije')
-        .insert({
-          vozac_id: vozacId,
-          prijava_id: prijavaId,
-          tip: 'odbijeno',
-          poruka: `Vaša prijava za turu ${turaInfo.polazak} → ${turaInfo.destinacija} (${new Date(turaInfo.datum).toLocaleDateString('sr-RS')}) je odbijena. Razlog: ${razlogOdbijanja.trim()}`
-        })
-
-      if (notifikacijaError) {
-        console.error('Greška pri kreiranju notifikacije:', notifikacijaError)
-        // Ne prekidaj proces zbog greške u notifikaciji
-      }
+      // 2. Kreiraj notifikaciju za odbijenog vozača (sa push notifikacijom)
+      await createNotificationWithPush({
+        userId: vozacId,
+        tip: 'odbijeno',
+        poruka: `Vaša prijava za turu ${turaInfo.polazak} → ${turaInfo.destinacija} (${new Date(turaInfo.datum).toLocaleDateString('sr-RS')}) je odbijena. Razlog: ${razlogOdbijanja.trim()}`,
+        prijavaId: prijavaId,
+        turaId: turaId
+      })
 
       setShowRejectDialog(false)
       setRazlogOdbijanja('')

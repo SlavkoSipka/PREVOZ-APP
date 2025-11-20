@@ -64,20 +64,29 @@ export async function signOut() {
 export async function signInWithGoogle() {
   const supabase = createClient()
   
-  // Koristi env varijablu za produkciju ili trenutni origin za development
+  // OBAVEZNO: Koristi env varijablu (važno za Netlify production)
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
+  
+  console.log('🔐 Google OAuth redirect URL:', `${baseUrl}/auth/callback`)
   
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
       redirectTo: `${baseUrl}/auth/callback`,
       queryParams: {
-        prompt: 'select_account', // PRISILNO prikazuj izbor naloga
-        access_type: 'offline', // Omogući refresh token
+        prompt: 'select_account',
+        access_type: 'offline',
       },
       skipBrowserRedirect: false,
     },
   })
+  
+  if (error) {
+    console.error('❌ Google OAuth error:', error)
+  } else {
+    console.log('✅ Google OAuth initiated successfully')
+  }
+  
   return { data, error }
 }
 

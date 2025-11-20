@@ -8,13 +8,21 @@ export async function GET(request: Request) {
   const errorDescription = requestUrl.searchParams.get('error_description')
   const next = requestUrl.searchParams.get('next') || '/'
 
+  console.log('🔄 Auth callback hit:', { 
+    hasCode: !!code, 
+    error, 
+    errorDescription,
+    url: requestUrl.toString() 
+  })
+
   // Ako ima error query param od OAuth providera
   if (error) {
-    console.error('OAuth provider error:', error, errorDescription)
+    console.error('❌ OAuth provider error:', error, errorDescription)
     return NextResponse.redirect(new URL(`/?error=auth_failed&details=${error}`, request.url))
   }
 
   if (code) {
+    console.log('✅ Got authorization code, exchanging for session...')
     const supabase = await createServerSupabaseClient()
     
     // Retry logika za exchange (ponekad treba retry zbog code verifier timing-a)

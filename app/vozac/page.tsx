@@ -3,7 +3,6 @@ import { getUserWithProfile } from '@/lib/auth-helpers.server'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { Navbar } from '@/components/dashboard/navbar'
 import { DashboardContent } from '@/components/vozac/dashboard-content'
-import { EnableNotificationsBanner } from '@/components/push-notifications/enable-notifications-banner'
 import { BlokiranBanner } from '@/components/vozac/blokiran-banner'
 import { HelpCard } from '@/components/support/help-card'
 
@@ -102,9 +101,6 @@ export default async function VozacDashboard() {
         {userData.profile.blokiran && (
           <BlokiranBanner ukupnoDug={ukupnoDug} />
         )}
-
-        {/* Push Notifications Banner */}
-        <EnableNotificationsBanner userId={userData.user.id} />
 
         {/* Pomoć banner - iznad dashboard-a */}
         <div className="mb-6">

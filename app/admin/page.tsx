@@ -10,7 +10,6 @@ import { UplateList } from '@/components/admin/uplate-list'
 import { KorisniciList } from '@/components/admin/korisnici-list'
 import { TureApprovalList } from '@/components/admin/ture-approval-list'
 import Link from 'next/link'
-import { EnableNotificationsBanner } from '@/components/push-notifications/enable-notifications-banner'
 
 // Cache strategija - revalidate svakih 30 sekundi
 export const revalidate = 30
@@ -123,9 +122,6 @@ export default async function AdminDashboard() {
       <Navbar user={{ ...userData.profile, id: userData.user.id }} />
 
       <div className="container mx-auto px-4 py-6">
-        {/* Push Notifications Banner */}
-        <EnableNotificationsBanner userId={userData.user.id} />
-
         {/* Statistike */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>

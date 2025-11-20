@@ -188,24 +188,26 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
   return (
     <>
       {/* Header sa live indicator */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-bold">
-              Upravljajte vašim turama
-            </h1>
-            <span className="inline-flex items-center gap-1 text-sm text-gray-600">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              Uživo
-            </span>
+      <div className="mb-6 md:mb-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl md:text-3xl font-bold">
+                Upravljajte vašim turama
+              </h1>
+              <span className="inline-flex items-center gap-1 text-sm text-gray-600">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                Uživo
+              </span>
+            </div>
           </div>
+          <Button asChild size="lg" className="w-full sm:w-auto">
+            <Link href="/poslodavac/objavi-turu" prefetch={true}>
+              <Plus className="mr-2 h-5 w-5" />
+              Objavi novu turu
+            </Link>
+          </Button>
         </div>
-        <Button asChild size="lg">
-          <Link href="/poslodavac/objavi-turu" prefetch={true}>
-            <Plus className="mr-2 h-5 w-5" />
-            Objavi novu turu
-          </Link>
-        </Button>
       </div>
 
       {/* Statistike */}
@@ -239,7 +241,7 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
 
       {/* Ture sa tabovima */}
       <div>
-        <h2 className="text-2xl font-bold mb-4">Vaše ture</h2>
+        <h2 className="text-xl md:text-2xl font-bold mb-4">Vaše ture</h2>
         
         {!ture || ture.length === 0 ? (
           <Card>
@@ -256,21 +258,31 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
           </Card>
         ) : (
           <Tabs defaultValue="aktivne" className="w-full">
-            <TabsList className="grid w-full max-w-2xl grid-cols-5">
-              <TabsTrigger value="aktivne">
-                Aktivne ({aktivneTureLista.length})
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-1">
+              <TabsTrigger value="aktivne" className="text-xs md:text-sm">
+                <span className="hidden sm:inline">Aktivne</span>
+                <span className="sm:hidden">Aktiv.</span>
+                <span className="ml-1">({aktivneTureLista.length})</span>
               </TabsTrigger>
-              <TabsTrigger value="na_cekanju">
-                Na čekanju ({naCekanjuTure.length})
+              <TabsTrigger value="na_cekanju" className="text-xs md:text-sm">
+                <span className="hidden sm:inline">Na čekanju</span>
+                <span className="sm:hidden">Čeka</span>
+                <span className="ml-1">({naCekanjuTure.length})</span>
               </TabsTrigger>
-              <TabsTrigger value="dodeljene">
-                Dodeljene ({dodeljena.length})
+              <TabsTrigger value="dodeljene" className="text-xs md:text-sm">
+                <span className="hidden sm:inline">Dodeljene</span>
+                <span className="sm:hidden">Dodel.</span>
+                <span className="ml-1">({dodeljena.length})</span>
               </TabsTrigger>
-              <TabsTrigger value="zavrsene">
-                Završene ({zavrsene.length})
+              <TabsTrigger value="zavrsene" className="text-xs md:text-sm">
+                <span className="hidden sm:inline">Završene</span>
+                <span className="sm:hidden">Završ.</span>
+                <span className="ml-1">({zavrsene.length})</span>
               </TabsTrigger>
-              <TabsTrigger value="odbijene">
-                Odbijene ({odbijene.length})
+              <TabsTrigger value="odbijene" className="text-xs md:text-sm">
+                <span className="hidden sm:inline">Odbijene</span>
+                <span className="sm:hidden">Odbij.</span>
+                <span className="ml-1">({odbijene.length})</span>
               </TabsTrigger>
             </TabsList>
 

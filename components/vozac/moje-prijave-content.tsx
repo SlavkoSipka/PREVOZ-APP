@@ -211,18 +211,26 @@ export function MojePrijaveContent({ initialPrijave, userId }: MojePrijaveConten
 
       {/* Tabs */}
       <Tabs defaultValue="odobrene" className="w-full">
-        <TabsList className="grid w-full max-w-2xl grid-cols-4">
-          <TabsTrigger value="na_cekanju">
-            Na čekanju ({naCekanju.length})
+        <TabsList className="grid w-full max-w-2xl grid-cols-2 md:grid-cols-4 gap-1">
+          <TabsTrigger value="na_cekanju" className="text-xs md:text-sm">
+            <span className="hidden sm:inline">Na čekanju</span>
+            <span className="sm:hidden">Čeka</span>
+            <span className="ml-1">({naCekanju.length})</span>
           </TabsTrigger>
-          <TabsTrigger value="odobrene">
-            Odobrene ({odobrene.length})
+          <TabsTrigger value="odobrene" className="text-xs md:text-sm">
+            <span className="hidden sm:inline">Odobrene</span>
+            <span className="sm:hidden">OK</span>
+            <span className="ml-1">({odobrene.length})</span>
           </TabsTrigger>
-          <TabsTrigger value="odbijene">
-            Odbijene ({odbijene.length})
+          <TabsTrigger value="odbijene" className="text-xs md:text-sm">
+            <span className="hidden sm:inline">Odbijene</span>
+            <span className="sm:hidden">Odbij.</span>
+            <span className="ml-1">({odbijene.length})</span>
           </TabsTrigger>
-          <TabsTrigger value="zavrsene">
-            Završene ({zavrsene.length})
+          <TabsTrigger value="zavrsene" className="text-xs md:text-sm">
+            <span className="hidden sm:inline">Završene</span>
+            <span className="sm:hidden">Završ.</span>
+            <span className="ml-1">({zavrsene.length})</span>
           </TabsTrigger>
         </TabsList>
 

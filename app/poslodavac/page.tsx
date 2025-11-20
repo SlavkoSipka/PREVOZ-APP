@@ -3,7 +3,6 @@ import { getUserWithProfile } from '@/lib/auth-helpers.server'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { Navbar } from '@/components/dashboard/navbar'
 import { DashboardContent } from '@/components/poslodavac/dashboard-content'
-import { EnableNotificationsBanner } from '@/components/push-notifications/enable-notifications-banner'
 
 // Onemogući cache za real-time
 export const revalidate = 0
@@ -55,9 +54,6 @@ export default async function PoslodavacDashboard() {
       <Navbar user={{ ...userData.profile, id: userData.user.id }} currentPage="dashboard" />
 
       <div className="container mx-auto px-4 py-6">
-        {/* Push Notifications Banner */}
-        <EnableNotificationsBanner userId={userData.user.id} />
-
         {/* Dashboard content sa real-time */}
         <DashboardContent 
           initialData={{

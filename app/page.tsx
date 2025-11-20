@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -55,12 +57,38 @@ export default function HomePage({
                 </p>
               )}
               <div className="mt-3 text-sm text-red-700">
-                <p className="mb-1">Pokušajte:</p>
-                <ul className="list-disc list-inside space-y-1">
+                <p className="mb-2 font-semibold">Pokušajte:</p>
+                <ul className="list-disc list-inside space-y-1 mb-3">
                   <li>Prijavite se ponovo preko <Link href="/prijava" className="underline font-semibold">obične prijave</Link></li>
                   <li>Proverite da li su third-party cookies omogućeni</li>
                   <li>Pokušajte u Incognito/Private režimu</li>
+                  <li>Očistite browser cache i cookies</li>
                 </ul>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => {
+                      if (typeof window !== 'undefined') {
+                        // Očisti lokalni storage i reload
+                        localStorage.clear()
+                        sessionStorage.clear()
+                        window.location.href = '/prijava'
+                      }
+                    }}
+                    size="sm"
+                    className="bg-red-600 hover:bg-red-700"
+                  >
+                    Pokušaj ponovo
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Link href="/prijava">
+                      Email prijava
+                    </Link>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

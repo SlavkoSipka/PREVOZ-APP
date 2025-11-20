@@ -17,17 +17,41 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await createServerSupabaseClient()
     
-    const { data: sessionData, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+    // Retry logika za exchange (ponekad treba retry zbog code verifier timing-a)
+    let sessionData, exchangeError
+    let retries = 3
+    
+    while (retries > 0) {
+      const result = await supabase.auth.exchangeCodeForSession(code)
+      sessionData = result.data
+      exchangeError = result.error
+      
+      if (!exchangeError) break
+      
+      // Ako je problem sa code verifier, probaj opet nakon kratkog delay-a
+      if (exchangeError.message.includes('code verifier') || exchangeError.message.includes('auth code')) {
+        retries--
+        if (retries > 0) {
+          console.log(`Retrying auth exchange... (${retries} attempts left)`)
+          await new Promise(resolve => setTimeout(resolve, 500))
+          continue
+        }
+      }
+      break
+    }
 
     if (exchangeError) {
       console.error('Auth exchange error:', exchangeError.message, exchangeError)
-      // Detaljnija greška za debugging
-      return NextResponse.redirect(new URL(`/?error=auth_failed&reason=${encodeURIComponent(exchangeError.message)}`, request.url))
+      // User-friendly poruka
+      const friendlyMessage = exchangeError.message.includes('code verifier') || exchangeError.message.includes('auth code')
+        ? 'Session je istekla. Molimo pokušajte ponovo da se prijavite.'
+        : exchangeError.message
+      return NextResponse.redirect(new URL(`/?error=auth_failed&reason=${encodeURIComponent(friendlyMessage)}`, request.url))
     }
 
     if (!sessionData?.session) {
       console.error('No session after exchange')
-      return NextResponse.redirect(new URL('/?error=no_session', request.url))
+      return NextResponse.redirect(new URL('/?error=no_session&reason=Sesija nije kreirana nakon autentifikacije', request.url))
     }
 
     await new Promise(resolve => setTimeout(resolve, 1500))

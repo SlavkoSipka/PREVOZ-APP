@@ -64,6 +64,10 @@ export async function signOut() {
 export async function signInWithGoogle() {
   const supabase = createClient()
   
+  // Očisti stare sessions PRE nego što pokreneš novi OAuth flow
+  // Ovo sprečava "code verifier" greške
+  await supabase.auth.signOut({ scope: 'local' })
+  
   // Koristi env varijablu za produkciju ili trenutni origin za development
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
   
@@ -75,7 +79,6 @@ export async function signInWithGoogle() {
         prompt: 'select_account', // PRISILNO prikazuj izbor naloga
         access_type: 'offline', // Omogući refresh token
       },
-      // Poboljšaj za mobilne uređaje - skip intermediary page
       skipBrowserRedirect: false,
     },
   })

@@ -120,7 +120,7 @@ export function Navbar({ user, currentPage }: NavbarProps) {
                 size="sm" 
                 asChild
               >
-                <Link href="/poslodavac/feed" className="flex items-center gap-2">
+                <Link href="/poslodavac/feed" className="flex items-center gap-2" prefetch={true}>
                   <LayoutDashboard className="h-4 w-4" />
                   Objave
                 </Link>
@@ -130,7 +130,7 @@ export function Navbar({ user, currentPage }: NavbarProps) {
                 size="sm" 
                 asChild
               >
-                <Link href="/poslodavac" className="flex items-center gap-2">
+                <Link href="/poslodavac" className="flex items-center gap-2" prefetch={true}>
                   <ListIcon className="h-4 w-4" />
                   Moje ture
                 </Link>
@@ -142,11 +142,11 @@ export function Navbar({ user, currentPage }: NavbarProps) {
           {user.uloga === 'vozac' && (
             <div className="hidden md:flex items-center gap-2">
               <Button 
-                variant={isActive('/vozac') || isActive('objave') ? "default" : "ghost"} 
+                variant={isActive('/vozac') ? "default" : "ghost"} 
                 size="sm" 
                 asChild
               >
-                <Link href="/vozac" className="flex items-center gap-2">
+                <Link href="/vozac" className="flex items-center gap-2" prefetch={true}>
                   <LayoutDashboard className="h-4 w-4" />
                   Objave
                 </Link>
@@ -156,7 +156,7 @@ export function Navbar({ user, currentPage }: NavbarProps) {
                 size="sm" 
                 asChild
               >
-                <Link href="/vozac/prijave" className="flex items-center gap-2">
+                <Link href="/vozac/prijave" className="flex items-center gap-2" prefetch={true}>
                   <ListIcon className="h-4 w-4" />
                   Moje prijave
                 </Link>
@@ -169,7 +169,7 @@ export function Navbar({ user, currentPage }: NavbarProps) {
           {/* Notifikacije za vozače */}
           {user.uloga === 'vozac' && (
             <Button variant="ghost" size="icon" asChild className="relative h-9 w-9 sm:h-10 sm:w-10 touch-manipulation">
-              <Link href="/vozac/notifikacije">
+              <Link href="/vozac/notifikacije" prefetch={true}>
                 <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
                 {neprocitaneNotifikacije > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-red-500 text-white text-[10px] sm:text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center font-semibold">
@@ -183,7 +183,7 @@ export function Navbar({ user, currentPage }: NavbarProps) {
           {/* Notifikacije za poslodavce */}
           {user.uloga === 'poslodavac' && (
             <Button variant="ghost" size="icon" asChild className="relative h-9 w-9 sm:h-10 sm:w-10 touch-manipulation">
-              <Link href="/poslodavac/notifikacije">
+              <Link href="/poslodavac/notifikacije" prefetch={true}>
                 <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
                 {neprocitaneNotifikacije > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-red-500 text-white text-[10px] sm:text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center font-semibold">
@@ -214,19 +214,19 @@ export function Navbar({ user, currentPage }: NavbarProps) {
               {user.uloga === 'poslodavac' && (
                 <>
                   <DropdownMenuItem asChild>
-                    <Link href="/poslodavac/feed" className="md:hidden">
+                    <Link href="/poslodavac/feed" className="md:hidden" prefetch={true}>
                       <LayoutDashboard className="mr-2 h-4 w-4" />
                       Objave
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/poslodavac" className="md:hidden">
+                    <Link href="/poslodavac" className="md:hidden" prefetch={true}>
                       <ListIcon className="mr-2 h-4 w-4" />
                       Moje ture
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/poslodavac/notifikacije" className="md:hidden relative">
+                    <Link href="/poslodavac/notifikacije" className="md:hidden relative" prefetch={true}>
                       <Bell className="mr-2 h-4 w-4" />
                       Notifikacije
                       {neprocitaneNotifikacije > 0 && (
@@ -244,19 +244,19 @@ export function Navbar({ user, currentPage }: NavbarProps) {
               {user.uloga === 'vozac' && (
                 <>
                   <DropdownMenuItem asChild>
-                    <Link href="/vozac" className="md:hidden">
+                    <Link href="/vozac" className="md:hidden" prefetch={true}>
                       <LayoutDashboard className="mr-2 h-4 w-4" />
                       Objave
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/vozac/prijave" className="md:hidden">
+                    <Link href="/vozac/prijave" className="md:hidden" prefetch={true}>
                       <ListIcon className="mr-2 h-4 w-4" />
                       Moje prijave
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/vozac/notifikacije" className="md:hidden relative">
+                    <Link href="/vozac/notifikacije" className="md:hidden relative" prefetch={true}>
                       <Bell className="mr-2 h-4 w-4" />
                       Notifikacije
                       {neprocitaneNotifikacije > 0 && (
@@ -271,7 +271,7 @@ export function Navbar({ user, currentPage }: NavbarProps) {
               )}
               
               <DropdownMenuItem asChild className="touch-manipulation">
-                <Link href={`/${user.uloga}/profil`} className="min-h-[44px] flex items-center">
+                <Link href={`/${user.uloga}/profil`} className="min-h-[44px] flex items-center" prefetch={true}>
                   <User className="mr-2 h-4 w-4" />
                   <span className="text-sm sm:text-base">Profil</span>
                 </Link>

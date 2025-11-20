@@ -4,16 +4,30 @@ import { NextResponse } from 'next/server'
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
+  const error = requestUrl.searchParams.get('error')
+  const errorDescription = requestUrl.searchParams.get('error_description')
   const next = requestUrl.searchParams.get('next') || '/'
+
+  // Ako ima error query param od OAuth providera
+  if (error) {
+    console.error('OAuth provider error:', error, errorDescription)
+    return NextResponse.redirect(new URL(`/?error=auth_failed&details=${error}`, request.url))
+  }
 
   if (code) {
     const supabase = await createServerSupabaseClient()
     
-    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+    const { data: sessionData, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
 
     if (exchangeError) {
-      console.error('Auth exchange error:', exchangeError)
-      return NextResponse.redirect(new URL('/?error=auth_failed', request.url))
+      console.error('Auth exchange error:', exchangeError.message, exchangeError)
+      // Detaljnija greška za debugging
+      return NextResponse.redirect(new URL(`/?error=auth_failed&reason=${encodeURIComponent(exchangeError.message)}`, request.url))
+    }
+
+    if (!sessionData?.session) {
+      console.error('No session after exchange')
+      return NextResponse.redirect(new URL('/?error=no_session', request.url))
     }
 
     await new Promise(resolve => setTimeout(resolve, 1500))

@@ -21,7 +21,6 @@ export default async function PoslodavacDashboard() {
   const [
     { count: aktivneTure },
     { count: završeneTure },
-    { data: turaIds },
     { data: ture }
   ] = await Promise.all([
     // COUNT aktivnih tura
@@ -38,35 +37,18 @@ export default async function PoslodavacDashboard() {
       .eq('firma_id', userData.user.id)
       .eq('status', 'zavrsena'),
 
-    // Prvo uzmi IDs svih tura
-    supabase
-      .from('ture')
-      .select('id')
-      .eq('firma_id', userData.user.id),
-
     // Ture poslodavca (samo potrebne kolone, limit 50)
     supabase
       .from('ture')
       .select(`
-        id, polazak, destinacija, datum, opis_robe, ponudjena_cena, status, created_at,
-        prijave:prijave(count),
-        vozac:users!ture_dodeljeni_vozac_id_fkey(puno_ime)
+        id, polazak, destinacija, datum, opis_robe, ponudjena_cena, status, created_at, dodeljeni_vozac_id,
+        vozac:users!ture_dodeljeni_vozac_id_fkey(id, puno_ime),
+        ocene(id, ocena, komentar)
       `)
       .eq('firma_id', userData.user.id)
       .order('created_at', { ascending: false })
       .limit(50)
   ])
-
-  // Broj prijava za sve ture (ako ima IDs)
-  let ukupnoPrijava = 0
-  if (turaIds && turaIds.length > 0) {
-    const { count } = await supabase
-      .from('prijave')
-      .select('id', { count: 'exact', head: true })
-      .in('tura_id', turaIds.map((t: any) => t.id))
-    
-    ukupnoPrijava = count || 0
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -81,7 +63,6 @@ export default async function PoslodavacDashboard() {
           initialData={{
             aktivneTure: aktivneTure || 0,
             završeneTure: završeneTure || 0,
-            ukupnoPrijava: ukupnoPrijava || 0,
             ture: ture || []
           }}
           userId={userData.user.id}

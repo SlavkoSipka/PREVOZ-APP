@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { Navbar } from '@/components/dashboard/navbar'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { MapPin, Calendar, Package, Euro, ArrowLeft, Users, FileText } from 'lucide-react'
+import { MapPin, Calendar, Package, Euro, ArrowLeft, Users, FileText, Star } from 'lucide-react'
 import Link from 'next/link'
 import { OceniVozacaDialog } from '@/components/poslodavac/oceni-vozaca-dialog'
 
@@ -180,12 +180,21 @@ export default async function PoslodavacTuraDetaljiPage({
                 <CardTitle className="text-green-800 flex items-center justify-between">
                   <span>Dodeljeni vozač</span>
                   {tura.status === 'zavrsena' && (
-                    <OceniVozacaDialog 
-                      turaId={tura.id}
-                      vozacId={tura.dodeljeni_vozac_id!}
-                      vozacIme={tura.vozac.puno_ime}
-                      postojecaOcena={postojecaOcena}
-                    />
+                    <>
+                      {postojecaOcena ? (
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-green-300 rounded-md">
+                          <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                          <span className="text-sm font-medium text-green-800">Ocenjeno ({postojecaOcena.ocena}/5)</span>
+                        </div>
+                      ) : (
+                        <OceniVozacaDialog 
+                          turaId={tura.id}
+                          vozacId={tura.dodeljeni_vozac_id!}
+                          vozacIme={tura.vozac.puno_ime}
+                          postojecaOcena={null}
+                        />
+                      )}
+                    </>
                   )}
                 </CardTitle>
               </CardHeader>
@@ -193,31 +202,10 @@ export default async function PoslodavacTuraDetaljiPage({
                 <p><strong>Ime:</strong> {tura.vozac.puno_ime}</p>
                 <p><strong>Telefon:</strong> {tura.vozac.telefon}</p>
                 <p><strong>Email:</strong> {tura.vozac.email}</p>
-                <p><strong>Tablice:</strong> {tura.vozac.registarske_tablice}</p>
               </CardContent>
             </Card>
           )}
 
-          {jeMojaTura && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span className="flex items-center">
-                    <Users className="mr-2 h-5 w-5" />
-                    Prijave
-                  </span>
-                  <span className="text-sm font-normal text-gray-500">
-                    {prijave?.length || 0} prijava
-                  </span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600">
-                  Admin pregledava prijave i dodeljuje vozača za vašu turu.
-                </p>
-              </CardContent>
-            </Card>
-          )}
         </div>
       </div>
     </div>

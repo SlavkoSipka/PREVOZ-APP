@@ -3,7 +3,11 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Truck, Building2, Shield, CheckCircle2, Clock, CreditCard } from 'lucide-react'
 
-export default function HomePage() {
+export default function HomePage({
+  searchParams,
+}: {
+  searchParams: { error?: string; reason?: string; details?: string }
+}) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       {/* Header */}
@@ -26,6 +30,42 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20 text-center">
+        {/* Error Alert */}
+        {searchParams.error && (
+          <div className="mb-6 mx-auto max-w-2xl">
+            <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4 text-left">
+              <h3 className="text-red-800 font-semibold mb-2">
+                ⚠️ Greška pri prijavljivanju
+              </h3>
+              <p className="text-sm text-red-700 mb-2">
+                {searchParams.error === 'auth_failed' 
+                  ? 'Prijavljivanje preko Google-a nije uspelo.'
+                  : searchParams.error === 'no_session'
+                  ? 'Nije kreirana sesija nakon prijavljivanja.'
+                  : 'Došlo je do greške pri prijavljivanju.'}
+              </p>
+              {searchParams.reason && (
+                <p className="text-xs text-red-600 font-mono bg-red-100 p-2 rounded">
+                  Detalji: {decodeURIComponent(searchParams.reason)}
+                </p>
+              )}
+              {searchParams.details && (
+                <p className="text-xs text-red-600 font-mono bg-red-100 p-2 rounded mt-1">
+                  {decodeURIComponent(searchParams.details)}
+                </p>
+              )}
+              <div className="mt-3 text-sm text-red-700">
+                <p className="mb-1">Pokušajte:</p>
+                <ul className="list-disc list-inside space-y-1">
+                  <li>Prijavite se ponovo preko <Link href="/prijava" className="underline font-semibold">obične prijave</Link></li>
+                  <li>Proverite da li su third-party cookies omogućeni</li>
+                  <li>Pokušajte u Incognito/Private režimu</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+        
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
           Poveži firme i vozače <span className="text-primary">lako</span>
         </h1>

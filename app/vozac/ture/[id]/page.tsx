@@ -250,7 +250,7 @@ export default async function TuraDetaljiPage({ params }: { params: { id: string
             </Card>
           )}
 
-          {jeOdobren && (
+          {jeOdobren && tura.status !== 'zavrsena' && (
             <Card className="border-green-300 bg-green-50">
               <CardHeader>
                 <CardTitle className="text-green-800">✅ Odobreni ste za ovu turu!</CardTitle>
@@ -261,8 +261,8 @@ export default async function TuraDetaljiPage({ params }: { params: { id: string
             </Card>
           )}
 
-          {/* Detaljne informacije - vidljivo samo ako je odobren */}
-          {jeOdobren && (
+          {/* Detaljne informacije - vidljivo samo ako je odobren i nije završena */}
+          {jeOdobren && tura.status !== 'zavrsena' && (
             <>
               <Card className="border-green-300">
                 <CardHeader>

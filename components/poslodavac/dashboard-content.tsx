@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Plus, MapPin, Calendar, Package, Euro, Users, CheckCircle, Clock, TruckIcon } from 'lucide-react'
+import { Plus, MapPin, Calendar, Package, Euro, Users, CheckCircle, Clock, TruckIcon, Star } from 'lucide-react'
 import Link from 'next/link'
 import { OceniVozacaDialog } from '@/components/poslodavac/oceni-vozaca-dialog'
 
@@ -13,7 +13,6 @@ interface DashboardContentProps {
   initialData: {
     aktivneTure: number
     završeneTure: number
-    ukupnoPrijava: number
     ture: any[]
   }
   userId: string
@@ -22,7 +21,6 @@ interface DashboardContentProps {
 export function DashboardContent({ initialData, userId }: DashboardContentProps) {
   const [aktivneTure, setAktivenTure] = useState(initialData.aktivneTure)
   const [završeneTure, setZavršeneTure] = useState(initialData.završeneTure)
-  const [ukupnoPrijava, setUkupnoPrijava] = useState(initialData.ukupnoPrijava)
   const [ture, setTure] = useState(initialData.ture)
   const [isLoading, setIsLoading] = useState(false)
   const supabase = createClient()
@@ -49,7 +47,6 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
     const [
       { count: aktivne },
       { count: zavrsene },
-      { data: turaIds },
       { data: tureLista }
     ] = await Promise.all([
       // COUNT aktivnih tura
@@ -66,18 +63,11 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
         .eq('firma_id', userId)
         .eq('status', 'zavrsena'),
 
-      // IDs svih tura
-      supabase
-        .from('ture')
-        .select('id')
-        .eq('firma_id', userId),
-
       // Ture poslodavca
       supabase
         .from('ture')
         .select(`
           id, polazak, destinacija, datum, opis_robe, ponudjena_cena, status, created_at, dodeljeni_vozac_id,
-          prijave:prijave(count),
           vozac:users!ture_dodeljeni_vozac_id_fkey(id, puno_ime),
           ocene(id, ocena, komentar)
         `)
@@ -86,20 +76,8 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
         .limit(50)
     ])
 
-    // Broj prijava
-    let prijave = 0
-    if (turaIds && turaIds.length > 0) {
-      const { count } = await supabase
-        .from('prijave')
-        .select('id', { count: 'exact', head: true })
-        .in('tura_id', turaIds.map((t: any) => t.id))
-      
-      prijave = count || 0
-    }
-
     setAktivenTure(aktivne || 0)
     setZavršeneTure(zavrsene || 0)
-    setUkupnoPrijava(prijave)
     setTure(tureLista || [])
     setIsLoading(false)
   }
@@ -165,10 +143,6 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
                 <Package className="h-4 w-4 mr-1" />
                 {tura.opis_robe}
               </span>
-              <span className="flex items-center">
-                <Users className="h-4 w-4 mr-1" />
-                {tura.prijave?.[0]?.count || 0} prijava
-              </span>
             </div>
           </div>
           <div className="text-right">
@@ -182,19 +156,29 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap items-center">
           <Button asChild variant="outline" size="sm">
-            <Link href={`/poslodavac/ture/${tura.id}`}>
+            <Link href={`/poslodavac/ture/${tura.id}`} prefetch={true}>
               Pogledaj detalje
             </Link>
           </Button>
           {tura.status === 'zavrsena' && tura.vozac && tura.dodeljeni_vozac_id && (
-            <OceniVozacaDialog
-              turaId={tura.id}
-              vozacId={tura.dodeljeni_vozac_id}
-              vozacIme={tura.vozac.puno_ime}
-              postojecaOcena={tura.ocene && tura.ocene.length > 0 ? tura.ocene[0] : null}
-            />
+            <>
+              {tura.ocene && tura.ocene.length > 0 ? (
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-200 rounded-md">
+                  <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                  <span className="text-sm font-medium text-green-700">Ocenjeno ({tura.ocene[0].ocena}/5)</span>
+                </div>
+              ) : (
+                <OceniVozacaDialog
+                  turaId={tura.id}
+                  vozacId={tura.dodeljeni_vozac_id}
+                  vozacIme={tura.vozac.puno_ime}
+                  postojecaOcena={null}
+                  buttonVariant="default"
+                />
+              )}
+            </>
           )}
         </div>
       </CardContent>
@@ -217,7 +201,7 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
           </div>
         </div>
         <Button asChild size="lg">
-          <Link href="/poslodavac/objavi-turu">
+          <Link href="/poslodavac/objavi-turu" prefetch={true}>
             <Plus className="mr-2 h-5 w-5" />
             Objavi novu turu
           </Link>
@@ -225,7 +209,7 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
       </div>
 
       {/* Statistike */}
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
+      <div className="grid md:grid-cols-2 gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Aktivne ture</CardTitle>
@@ -248,19 +232,6 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
             <div className="text-2xl font-bold">{završeneTure}</div>
             <p className="text-xs text-muted-foreground">
               Ukupno realizovano
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Prijave vozača</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{ukupnoPrijava}</div>
-            <p className="text-xs text-muted-foreground">
-              Ukupno prijavljenih vozača
             </p>
           </CardContent>
         </Card>

@@ -73,7 +73,10 @@ export async function signInWithGoogle() {
       redirectTo: `${baseUrl}/auth/callback`,
       queryParams: {
         prompt: 'select_account', // PRISILNO prikazuj izbor naloga
+        access_type: 'offline', // Omogući refresh token
       },
+      // Poboljšaj za mobilne uređaje - skip intermediary page
+      skipBrowserRedirect: false,
     },
   })
   return { data, error }

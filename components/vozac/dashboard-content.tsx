@@ -209,7 +209,7 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
 
       {/* Statistike */}
       {brojZavrsenihTura > 0 && (
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <div className="grid md:grid-cols-1 gap-6 mb-8 max-w-md">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Izvezene ture</CardTitle>
@@ -219,22 +219,6 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
               <div className="text-2xl font-bold">{brojZavrsenihTura}</div>
               <p className="text-xs text-muted-foreground">
                 Ukupno završenih tura
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Prosečna ocena</CardTitle>
-              <Star className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold flex items-center">
-                {prosecnaOcena > 0 ? prosecnaOcena.toFixed(1) : 'N/A'}
-                {prosecnaOcena > 0 && <Star className="h-5 w-5 ml-1 fill-yellow-400 text-yellow-400" />}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Na osnovu {zavrseneTure?.filter((t: any) => t.vozac_rating).length || 0} ocena
               </p>
             </CardContent>
           </Card>

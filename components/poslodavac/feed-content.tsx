@@ -282,13 +282,10 @@ export function FeedContent({ initialTure, userId }: FeedContentProps) {
                       size="sm"
                       variant={jeMojaTura ? "default" : "outline"}
                     >
-                      <Link href={`/poslodavac/ture/${tura.id}?from=objave`}>
+                      <Link href={`/poslodavac/ture/${tura.id}?from=objave`} prefetch={true}>
                         Pogledaj
                       </Link>
                     </Button>
-                  </div>
-                  <div className="text-xs text-gray-500 pt-1">
-                    {tura.prijave?.[0]?.count || 0} prijava vozača
                   </div>
                 </CardContent>
               </Card>

@@ -29,6 +29,7 @@ interface OceniVozacaDialogProps {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   onOcenaSubmit?: () => void
+  buttonVariant?: "default" | "outline" | "secondary" | "ghost" | "link" | "destructive"
 }
 
 export function OceniVozacaDialog({ 
@@ -38,7 +39,8 @@ export function OceniVozacaDialog({
   postojecaOcena,
   open: externalOpen,
   onOpenChange: externalOnOpenChange,
-  onOcenaSubmit
+  onOcenaSubmit,
+  buttonVariant = "outline"
 }: OceniVozacaDialogProps) {
   const [internalOpen, setInternalOpen] = useState(false)
   const open = externalOpen !== undefined ? externalOpen : internalOpen
@@ -212,7 +214,7 @@ export function OceniVozacaDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={postojecaOcena ? "outline" : "default"} size="sm">
+        <Button variant={postojecaOcena ? buttonVariant : buttonVariant} size="sm">
           <Star className="h-4 w-4 mr-2" />
           {postojecaOcena ? 'Izmeni ocenu' : 'Oceni vozača'}
         </Button>

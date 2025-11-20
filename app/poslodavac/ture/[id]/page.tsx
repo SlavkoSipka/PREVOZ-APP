@@ -12,9 +12,13 @@ export default async function PoslodavacTuraDetaljiPage({
   params,
   searchParams 
 }: { 
-  params: { id: string }
-  searchParams: { from?: string }
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ from?: string }>
 }) {
+  // Await params i searchParams (Next.js 15)
+  const { id } = await params
+  const { from } = await searchParams
+  
   const userData = await getUserWithProfile()
 
   if (!userData || userData.profile.uloga !== 'poslodavac') {
@@ -29,9 +33,9 @@ export default async function PoslodavacTuraDetaljiPage({
     .select(`
       *,
       firma:users!ture_firma_id_fkey(puno_ime, naziv_firme),
-      vozac:users!ture_dodeljeni_vozac_id_fkey(puno_ime, telefon, email, registarske_tablice)
+      vozac:users!ture_dodeljeni_vozac_id_fkey(puno_ime, telefon, email)
     `)
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (error || !tura) {
@@ -45,14 +49,14 @@ export default async function PoslodavacTuraDetaljiPage({
   const { data: prijave } = jeMojaTura ? await supabase
     .from('prijave')
     .select('*')
-    .eq('tura_id', params.id) : { data: [] }
+    .eq('tura_id', id) : { data: [] }
 
   // Učitaj ocenu ako je tura završena i ima dodeljenog vozača
   const { data: postojecaOcena } = (jeMojaTura && tura.status === 'zavrsena' && tura.dodeljeni_vozac_id) 
     ? await supabase
         .from('ocene')
         .select('id, ocena, komentar')
-        .eq('tura_id', params.id)
+        .eq('tura_id', id)
         .eq('vozac_id', tura.dodeljeni_vozac_id)
         .eq('poslodavac_id', userData.user.id)
         .maybeSingle() // Koristi maybeSingle() umesto single() da ne dobijemo error ako ne postoji
@@ -66,8 +70,8 @@ export default async function PoslodavacTuraDetaljiPage({
   }
 
   // Odredi gde da vrati korisnika
-  const backUrl = searchParams.from === 'objave' ? '/poslodavac/feed' : '/poslodavac'
-  const backText = searchParams.from === 'objave' ? 'Nazad' : 'Nazad'
+  const backUrl = from === 'objave' ? '/poslodavac/feed' : '/poslodavac'
+  const backText = from === 'objave' ? 'Nazad' : 'Nazad'
 
   return (
     <div className="min-h-screen bg-gray-50">

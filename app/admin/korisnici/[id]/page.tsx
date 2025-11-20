@@ -10,7 +10,10 @@ import Link from 'next/link'
 import { PosaljiNotifikacijuDialog } from '@/components/admin/posalji-notifikaciju-dialog'
 import { ToggleBlokiranjeButton } from '@/components/admin/toggle-blokiranje-button'
 
-export default async function KorisnikProfilPage({ params }: { params: { id: string } }) {
+export default async function KorisnikProfilPage({ params }: { params: Promise<{ id: string }> }) {
+  // Await params (Next.js 15)
+  const { id } = await params
+  
   const userData = await getUserWithProfile()
 
   if (!userData || userData.profile.uloga !== 'admin') {
@@ -23,7 +26,7 @@ export default async function KorisnikProfilPage({ params }: { params: { id: str
   const { data: korisnik } = await supabase
     .from('users')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!korisnik || (korisnik.uloga !== 'vozac' && korisnik.uloga !== 'poslodavac')) {
@@ -44,7 +47,7 @@ export default async function KorisnikProfilPage({ params }: { params: { id: str
         *,
         tura:ture(*)
       `)
-      .eq('vozac_id', params.id)
+      .eq('vozac_id', id)
       .order('created_at', { ascending: false })
     prijave = data
 
@@ -73,11 +76,10 @@ export default async function KorisnikProfilPage({ params }: { params: { id: str
           id,
           puno_ime,
           email,
-          telefon,
-          registarske_tablice
+          telefon
         )
       `)
-      .eq('firma_id', params.id)
+      .eq('firma_id', id)
       .order('created_at', { ascending: false })
     ture = data
 

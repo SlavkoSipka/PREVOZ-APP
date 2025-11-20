@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Truck, LogOut, User, Bell, LayoutDashboard, ListIcon } from 'lucide-react'
+import { Truck, LogOut, User, Bell, LayoutDashboard, ListIcon, Plus } from 'lucide-react'
 import { signOut } from '@/lib/auth-helpers.client'
 import { useToast } from '@/hooks/use-toast'
 import { createClient } from '@/lib/supabase/client'
@@ -135,6 +135,16 @@ export function Navbar({ user, currentPage }: NavbarProps) {
                   Moje ture
                 </Link>
               </Button>
+              <Button 
+                variant={isActive('/poslodavac/objavi-turu') ? "default" : "ghost"} 
+                size="sm" 
+                asChild
+              >
+                <Link href="/poslodavac/objavi-turu" className="flex items-center gap-2" prefetch={true}>
+                  <Plus className="h-4 w-4" />
+                  Objavi turu
+                </Link>
+              </Button>
             </div>
           )}
 
@@ -223,6 +233,12 @@ export function Navbar({ user, currentPage }: NavbarProps) {
                     <Link href="/poslodavac" className="md:hidden" prefetch={true}>
                       <ListIcon className="mr-2 h-4 w-4" />
                       Moje ture
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/poslodavac/objavi-turu" className="md:hidden" prefetch={true}>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Objavi turu
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>

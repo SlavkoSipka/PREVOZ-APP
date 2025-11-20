@@ -7,7 +7,10 @@ import { Button } from '@/components/ui/button'
 import { MapPin, Calendar, Package, Euro, ArrowLeft, Users } from 'lucide-react'
 import Link from 'next/link'
 
-export default async function FirmaTuraDetaljiPage({ params }: { params: { id: string } }) {
+export default async function FirmaTuraDetaljiPage({ params }: { params: Promise<{ id: string }> }) {
+  // Await params (Next.js 15)
+  const { id } = await params
+  
   const userData = await getUserWithProfile()
 
   if (!userData || userData.profile.uloga !== 'poslodavac') {
@@ -20,9 +23,9 @@ export default async function FirmaTuraDetaljiPage({ params }: { params: { id: s
     .from('ture')
     .select(`
       *,
-      vozac:users!ture_dodeljeni_vozac_id_fkey(puno_ime, telefon, email, registarske_tablice)
+      vozac:users!ture_dodeljeni_vozac_id_fkey(puno_ime, telefon, email)
     `)
-    .eq('id', params.id)
+    .eq('id', id)
     .eq('firma_id', userData.user.id)
     .single()
 
@@ -33,7 +36,7 @@ export default async function FirmaTuraDetaljiPage({ params }: { params: { id: s
   const { data: prijave } = await supabase
     .from('prijave')
     .select('*')
-    .eq('tura_id', params.id)
+    .eq('tura_id', id)
 
   const statusLabels: { [key: string]: string } = {
     aktivna: '🟢 Aktivna',

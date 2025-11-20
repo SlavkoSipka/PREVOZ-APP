@@ -10,7 +10,10 @@ import { PrihvatiTuruButton } from '@/components/vozac/prihvati-turu-button'
 import { ZavrsiTuruButton } from '@/components/vozac/zavrsi-turu-button'
 import { formatVreme } from '@/lib/utils'
 
-export default async function TuraDetaljiPage({ params }: { params: { id: string } }) {
+export default async function TuraDetaljiPage({ params }: { params: Promise<{ id: string }> }) {
+  // Await params (Next.js 15)
+  const { id } = await params
+  
   const userData = await getUserWithProfile()
 
   if (!userData || userData.profile.uloga !== 'vozac') {
@@ -26,7 +29,7 @@ export default async function TuraDetaljiPage({ params }: { params: { id: string
       *,
       firma:users!ture_firma_id_fkey(puno_ime, naziv_firme, telefon, email)
     `)
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (error || !tura) {
@@ -37,7 +40,7 @@ export default async function TuraDetaljiPage({ params }: { params: { id: string
   const { data: prijava } = await supabase
     .from('prijave')
     .select('*')
-    .eq('tura_id', params.id)
+    .eq('tura_id', id)
     .eq('vozac_id', userData.user.id)
     .single()
 

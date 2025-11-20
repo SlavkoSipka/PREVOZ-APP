@@ -17,7 +17,6 @@ interface Korisnik {
   telefon: string
   uloga: string
   naziv_firme?: string
-  registarske_tablice?: string
   verifikovan: boolean
   blokiran: boolean
   created_at: string
@@ -138,12 +137,6 @@ export function KorisniciList({ korisnici }: { korisnici: Korisnik[] }) {
                 </p>
               )}
               
-              {korisnik.registarske_tablice && (
-                <p className="text-sm text-gray-600">
-                  <Truck className="h-4 w-4 inline mr-1" />
-                  {korisnik.registarske_tablice}
-                </p>
-              )}
 
               <div className="flex gap-4 text-sm text-gray-600">
                 <span>📧 {korisnik.email}</span>

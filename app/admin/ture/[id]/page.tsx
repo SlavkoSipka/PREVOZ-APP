@@ -10,7 +10,10 @@ import Link from 'next/link'
 import { formatVreme } from '@/lib/utils'
 import { SendNotificationForm } from '@/components/admin/send-notification-form'
 
-export default async function AdminTuraDetaljiPage({ params }: { params: { id: string } }) {
+export default async function AdminTuraDetaljiPage({ params }: { params: Promise<{ id: string }> }) {
+  // Await params (Next.js 15)
+  const { id } = await params
+  
   const userData = await getUserWithProfile()
 
   if (!userData || userData.profile.uloga !== 'admin') {
@@ -35,11 +38,10 @@ export default async function AdminTuraDetaljiPage({ params }: { params: { id: s
         id,
         puno_ime,
         email,
-        telefon,
-        registarske_tablice
+        telefon
       )
     `)
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!tura) {
@@ -56,11 +58,10 @@ export default async function AdminTuraDetaljiPage({ params }: { params: { id: s
         puno_ime,
         email,
         telefon,
-        registarske_tablice,
         blokiran
       )
     `)
-    .eq('tura_id', params.id)
+    .eq('tura_id', id)
     .order('created_at', { ascending: false })
 
   const statusLabels: { [key: string]: string } = {

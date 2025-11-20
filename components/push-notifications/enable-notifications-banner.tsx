@@ -30,8 +30,12 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
 
   // Auto re-subscribe ako user ima permission ali nema DB subscription
   useEffect(() => {
+    let hasAttempted = false
+    
     const autoResubscribe = async () => {
-      if (!isSupported || !userId || permission !== 'granted') return
+      if (!isSupported || !userId || permission !== 'granted' || hasAttempted) return
+      
+      hasAttempted = true
       
       // Proveri da li subscription postoji u bazi
       const supabase = createClient()
@@ -49,7 +53,7 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
     }
     
     autoResubscribe()
-  }, [isSupported, permission, userId])
+  }, [isSupported, permission, userId, subscribe])
 
   // Proveri da li treba prikazati banner
   useEffect(() => {

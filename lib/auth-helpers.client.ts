@@ -10,7 +10,6 @@ export async function signUp(
     telefon: string
     uloga: Uloga | null
     naziv_firme?: string
-    registarske_tablice?: string
   },
   redirectOptions?: { emailRedirectTo?: string }
 ) {

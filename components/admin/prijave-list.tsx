@@ -20,7 +20,6 @@ interface Prijava {
     id: string
     puno_ime: string
     telefon: string
-    registarske_tablice: string
   }
 }
 
@@ -65,10 +64,6 @@ export function PrijaveList({ prijave }: { prijave: Prijava[] }) {
                   <div className="flex items-center">
                     <User className="h-4 w-4 mr-2 text-gray-500" />
                     {prijava.vozac.puno_ime}
-                  </div>
-                  <div className="flex items-center">
-                    <Truck className="h-4 w-4 mr-2 text-gray-500" />
-                    {prijava.vozac.registarske_tablice}
                   </div>
                   <div className="text-gray-600">
                     📞 {prijava.vozac.telefon}

@@ -50,7 +50,7 @@ export default async function AdminDashboard() {
       .select(`
         id, created_at, status,
         tura:ture(id, polazak, destinacija, datum, ponudjena_cena),
-        vozac:users!prijave_vozac_id_fkey(id, puno_ime, email, telefon, registarske_tablice, blokiran)
+        vozac:users!prijave_vozac_id_fkey(id, puno_ime, email, telefon, blokiran)
       `, { count: 'exact' })
       .eq('status', 'ceka_admina')
       .order('created_at', { ascending: false })
@@ -73,7 +73,7 @@ export default async function AdminDashboard() {
       .select(`
         id, polazak, destinacija, datum, opis_robe, ponudjena_cena, status, created_at, dodeljeni_vozac_id,
         firma:users!ture_firma_id_fkey(id, puno_ime, naziv_firme, email, telefon),
-        vozac:users!ture_dodeljeni_vozac_id_fkey(id, puno_ime, email, telefon, registarske_tablice)
+        vozac:users!ture_dodeljeni_vozac_id_fkey(id, puno_ime, email, telefon)
       `, { count: 'exact' })
       .eq('status', 'dodeljena')
       .order('datum', { ascending: true })
@@ -88,7 +88,7 @@ export default async function AdminDashboard() {
     // Korisnici (samo za tab, limit 100)
     supabase
       .from('users')
-      .select('id, puno_ime, email, telefon, uloga, naziv_firme, registarske_tablice, verifikovan, blokiran, created_at')
+      .select('id, puno_ime, email, telefon, uloga, naziv_firme, verifikovan, blokiran, created_at')
       .order('created_at', { ascending: false })
       .limit(100),
     
@@ -98,7 +98,7 @@ export default async function AdminDashboard() {
       .select(`
         id, polazak, destinacija, datum, opis_robe, ponudjena_cena, status, created_at,
         firma:users!ture_firma_id_fkey(puno_ime, naziv_firme),
-        vozac:users!ture_dodeljeni_vozac_id_fkey(puno_ime, registarske_tablice)
+        vozac:users!ture_dodeljeni_vozac_id_fkey(puno_ime)
       `)
       .order('created_at', { ascending: false })
       .limit(100),
@@ -108,7 +108,7 @@ export default async function AdminDashboard() {
       .from('uplate')
       .select(`
         id, iznos, status, created_at,
-        vozac:users!uplate_vozac_id_fkey(id, puno_ime, email, registarske_tablice),
+        vozac:users!uplate_vozac_id_fkey(id, puno_ime, email),
         tura:ture(id, polazak, destinacija, datum)
       `)
       .order('created_at', { ascending: false })
@@ -263,7 +263,7 @@ export default async function AdminDashboard() {
                               </p>
                               {tura.vozac && (
                                 <p className="text-sm font-semibold text-blue-600">
-                                  🚚 Vozač: {tura.vozac.puno_ime} ({tura.vozac.registarske_tablice})
+                                  🚚 Vozač: {tura.vozac.puno_ime}
                                 </p>
                               )}
                             </div>
@@ -306,7 +306,7 @@ export default async function AdminDashboard() {
                             </p>
                             {tura.vozac && (
                               <p className="text-sm">
-                                🚚 Vozač: {tura.vozac.puno_ime} ({tura.vozac.registarske_tablice})
+                                🚚 Vozač: {tura.vozac.puno_ime}
                               </p>
                             )}
                             <p className="text-xs text-gray-500">

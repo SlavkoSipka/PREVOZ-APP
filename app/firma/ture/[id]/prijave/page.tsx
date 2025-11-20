@@ -7,7 +7,10 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, User, Truck, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 
-export default async function FirmaPrijavePage({ params }: { params: { id: string } }) {
+export default async function FirmaPrijavePage({ params }: { params: Promise<{ id: string }> }) {
+  // Await params (Next.js 15)
+  const { id } = await params
+  
   const userData = await getUserWithProfile()
 
   if (!userData || userData.profile.uloga !== 'poslodavac') {
@@ -19,7 +22,7 @@ export default async function FirmaPrijavePage({ params }: { params: { id: strin
   const { data: tura, error: turaError } = await supabase
     .from('ture')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .eq('firma_id', userData.user.id)
     .single()
 
@@ -33,7 +36,7 @@ export default async function FirmaPrijavePage({ params }: { params: { id: strin
       *,
       vozac:users!prijave_vozac_id_fkey(*)
     `)
-    .eq('tura_id', params.id)
+    .eq('tura_id', id)
     .order('created_at', { ascending: false })
 
   const statusLabels: { [key: string]: string } = {
@@ -49,7 +52,7 @@ export default async function FirmaPrijavePage({ params }: { params: { id: strin
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Button variant="ghost" asChild className="mb-6">
-          <Link href={`/firma/ture/${params.id}`}>
+          <Link href={`/firma/ture/${id}`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Nazad na turu
           </Link>
@@ -100,10 +103,6 @@ export default async function FirmaPrijavePage({ params }: { params: { id: strin
                     </div>
 
                     <div className="space-y-2 text-sm">
-                      <div className="flex items-center text-gray-600">
-                        <Truck className="h-4 w-4 mr-2" />
-                        {prijava.vozac.registarske_tablice}
-                      </div>
                       <div className="flex items-center text-gray-600">
                         <Phone className="h-4 w-4 mr-2" />
                         {prijava.vozac.telefon}

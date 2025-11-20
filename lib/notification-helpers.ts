@@ -189,7 +189,7 @@ export async function createNotificationWithPushServer(
       .from('push_subscriptions')
       .select('subscription')
       .eq('user_id', options.userId)
-      .single()
+      .maybeSingle()  // ← Ne baca error ako nema subscription
 
     if (subData?.subscription) {
       // Pošalji push koristeći web-push direktno

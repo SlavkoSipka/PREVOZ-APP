@@ -46,14 +46,17 @@ export function CheckSubscriptionButton({ userId }: CheckSubscriptionButtonProps
         .from('push_subscriptions')
         .select('*')
         .eq('user_id', userId)
-        .single()
+        .maybeSingle()  // ← maybeSingle() ne baca error ako nema red-ova
       
       if (error) {
-        info.push(`❌ Baza: NE POSTOJI subscription`)
+        info.push(`❌ Baza: Greška pri proveri`)
         info.push(`   Error: ${error.message}`)
       } else if (dbSub) {
         info.push(`✅ Baza: Subscription postoji`)
         info.push(`   Created: ${new Date(dbSub.created_at).toLocaleString('sr-RS')}`)
+        info.push(`   Updated: ${new Date(dbSub.updated_at).toLocaleString('sr-RS')}`)
+      } else {
+        info.push(`⚠️ Baza: Subscription NE POSTOJI (treba da se kreira)`)
       }
       
       setResult(info.join('\n'))

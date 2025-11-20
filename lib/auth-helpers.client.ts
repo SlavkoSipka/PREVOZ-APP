@@ -67,9 +67,6 @@ export async function signInWithGoogle() {
   // OBAVEZNO: Koristi env varijablu (važno za Netlify production)
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
   
-  // Mobile detection
-  const isMobile = typeof window !== 'undefined' && /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent)
-  console.log('📱 Google login initiated from:', isMobile ? 'Mobile' : 'Desktop')
   console.log('🔐 Google OAuth redirect URL:', `${baseUrl}/auth/callback`)
   
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -79,8 +76,6 @@ export async function signInWithGoogle() {
       queryParams: {
         prompt: 'select_account',
         access_type: 'offline',
-        // Mobile-specific: prevent popup on some Android browsers
-        ...(isMobile && { display: 'touch' }),
       },
       skipBrowserRedirect: false,
     },

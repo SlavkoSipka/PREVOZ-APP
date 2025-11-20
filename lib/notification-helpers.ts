@@ -193,7 +193,9 @@ export async function createNotificationWithPushServer(
 
     if (subData?.subscription) {
       // Pošalji push koristeći web-push direktno
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+      // Koristi env variable ili dinamički URL
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+                      (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000')
       
       try {
         await fetch(`${baseUrl}/api/push/send`, {

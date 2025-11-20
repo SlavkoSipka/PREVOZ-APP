@@ -138,7 +138,8 @@ export function usePushNotifications(userId?: string) {
       if (initialPermission === 'denied') {
         debug.push('❌ Već DENIED - resetuj u browser settings')
         setDebugInfo(debug.join('\n'))
-        setError('Notifikacije blokirane. Chrome → ⋮ → Settings → Site settings → All sites → test.aislike.rs → Notifications → Allow')
+        const currentDomain = typeof window !== 'undefined' ? window.location.hostname : 'prevezime.rs'
+        setError(`Notifikacije blokirane. Chrome → ⋮ → Settings → Site settings → All sites → ${currentDomain} → Notifications → Allow`)
         return false
       }
       
@@ -189,16 +190,17 @@ export function usePushNotifications(userId?: string) {
         return false
       } else {
         // Status 'default' - popup nije izašao
+        const currentDomain = typeof window !== 'undefined' ? window.location.hostname : 'prevezime.rs'
         debug.push('⚠️ Status ostao DEFAULT - popup se nije pojavio')
         debug.push('🔧 REŠENJE: Ručno omogući u Chrome-u:')
         debug.push('1. Chrome → ⋮ (3 tačke gore)')
         debug.push('2. Settings → Site settings')
         debug.push('3. Notifications → Add site exception')
-        debug.push('4. Unesi: test.aislike.rs → Allow')
+        debug.push(`4. Unesi: ${currentDomain} → Allow`)
         debug.push('5. Vrati se i refresh sajt')
         setDebugInfo(debug.join('\n'))
         
-        setError('Popup nije izašao. Molimo omogućite RUČNO: Chrome → ⋮ → Settings → Site settings → Notifications → Add site → test.aislike.rs → Allow')
+        setError(`Popup nije izašao. Molimo omogućite RUČNO: Chrome → ⋮ → Settings → Site settings → Notifications → Add site → ${currentDomain} → Allow`)
         return false
       }
     } catch (err: any) {

@@ -190,7 +190,7 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
                   <li>Kliknite <strong>Site settings</strong></li>
                   <li>Kliknite <strong>Notifications</strong></li>
                   <li>Pod <strong>Allowed</strong> sekcijom kliknite <strong>Add site</strong></li>
-                  <li>Upišite: <code className="bg-gray-200 px-1">test.aislike.rs</code></li>
+                  <li>Upišite: <code className="bg-gray-200 px-1">{typeof window !== 'undefined' ? window.location.hostname : 'prevezime.rs'}</code></li>
                   <li>Vrati se na sajt i refresh (povuci dole)</li>
                 </ol>
               </div>

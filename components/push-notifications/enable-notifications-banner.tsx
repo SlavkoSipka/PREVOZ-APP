@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card'
 import { usePushNotifications } from '@/hooks/use-push-notifications'
 import { useToast } from '@/hooks/use-toast'
 import { CheckSubscriptionButton } from './check-subscription-button'
+import { createClient } from '@/lib/supabase/client'
 
 interface EnableNotificationsBannerProps {
   userId: string
@@ -26,6 +27,29 @@ export function EnableNotificationsBanner({ userId }: EnableNotificationsBannerP
     error,
     debugInfo
   } = usePushNotifications(userId)
+
+  // Auto re-subscribe ako user ima permission ali nema DB subscription
+  useEffect(() => {
+    const autoResubscribe = async () => {
+      if (!isSupported || !userId || permission !== 'granted') return
+      
+      // Proveri da li subscription postoji u bazi
+      const supabase = createClient()
+      const { data: dbSub } = await supabase
+        .from('push_subscriptions')
+        .select('*')
+        .eq('user_id', userId)
+        .maybeSingle()
+      
+      if (!dbSub) {
+        // User ima permission ali nema DB subscription → auto re-subscribe
+        console.log('🔄 Auto re-subscribing... (permission granted but no DB sub)')
+        await subscribe()
+      }
+    }
+    
+    autoResubscribe()
+  }, [isSupported, permission, userId])
 
   // Proveri da li treba prikazati banner
   useEffect(() => {

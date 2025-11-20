@@ -25,10 +25,19 @@ export async function middleware(request: NextRequest) {
           return request.cookies.get(name)?.value
         },
         set(name: string, value: string, options: CookieOptions) {
+          // Mobile-optimized cookie options
+          const cookieOptions = {
+            ...options,
+            sameSite: 'lax' as const,
+            secure: request.url.startsWith('https://'),
+            httpOnly: options.httpOnly ?? false,
+            maxAge: options.maxAge ?? 604800, // 7 days for mobile
+          }
+          
           request.cookies.set({
             name,
             value,
-            ...options,
+            ...cookieOptions,
           })
           response = NextResponse.next({
             request: {
@@ -38,7 +47,7 @@ export async function middleware(request: NextRequest) {
           response.cookies.set({
             name,
             value,
-            ...options,
+            ...cookieOptions,
           })
         },
         remove(name: string, options: CookieOptions) {
@@ -62,7 +71,15 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  await supabase.auth.getSession()
+  // Refresh session and get user
+  const { data: { session } } = await supabase.auth.getSession()
+  
+  // Log session info for debugging
+  if (session) {
+    console.log('✅ Middleware: Session active for user', session.user.id.substring(0, 8))
+  } else {
+    console.log('⚠️ Middleware: No active session')
+  }
 
   return response
 }

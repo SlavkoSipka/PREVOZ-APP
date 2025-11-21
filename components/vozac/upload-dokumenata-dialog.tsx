@@ -194,7 +194,7 @@ export function UploadDokumenataDialog({ userId, postojecaNapred, postojecaNazad
         <div className="space-y-6 py-4">
           {/* Napred */}
           <div className="space-y-2">
-            <h4 className="font-semibold">Prednja strana dozvole</h4>
+            <h4 className="font-semibold">Prednja strana saobraćajne dozvole</h4>
             <label 
               htmlFor="upload-napred"
               className={`
@@ -235,7 +235,7 @@ export function UploadDokumenataDialog({ userId, postojecaNapred, postojecaNazad
 
           {/* Nazad */}
           <div className="space-y-2">
-            <h4 className="font-semibold">Zadnja strana dozvole</h4>
+            <h4 className="font-semibold">Zadnja strana saobraćajne dozvole</h4>
             <label 
               htmlFor="upload-nazad"
               className={`

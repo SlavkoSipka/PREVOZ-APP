@@ -348,7 +348,7 @@ export default function VozacOnboardingPage() {
                   <div className="text-xs sm:text-sm text-blue-900">
                     <p className="font-medium mb-1.5 sm:mb-2">O zaštiti vaših podataka:</p>
                     <p className="leading-relaxed">
-                      <strong>TransLink</strong> koristi fotografiju vaše saobraćajne dozvole <strong>isključivo radi provere verodostojnosti naloga</strong> i sprečavanja zloupotreba (višestrukih registracija).
+                      <strong>PreveziMe</strong> koristi fotografiju vaše saobraćajne dozvole <strong>isključivo radi provere verodostojnosti naloga</strong> i sprečavanja zloupotreba (višestrukih registracija).
                     </p>
                     <p className="mt-1.5 sm:mt-2 leading-relaxed">
                       Podaci se čuvaju bezbedno i <strong>ne dele se sa trećim licima</strong>. Slanjem fotografije saglasni ste sa ovim uslovima.
@@ -360,7 +360,7 @@ export default function VozacOnboardingPage() {
               {/* Upload Napred */}
               <div className="space-y-1.5 sm:space-y-2">
                 <Label htmlFor="saobracajna-napred" className="text-sm sm:text-base">
-                  Prednja strana dozvole *
+                  Prednja strana saobraćajne dozvole *
                 </Label>
                 <div className="flex items-center gap-2 sm:gap-3">
                   <label 
@@ -407,7 +407,7 @@ export default function VozacOnboardingPage() {
               {/* Upload Pozadi */}
               <div className="space-y-1.5 sm:space-y-2">
                 <Label htmlFor="saobracajna-pozadi" className="text-sm sm:text-base">
-                  Zadnja strana dozvole *
+                  Zadnja strana saobraćajne dozvole *
                 </Label>
                 <div className="flex items-center gap-2 sm:gap-3">
                   <label 

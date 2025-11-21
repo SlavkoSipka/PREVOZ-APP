@@ -59,12 +59,6 @@ export function HelpCard() {
             </a>
           </Button>
         </div>
-
-        <div className="pt-2 border-t border-blue-200">
-          <p className="text-xs text-blue-600">
-            💡 <strong>Radno vreme:</strong> Pon-Pet 08:00-20:00, Sub 09:00-17:00
-          </p>
-        </div>
       </CardContent>
     </Card>
   )

@@ -46,7 +46,7 @@ function RegistracijaContent() {
               <div>
                 <p className="font-medium text-sm sm:text-base">Korak 1: Otvorite email</p>
                 <p className="text-xs sm:text-sm text-gray-600">
-                  Potražite email od TransLink-a u vašem inboxu
+                  Potražite email od PreveziMe-a u vašem inboxu
                 </p>
               </div>
             </div>

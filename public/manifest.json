@@ -1,6 +1,6 @@
 {
-  "name": "TransLink - Platforma za Transport",
-  "short_name": "TransLink",
+  "name": "PreveziMe - Platforma za Transport",
+  "short_name": "PreveziMe",
   "description": "Platforma koja povezuje poslodavce i vozače za efikasan transport robe",
   "start_url": "/",
   "display": "standalone",

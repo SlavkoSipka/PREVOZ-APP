@@ -24,7 +24,7 @@ export default function PlacanjeUspesnoPage() {
           <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
             <p className="text-xs sm:text-sm text-green-800">
               Vaš nalog je sada ponovo aktivan. Možete nastaviti da prihvatate nove ture 
-              i koristite sve funkcionalnosti TransLink platforme.
+              i koristite sve funkcionalnosti PreveziMe platforme.
             </p>
           </div>
 
@@ -42,7 +42,7 @@ export default function PlacanjeUspesnoPage() {
 
           <div className="pt-3 sm:pt-4 border-t">
             <p className="text-xs text-gray-500">
-              Hvala što koristite TransLink platformu!
+              Hvala što koristite PreveziMe platformu!
             </p>
           </div>
         </CardContent>

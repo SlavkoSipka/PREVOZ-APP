@@ -17,7 +17,7 @@ export default function HomePage({
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <Truck className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
-            <span className="text-xl sm:text-2xl font-bold">TransLink</span>
+            <span className="text-xl sm:text-2xl font-bold">PreveziMe</span>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <Button variant="ghost" asChild size="sm" className="text-xs sm:text-sm">
@@ -98,7 +98,7 @@ export default function HomePage({
           Poveži firme i vozače <span className="text-primary">lako</span>
         </h1>
         <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto px-2">
-          TransLink spaja firme i kamiondžije. Brzo, sigurno i jednostavno. 
+          PreveziMe spaja firme i kamiondžije. Brzo, sigurno i jednostavno. 
           Pronađi ture ili objavi potrebu za prevozom odmah.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-xl mx-auto px-2">
@@ -219,7 +219,7 @@ export default function HomePage({
       {/* Benefits Section */}
       <section className="bg-gray-50 py-10 sm:py-12 md:py-16">
         <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Zašto TransLink?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Zašto PreveziMe?</h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto">
             <div className="text-center">
               <div className="bg-primary/10 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
@@ -256,7 +256,7 @@ export default function HomePage({
       <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20 text-center">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Spreman da počneš?</h2>
         <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
-          Pridruži se TransLink platformi danas i poveži se sa stotinama firmi i vozača
+          Pridruži se PreveziMe platformi danas i poveži se sa stotinama firmi i vozača
         </p>
         <Button size="lg" asChild className="text-sm sm:text-base md:text-lg px-8 sm:px-10 py-4 sm:py-6 touch-manipulation">
           <Link href="/registracija">
@@ -271,10 +271,10 @@ export default function HomePage({
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center space-x-2">
               <Truck className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-              <span className="text-base sm:text-lg font-bold">TransLink</span>
+              <span className="text-base sm:text-lg font-bold">PreveziMe</span>
             </div>
             <p className="text-gray-600 text-xs sm:text-sm text-center">
-              © 2024 TransLink. Sva prava zadržana.
+              © 2024 PreveziMe. Sva prava zadržana.
             </p>
           </div>
         </div>

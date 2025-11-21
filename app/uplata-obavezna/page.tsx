@@ -41,7 +41,7 @@ export default async function UplataObaveznaPage() {
   // 2Checkout konfiguracija (samo za produkciju)
   const merchantCode = process.env.NEXT_PUBLIC_2CHECKOUT_MERCHANT_CODE
   const checkoutUrl = merchantCode 
-    ? `https://secure.2checkout.com/checkout/buy?merchant=${merchantCode}&dynamic=1&prod=TransLink_Provizija&price=${ukupnoDug}&qty=1&return-url=${process.env.NEXT_PUBLIC_SITE_URL}/placanje-uspesno&return-type=redirect`
+    ? `https://secure.2checkout.com/checkout/buy?merchant=${merchantCode}&dynamic=1&prod=PreveziMe_Provizija&price=${ukupnoDug}&qty=1&return-url=${process.env.NEXT_PUBLIC_SITE_URL}/placanje-uspesno&return-type=redirect`
     : '#'
 
   return (
@@ -75,7 +75,7 @@ export default async function UplataObaveznaPage() {
             <h3 className="font-semibold text-orange-800 mb-1.5 sm:mb-2 text-sm sm:text-base">Potrebno plaćanje provizije</h3>
             <p className="text-xs sm:text-sm text-orange-700">
               Nakon završetka ture, svi vozači su dužni da plate proviziju od 15€ po turi. 
-              Molimo izvršite uplatu kako biste nastavili da prihvatate nove ture na TransLink platformi.
+              Molimo izvršite uplatu kako biste nastavili da prihvatate nove ture na PreveziMe platformi.
             </p>
           </div>
 

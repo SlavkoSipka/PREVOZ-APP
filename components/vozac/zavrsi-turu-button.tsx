@@ -103,7 +103,7 @@ export function ZavrsiTuruButton({ turaId, vozacId, iznos }: ZavrsiTuruButtonPro
             vozac_id: turaData.firma_id,
             tura_id: turaId,
             tip: 'tura_zavrsena',
-            poruka: `🎉 Tura ${turaData.polazak} → ${turaData.destinacija} je uspešno završena! Hvala vam što koristite TransLink. Možete oceniti vozača kako biste pomogli drugim korisnicima.`
+            poruka: `🎉 Tura ${turaData.polazak} → ${turaData.destinacija} je uspešno završena! Hvala vam što koristite PreveziMe. Možete oceniti vozača kako biste pomogli drugim korisnicima.`
           })
           .select()
         

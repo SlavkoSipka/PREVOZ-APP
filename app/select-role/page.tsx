@@ -106,7 +106,7 @@ export default function SelectRolePage() {
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 px-2">Izaberite tip naloga</h1>
           <p className="text-base sm:text-lg text-gray-600 px-2">
-            Kako planirate da koristite TransLink?
+            Kako planirate da koristite PreveziMe?
           </p>
         </div>
 

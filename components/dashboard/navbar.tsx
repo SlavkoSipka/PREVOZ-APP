@@ -109,7 +109,7 @@ export function Navbar({ user, currentPage }: NavbarProps) {
         <div className="flex items-center gap-3 sm:gap-6">
           <div className="flex items-center space-x-1.5 sm:space-x-2">
             <Truck className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-            <span className="text-lg sm:text-xl font-bold">TransLink</span>
+            <span className="text-lg sm:text-xl font-bold">PreveziMe</span>
           </div>
 
           {/* Navigacioni linkovi za poslodavce */}

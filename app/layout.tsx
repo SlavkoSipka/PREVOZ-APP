@@ -8,7 +8,7 @@ import { MobileConsole } from '@/components/mobile-console'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'TransLink - Platforma za transport',
+  title: 'PreveziMe - Platforma za transport',
   description: 'Povežite poslodavce i vozače - brzo, efikasno, sigurno',
   manifest: '/manifest.json',
   icons: {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'TransLink'
+    title: 'PreveziMe'
   },
   formatDetection: {
     telephone: false

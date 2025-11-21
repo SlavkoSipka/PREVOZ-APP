@@ -8,10 +8,17 @@ export async function middleware(request: NextRequest) {
     },
   })
 
-  // Add performance headers
+  // Add performance and security headers
   response.headers.set('X-Content-Type-Options', 'nosniff')
   response.headers.set('X-Frame-Options', 'DENY')
   response.headers.set('X-XSS-Protection', '1; mode=block')
+  
+  // Cache control - prevent caching of HTML pages
+  if (!request.nextUrl.pathname.startsWith('/_next/static')) {
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate')
+    response.headers.set('Pragma', 'no-cache')
+    response.headers.set('Expires', '0')
+  }
   
   // Enable preload links for better performance
   response.headers.set('Link', '</fonts/*>; rel=preload; as=font; crossorigin=anonymous')

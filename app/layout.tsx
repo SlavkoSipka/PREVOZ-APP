@@ -4,6 +4,7 @@ import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
 import { ClearCacheOnMount } from '@/components/clear-cache-on-mount'
 import { MobileConsole } from '@/components/mobile-console'
+import { VersionChecker } from '@/components/version-checker'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -47,6 +48,7 @@ export default function RootLayout({
         <meta httpEquiv="Expires" content="0" />
       </head>
       <body className={inter.className}>
+        <VersionChecker />
         <ClearCacheOnMount />
         <MobileConsole />
         {children}

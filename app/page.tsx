@@ -1,47 +1,290 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Truck, Building2, Shield, CheckCircle2, Clock, CreditCard } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/card'
+import { 
+  Truck, Building2, Shield, CheckCircle2, Clock, CreditCard, 
+  TrendingUp, Users, Star, ArrowRight, Sparkles, Zap,
+  BadgeCheck, FileCheck, MessageSquare, ChevronRight
+} from 'lucide-react'
 
 export default function HomePage({
   searchParams,
 }: {
   searchParams: { error?: string; reason?: string; details?: string }
 }) {
+  const [isVisible, setIsVisible] = useState(false)
+  const [activeTestimonial, setActiveTestimonial] = useState(0)
+
+  useEffect(() => {
+    setIsVisible(true)
+    
+    // Auto-rotate testimonials
+    const interval = setInterval(() => {
+      setActiveTestimonial((prev) => (prev + 1) % 3)
+    }, 5000)
+    
+    return () => clearInterval(interval)
+  }, [])
+
+  const stats = [
+    { label: 'Aktivnih korisnika', value: '500+', icon: Users },
+    { label: 'Završenih tura', value: '1,200+', icon: Truck },
+    { label: 'Zadovoljnih klijenata', value: '98%', icon: Star },
+    { label: 'Prosečno vreme', value: '< 2h', icon: Clock },
+  ]
+
+  const features = [
+    {
+      icon: Shield,
+      title: 'Verifikovani vozači',
+      description: 'Svi vozači prolaze kroz proces verifikacije dokumenata i background provere',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50'
+    },
+    {
+      icon: Zap,
+      title: 'Brzo povezivanje',
+      description: 'Algoritam automatski predlaže najbolje kandidate za svaku turu',
+      color: 'text-yellow-600',
+      bgColor: 'bg-yellow-50'
+    },
+    {
+      icon: BadgeCheck,
+      title: 'Admin kontrola',
+      description: 'Svaka prijava prolazi kroz ručnu proveru admina pre odobrenja',
+      color: 'text-green-600',
+      bgColor: 'bg-green-50'
+    },
+    {
+      icon: CreditCard,
+      title: 'Sigurno plaćanje',
+      description: 'Integrisani sistem plaćanja sa zaštitom za obe strane',
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50'
+    },
+    {
+      icon: FileCheck,
+      title: 'Provera dokumenata',
+      description: 'Automatska provera valjanosti saobraćajnih dozvola i registracija',
+      color: 'text-red-600',
+      bgColor: 'bg-red-50'
+    },
+    {
+      icon: MessageSquare,
+      title: 'Direktna komunikacija',
+      description: 'Ugrađen sistem notifikacija za brzu komunikaciju',
+      color: 'text-indigo-600',
+      bgColor: 'bg-indigo-50'
+    },
+  ]
+
+  const steps = [
+    {
+      number: '01',
+      title: 'Registruj se',
+      description: 'Kreiraj nalog za firmu ili vozača za manje od 3 minuta',
+      icon: Users
+    },
+    {
+      number: '02',
+      title: 'Verifikuj profil',
+      description: 'Uploaduj dokumenta i čekaj verifikaciju admina',
+      icon: BadgeCheck
+    },
+    {
+      number: '03',
+      title: 'Pronađi ili objavi',
+      description: 'Vozači pregledaju ture, firme objavljuju potrebe',
+      icon: TrendingUp
+    },
+    {
+      number: '04',
+      title: 'Započni saradnju',
+      description: 'Admin odobrava najbolje kandidate i započinje posao',
+      icon: CheckCircle2
+    },
+  ]
+
+  const testimonials = [
+    {
+      name: 'Marko Petrović',
+      role: 'Nezavisni vozač',
+      text: 'Pre PreveziMe sam gubio sate tražeći ture. Sad za 10 minuta nađem posao i sve je transparentno.',
+      rating: 5,
+      image: '👨‍💼'
+    },
+    {
+      name: 'Transport d.o.o.',
+      role: 'Logistička firma',
+      text: 'Konačno platforma gde možemo brzo naći proverne vozače. Verifikacija dokumenata je odlična stvar!',
+      rating: 5,
+      image: '🏢'
+    },
+    {
+      name: 'Jovan Nikolić',
+      role: 'Vozač kamiona',
+      text: 'Provizija je fer, sistem je pouzdan, i admin tim je uvek tu da pomogne. Preporučujem!',
+      rating: 5,
+      image: '🚚'
+    },
+  ]
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+          50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.6); }
+        }
+        
+        @keyframes gradient-shift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        
+        .animate-fade-in-up {
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .animate-fade-in {
+          animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .animate-slide-in-left {
+          animation: slideInLeft 0.8s ease-out forwards;
+        }
+        
+        .animate-slide-in-right {
+          animation: slideInRight 0.8s ease-out forwards;
+        }
+        
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+        
+        .animate-pulse-glow {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        .gradient-shift {
+          background-size: 200% 200%;
+          animation: gradient-shift 5s ease infinite;
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+        
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        .card-hover {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-glow:hover {
+          box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+        }
+      `}</style>
+
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300">
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <Truck className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
-            <span className="text-xl sm:text-2xl font-bold">PreveziMe</span>
+          <div className="flex items-center space-x-2 group">
+            <div className="relative">
+              <Truck className="h-7 w-7 sm:h-9 sm:w-9 text-primary transition-transform group-hover:scale-110 duration-300" />
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            </div>
+            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
+              PreveziMe
+            </span>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
-            <Button variant="ghost" asChild size="sm" className="text-xs sm:text-sm">
+            <Button 
+              variant="ghost" 
+              asChild 
+              size="sm" 
+              className="text-xs sm:text-sm hover:bg-green-50 transition-all duration-300"
+            >
               <Link href="/prijava">Prijavi se</Link>
             </Button>
-            <Button asChild size="sm" className="text-xs sm:text-sm">
+            <Button 
+              asChild 
+              size="sm" 
+              className="text-xs sm:text-sm btn-glow transition-all duration-300 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
+            >
               <Link href="/registracija">Registruj se</Link>
             </Button>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20 text-center">
-        {/* Error Alert */}
-        {searchParams.error && (
+      {/* Error Alert */}
+      {searchParams.error && (
+        <div className="container mx-auto px-4 sm:px-6 pt-6 animate-fade-in-up">
           <div className="mb-6 mx-auto max-w-2xl">
-            <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4 text-left">
+            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-left shadow-lg">
               <h3 className="text-red-800 font-semibold mb-2">
                 ⚠️ Greška pri prijavljivanju
               </h3>
               <p className="text-sm text-red-700 mb-2">
                 {searchParams.error === 'auth_failed' 
-                  ? 'Prijavljivanje preko Google-a nije uspelo.'
+                  ? 'Prijavljivanje nije uspelo.'
                   : searchParams.error === 'no_session'
                   ? 'Nije kreirana sesija nakon prijavljivanja.'
                   : 'Došlo je do greške pri prijavljivanju.'}
@@ -51,235 +294,374 @@ export default function HomePage({
                   Detalji: {decodeURIComponent(searchParams.reason)}
                 </p>
               )}
-              {searchParams.details && (
-                <p className="text-xs text-red-600 font-mono bg-red-100 p-2 rounded mt-1">
-                  {decodeURIComponent(searchParams.details)}
-                </p>
-              )}
-              <div className="mt-3 text-sm text-red-700">
-                <p className="mb-2 font-semibold">Pokušajte:</p>
-                <ul className="list-disc list-inside space-y-1 mb-3">
-                  <li>Prijavite se ponovo preko <Link href="/prijava" className="underline font-semibold">obične prijave</Link></li>
-                  <li>Proverite da li su third-party cookies omogućeni</li>
-                  <li>Pokušajte u Incognito/Private režimu</li>
-                  <li>Očistite browser cache i cookies</li>
-                </ul>
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => {
-                      if (typeof window !== 'undefined') {
-                        // Očisti lokalni storage i reload
-                        localStorage.clear()
-                        sessionStorage.clear()
-                        window.location.href = '/prijava'
-                      }
-                    }}
-                    size="sm"
-                    className="bg-red-600 hover:bg-red-700"
-                  >
-                    Pokušaj ponovo
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="sm"
-                  >
-                    <Link href="/prijava">
-                      Email prijava
-                    </Link>
-                  </Button>
-                </div>
+              <div className="mt-3 flex gap-2">
+                <Button
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      localStorage.clear()
+                      sessionStorage.clear()
+                      window.location.href = '/prijava'
+                    }
+                  }}
+                  size="sm"
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Pokušaj ponovo
+                </Button>
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/prijava">Email prijava</Link>
+                </Button>
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-blue-50 gradient-shift">
+        {/* Decorative elements */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float"></div>
+        <div className="absolute bottom-20 right-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float delay-200"></div>
         
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
-          Poveži firme i vozače <span className="text-primary">lako</span>
-        </h1>
-        <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto px-2">
-          PreveziMe spaja firme i kamiondžije. Brzo, sigurno i jednostavno. 
-          Pronađi ture ili objavi potrebu za prevozom odmah.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-xl mx-auto px-2">
-          <Button size="lg" asChild className="text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto touch-manipulation">
-            <Link href="/registracija?uloga=vozac">
-              <Truck className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-              Registruj se kao vozač
-            </Link>
-          </Button>
-          <Button size="lg" variant="outline" asChild className="text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto touch-manipulation">
-            <Link href="/registracija?uloga=firma">
-              <Building2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-              Registruj se kao firma
-            </Link>
-          </Button>
+        <div className="container mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-28 text-center relative z-10">
+          <div className={`transition-all duration-1000 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium mb-6 animate-pulse-glow">
+              <Sparkles className="h-4 w-4" />
+              <span>Platforma #1 za povezivanje firmi i vozača</span>
+            </div>
+            
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 leading-tight px-2">
+              <span className="bg-gradient-to-r from-green-600 via-green-700 to-blue-600 bg-clip-text text-transparent">
+                Poveži, prevezi, zaradi
+              </span>
+              <br />
+              <span className="text-gray-800">brzo i sigurno</span>
+            </h1>
+            
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto px-4 leading-relaxed">
+              Moderna platforma koja spaja <span className="font-semibold text-green-600">firme</span> sa provjerenim{' '}
+              <span className="font-semibold text-blue-600">vozačima</span>. Bez posrednika, bez čekanja.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-2xl mx-auto px-4 mb-10 sm:mb-12">
+              <Button 
+                size="lg" 
+                asChild 
+                className="text-sm sm:text-base md:text-lg px-6 sm:px-8 py-5 sm:py-6 md:py-7 btn-glow bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-xl transition-all duration-300 group w-full sm:w-auto"
+              >
+                <Link href="/registracija?uloga=vozac" className="flex items-center justify-center">
+                  <Truck className="mr-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:scale-110 transition-transform" />
+                  Vozač - Nađi ture
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                asChild 
+                className="text-sm sm:text-base md:text-lg px-6 sm:px-8 py-5 sm:py-6 md:py-7 border-2 hover:bg-green-50 hover:border-green-600 shadow-lg transition-all duration-300 group w-full sm:w-auto"
+              >
+                <Link href="/registracija?uloga=firma" className="flex items-center justify-center">
+                  <Building2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:scale-110 transition-transform" />
+                  Firma - Objavi turu
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </div>
+            
+            {/* Trust badges */}
+            <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 text-xs sm:text-sm text-gray-600 px-4">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
+                <span>Verifikovani</span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 flex-shrink-0" />
+                <span>Sigurno</span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 flex-shrink-0" />
+                <span>Brzo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-10 sm:py-12 md:py-16 bg-white border-y">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon
+              return (
+                <div 
+                  key={index}
+                  className={`text-center animate-fade-in-up delay-${(index + 1) * 100} px-2`}
+                >
+                  <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-green-100 mb-2 sm:mb-3 md:mb-4">
+                    <Icon className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-green-600" />
+                  </div>
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs sm:text-sm md:text-base text-gray-600 leading-tight">
+                    {stat.label}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 sm:px-6 py-10 sm:py-12 md:py-16">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Kako funkcioniše?</h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          {/* Za Firme */}
-          <Card className="border-2 hover:shadow-lg transition-shadow sm:col-span-2 md:col-span-1">
-            <CardHeader className="pb-3">
-              <Building2 className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3" />
-              <CardTitle className="text-xl sm:text-2xl">Za Firme</CardTitle>
-              <CardDescription className="text-sm sm:text-base">
-                Objavi turu i pronađi proveren vozača
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2.5 sm:space-y-3">
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Registruj se i verifikuj firmu</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Objavi turu sa detaljima</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Admin odobrava najbolje vozače</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Direktna komunikacija sa vozačem</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          {/* Za Vozače */}
-          <Card className="border-2 border-primary hover:shadow-lg transition-shadow sm:col-span-2 md:col-span-1">
-            <CardHeader className="pb-3">
-              <Truck className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3" />
-              <CardTitle className="text-xl sm:text-2xl">Za Vozače</CardTitle>
-              <CardDescription className="text-sm sm:text-base">
-                Pronađi ture i zarađuj vožnjom
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2.5 sm:space-y-3">
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Registruj se kao vozač</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Pregledaj dostupne ture</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Prijavi se i čekaj odobrenje</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Završi posao i plati proviziju</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          {/* Admin Kontrola */}
-          <Card className="border-2 hover:shadow-lg transition-shadow sm:col-span-2 md:col-span-1">
-            <CardHeader className="pb-3">
-              <Shield className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3" />
-              <CardTitle className="text-xl sm:text-2xl">Sigurnost</CardTitle>
-              <CardDescription className="text-sm sm:text-base">
-                Admin tim brine o kvalitetu
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2.5 sm:space-y-3">
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Verifikacija svih korisnika</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Ručno odobravanje vozača</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Zaštita plaćanja</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Podrška 24/7</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
+      <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in-up px-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6">
+              Sve što ti treba na{' '}
+              <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                jednom mestu
+              </span>
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+              Kompletan ekosistem za upravljanje transportom sa najboljim funkcijama u industriji
+            </p>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {features.map((feature, index) => {
+              const Icon = feature.icon
+              return (
+                <Card 
+                  key={index}
+                  className={`card-hover border-2 hover:border-green-200 cursor-pointer animate-fade-in-up delay-${(index + 1) * 100}`}
+                >
+                  <CardContent className="p-5 sm:p-6 md:p-8">
+                    <div className={`inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl ${feature.bgColor} mb-3 sm:mb-4 md:mb-6 transition-transform hover:scale-110 duration-300`}>
+                      <Icon className={`h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 ${feature.color}`} />
+                    </div>
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 md:mb-4 text-gray-900">
+                      {feature.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="bg-gray-50 py-10 sm:py-12 md:py-16">
+      {/* How It Works */}
+      <section className="py-16 sm:py-20 md:py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Zašto PreveziMe?</h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="bg-primary/10 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <Clock className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Brzo i Efikasno</h3>
-              <p className="text-sm sm:text-base text-gray-600 px-2">
-                Pronađi vozača ili turu za nekoliko minuta
-              </p>
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in-up px-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6">
+              Kako funkcioniše?
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+              Jednostavan proces u 4 koraka
+            </p>
+          </div>
+          
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
+              {steps.map((step, index) => {
+                const Icon = step.icon
+                return (
+                  <div 
+                    key={index}
+                    className={`relative animate-fade-in-up delay-${(index + 1) * 200}`}
+                  >
+                    <div className="flex gap-3 sm:gap-4 md:gap-6">
+                      <div className="flex-shrink-0">
+                        <div className="relative">
+                          <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl sm:rounded-2xl bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white font-bold text-lg sm:text-xl md:text-2xl shadow-lg">
+                            {step.number}
+                          </div>
+                          {index < steps.length - 1 && (
+                            <div className="hidden md:block absolute top-full left-1/2 -translate-x-1/2 w-0.5 h-12 bg-gradient-to-b from-green-400 to-transparent"></div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex-1 pt-1 sm:pt-2">
+                        <div className="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg bg-green-100 mb-2 sm:mb-3 md:mb-4">
+                          <Icon className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-green-600" />
+                        </div>
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-1.5 sm:mb-2 md:mb-3 text-gray-900">
+                          {step.title}
+                        </h3>
+                        <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                          {step.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-            <div className="text-center">
-              <div className="bg-primary/10 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <Shield className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-br from-green-50 to-blue-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in-up px-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6">
+              Šta kažu naši korisnici
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+              Pridruži se stotinama zadovoljnih vozača i firmi
+            </p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="relative">
+              {testimonials.map((testimonial, index) => (
+                <div
+                  key={index}
+                  className={`transition-all duration-500 ${
+                    index === activeTestimonial
+                      ? 'opacity-100 scale-100'
+                      : 'opacity-0 scale-95 absolute top-0 left-0 w-full'
+                  }`}
+                >
+                  <Card className="border-2 shadow-2xl">
+                    <CardContent className="p-6 sm:p-8 md:p-10 lg:p-12 text-center">
+                      <div className="text-5xl sm:text-6xl md:text-7xl mb-4 sm:mb-6">
+                        {testimonial.image}
+                      </div>
+                      <div className="flex justify-center gap-0.5 sm:gap-1 mb-4 sm:mb-6">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star key={i} className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 fill-yellow-400 text-yellow-400" />
+                        ))}
+                      </div>
+                      <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-4 sm:mb-6 md:mb-8 italic leading-relaxed px-2">
+                        "{testimonial.text}"
+                      </p>
+                      <div className="font-semibold text-base sm:text-lg md:text-xl text-gray-900">
+                        {testimonial.name}
+                      </div>
+                      <div className="text-gray-600 text-sm sm:text-base">
+                        {testimonial.role}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+              
+              {/* Dots indicator */}
+              <div className="flex justify-center gap-2 mt-8">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveTestimonial(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === activeTestimonial
+                        ? 'bg-green-600 w-8'
+                        : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
+                  />
+                ))}
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Sigurno</h3>
-              <p className="text-sm sm:text-base text-gray-600 px-2">
-                Svi korisnici su verifikovani i provereni
-              </p>
-            </div>
-            <div className="text-center sm:col-span-2 md:col-span-1">
-              <div className="bg-primary/10 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <CreditCard className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Transparentno</h3>
-              <p className="text-sm sm:text-base text-gray-600 px-2">
-                Jasne cene i provizije, bez skrivenih troškova
-              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20 text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Spreman da počneš?</h2>
-        <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
-          Pridruži se PreveziMe platformi danas i poveži se sa stotinama firmi i vozača
-        </p>
-        <Button size="lg" asChild className="text-sm sm:text-base md:text-lg px-8 sm:px-10 py-4 sm:py-6 touch-manipulation">
-          <Link href="/registracija">
-            Registruj se odmah
-          </Link>
-        </Button>
+      <section className="relative py-16 sm:py-20 md:py-28 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-green-600 via-green-700 to-blue-600 gradient-shift"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-10"></div>
+        
+        <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center text-white">
+          <div className="animate-fade-in-up">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 px-2">
+              Spreman za početak?
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto opacity-90 leading-relaxed px-4">
+              Pridruži se stotinama vozača i firmi koji već koriste PreveziMe. 
+              Registracija je besplatna i traje manje od 3 minuta.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-2xl mx-auto px-2">
+              <Button 
+                size="lg" 
+                asChild 
+                className="text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-10 py-5 sm:py-6 md:py-7 bg-white text-green-700 hover:bg-gray-100 shadow-2xl transition-all duration-300 group w-full sm:w-auto"
+              >
+                <Link href="/registracija" className="flex items-center justify-center">
+                  Registruj se besplatno
+                  <ChevronRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                asChild 
+                className="text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-10 py-5 sm:py-6 md:py-7 border-2 border-white text-white hover:bg-white/10 shadow-xl transition-all duration-300 w-full sm:w-auto"
+              >
+                <Link href="/prijava">
+                  Već imam nalog
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center space-x-2">
-              <Truck className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-              <span className="text-base sm:text-lg font-bold">PreveziMe</span>
+      <footer className="bg-gray-900 text-gray-300 py-12 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid md:grid-cols-3 gap-8 sm:gap-12 mb-8 sm:mb-12">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <Truck className="h-8 w-8 text-green-500" />
+                <span className="text-2xl font-bold text-white">PreveziMe</span>
+              </div>
+              <p className="text-gray-400 leading-relaxed">
+                Moderna platforma koja povezuje firme sa provjerenim vozačima. 
+                Brzo, sigurno i transparentno.
+              </p>
             </div>
-            <p className="text-gray-600 text-xs sm:text-sm text-center">
-              © 2024 PreveziMe. Sva prava zadržana.
-            </p>
+            
+            {/* Links */}
+            <div>
+              <h3 className="text-white font-semibold text-lg mb-4">Brzi linkovi</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="/registracija" className="hover:text-green-500 transition-colors duration-200">
+                    Registracija
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/prijava" className="hover:text-green-500 transition-colors duration-200">
+                    Prijava
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            
+            {/* Contact */}
+            <div>
+              <h3 className="text-white font-semibold text-lg mb-4">Kontakt</h3>
+              <p className="text-gray-400">
+                Email: podrska@prevezime.rs<br />
+                Tel: +381 61 309 1583
+              </p>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
+            <p>© 2024 PreveziMe. Sva prava zadržana.</p>
           </div>
         </div>
       </footer>
     </div>
   )
 }
-

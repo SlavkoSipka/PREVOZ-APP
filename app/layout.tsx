@@ -11,6 +11,15 @@ export const metadata: Metadata = {
   title: 'TransLink - Platforma za transport',
   description: 'Povežite poslodavce i vozače - brzo, efikasno, sigurno',
   manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+    ]
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',

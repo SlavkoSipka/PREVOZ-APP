@@ -2,9 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
-import { ClearCacheOnMount } from '@/components/clear-cache-on-mount'
-import { MobileConsole } from '@/components/mobile-console'
-import { VersionChecker } from '@/components/version-checker'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -42,15 +39,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="sr">
-      <head>
-        <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-        <meta httpEquiv="Pragma" content="no-cache" />
-        <meta httpEquiv="Expires" content="0" />
-      </head>
       <body className={inter.className}>
-        <VersionChecker />
-        <ClearCacheOnMount />
-        <MobileConsole />
         {children}
         <Toaster />
       </body>

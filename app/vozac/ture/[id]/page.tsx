@@ -135,12 +135,12 @@ export default async function TuraDetaljiPage({ params }: { params: Promise<{ id
                   </div>
 
                   <div className="pt-2 border-t">
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 space-y-2">
-                      <p className="text-xs text-amber-900 leading-relaxed">
-                        <strong>💰 Provizija - OBAVEZNO:</strong> Nakon završene ture <strong>morate potvrditi završetak</strong> i platiti proviziju od <strong>15€</strong> za korišćenje platforme.
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3 space-y-2">
+                      <p className="text-xs text-green-900 leading-relaxed">
+                        <strong>🎉 BETA VERZIJA - BESPLATNO:</strong> PreveziMe je trenutno u beta fazi, što znači da možete koristiti platformu <strong>potpuno besplatno</strong>!
                       </p>
-                      <p className="text-xs text-amber-900 leading-relaxed font-semibold">
-                        ⚠️ <strong>VAŽNO:</strong> Ukoliko završite turu i ne platite proviziju, <strong>vaš nalog će biti automatski blokiran</strong> i nećete moći da aplicirate za dalje ture dok ne namirite dugovanje!
+                      <p className="text-xs text-green-800 leading-relaxed">
+                        💚 <strong>Nema provizije, nema skrivenih troškova.</strong> Nakon završene ture samo potvrdite završetak i nastavite da koristite platformu bez ikakvih naknada. Uživajte u besplatnom korišćenju dok gradimo najbolju platformu za vas!
                       </p>
                     </div>
                   </div>

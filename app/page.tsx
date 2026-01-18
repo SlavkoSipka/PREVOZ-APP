@@ -29,12 +29,7 @@ export default function HomePage({
     return () => clearInterval(interval)
   }, [])
 
-  const stats = [
-    { label: 'Aktivnih korisnika', value: '500+', icon: Users },
-    { label: 'Završenih tura', value: '1,200+', icon: Truck },
-    { label: 'Zadovoljnih klijenata', value: '98%', icon: Star },
-    { label: 'Prosečno vreme', value: '< 2h', icon: Clock },
-  ]
+  // Uklonjena lažna statistika - aplikacija je nova
 
   const features = [
     {
@@ -388,29 +383,91 @@ export default function HomePage({
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-10 sm:py-12 md:py-16 bg-white border-y">
+      {/* Beta Launch Banner */}
+      <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-green-50 via-white to-blue-50 border-y border-green-100">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon
-              return (
-                <div 
-                  key={index}
-                  className={`text-center animate-fade-in-up delay-${(index + 1) * 100} px-2`}
-                >
-                  <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-green-100 mb-2 sm:mb-3 md:mb-4">
-                    <Icon className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-green-600" />
+          <div className="max-w-4xl mx-auto">
+            {/* Glavni banner */}
+            <div className="bg-white rounded-2xl shadow-2xl border-2 border-green-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4 sm:px-8 sm:py-5">
+                <div className="flex items-center justify-center gap-3">
+                  <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-300 animate-pulse" />
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center">
+                    🎉 Beta Verzija - Potpuno BESPLATNO!
+                  </h2>
+                  <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-300 animate-pulse" />
+                </div>
+              </div>
+              
+              <div className="p-6 sm:p-8 md:p-10 space-y-6">
+                {/* Glavna poruka */}
+                <div className="text-center space-y-3">
+                  <p className="text-lg sm:text-xl md:text-2xl text-gray-800 font-semibold">
+                    Budite među prvima koji će koristiti novu platformu!
+                  </p>
+                  <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                    PreveziMe je <span className="font-bold text-green-600">potpuno nova platforma</span> koja povezuje poslodavce i vozače. 
+                    Trenutno smo u <span className="font-bold text-blue-600">beta fazi</span> i želimo da što više ljudi testira aplikaciju!
+                  </p>
+                </div>
+
+                {/* Benefiti */}
+                <div className="grid sm:grid-cols-2 gap-4 pt-4">
+                  <div className="flex items-start gap-3 bg-green-50 rounded-lg p-4 border border-green-200">
+                    <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1">Nema provizije</h3>
+                      <p className="text-sm text-gray-600">Koristite platformu potpuno besplatno dok je u beta verziji</p>
+                    </div>
                   </div>
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1">
-                    {stat.value}
+                  
+                  <div className="flex items-start gap-3 bg-blue-50 rounded-lg p-4 border border-blue-200">
+                    <Sparkles className="h-6 w-6 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1">Rani korisnici</h3>
+                      <p className="text-sm text-gray-600">Budite deo razvoja i pomozite nam da napravimo najbolju platformu</p>
+                    </div>
                   </div>
-                  <div className="text-xs sm:text-sm md:text-base text-gray-600 leading-tight">
-                    {stat.label}
+                  
+                  <div className="flex items-start gap-3 bg-purple-50 rounded-lg p-4 border border-purple-200">
+                    <Star className="h-6 w-6 text-purple-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1">Povlašćeni uslovi</h3>
+                      <p className="text-sm text-gray-600">Rani korisnici će imati posebne benefite i kada uvedemo proviziju</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3 bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                    <Users className="h-6 w-6 text-yellow-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1">Direktan uticaj</h3>
+                      <p className="text-sm text-gray-600">Vaš feedback direktno utiče na razvoj novih funkcija</p>
+                    </div>
                   </div>
                 </div>
-              )
-            })}
+
+                {/* CTA */}
+                <div className="pt-6 text-center border-t border-gray-200">
+                  <p className="text-sm text-gray-500 mb-4">
+                    Registracija je potpuno besplatna i traje manje od 3 minuta
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Button asChild size="lg" className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-lg">
+                      <Link href="/registracija?uloga=vozac">
+                        <Truck className="mr-2 h-5 w-5" />
+                        Registruj se kao vozač
+                      </Link>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className="border-2 border-green-600 hover:bg-green-50">
+                      <Link href="/registracija?uloga=firma">
+                        <Building2 className="mr-2 h-5 w-5" />
+                        Registruj se kao firma
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

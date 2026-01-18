@@ -21,10 +21,12 @@ export default function PrijavaPage() {
   const supabase = createClient()
   
   useEffect(() => {
+    let mounted = true
+    
     // Proveri da li je korisnik već ulogovan
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession()
-      if (session) {
+      if (session && mounted) {
         // Učitaj profil
         const { data: profile } = await supabase
           .from('users')
@@ -32,7 +34,7 @@ export default function PrijavaPage() {
           .eq('id', session.user.id)
           .single()
         
-        if (profile) {
+        if (profile && mounted) {
           // Redirect na pravi dashboard
           if (profile.uloga === 'admin') router.push('/admin')
           else if (profile.uloga === 'poslodavac') {
@@ -44,6 +46,10 @@ export default function PrijavaPage() {
       }
     }
     checkUser()
+    
+    return () => {
+      mounted = false
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -91,7 +97,7 @@ export default function PrijavaPage() {
           const dashboardPath = profile.uloga === 'vozac' ? '/vozac' : '/poslodavac'
           router.push(dashboardPath)
         }
-        router.refresh()
+        // router.refresh() UKLONJENO - uzrokovalo je reload loop!
       }
     } catch (error) {
       toast({

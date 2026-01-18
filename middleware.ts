@@ -20,8 +20,8 @@ export async function middleware(request: NextRequest) {
     response.headers.set('Expires', '0')
   }
   
-  // Enable preload links for better performance
-  response.headers.set('Link', '</fonts/*>; rel=preload; as=font; crossorigin=anonymous')
+  // Font preload removed - Next.js handles Google Fonts automatically
+  // and the /fonts/* path was causing 404 errors
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

@@ -138,7 +138,7 @@ export default function SelectRolePage() {
                 </li>
                 <li className="flex items-center">
                   <span className="text-green-500 mr-2 text-base sm:text-lg">✓</span>
-                  <span>Provizija samo 15€ po turi</span>
+                  <span>🎉 Trenutno BESPLATNO (beta verzija)</span>
                 </li>
               </ul>
               <Button 

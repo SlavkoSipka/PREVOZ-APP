@@ -22,7 +22,7 @@ export function PrihvatiTuruButton({ turaId, vozacId, blokiran }: PrihvatiTuruBu
     if (blokiran) {
       toast({
         title: 'Nalog je blokiran',
-        description: 'Morate platiti proviziju pre nego što možete prihvatiti nove ture.',
+        description: 'Kontaktirajte administratora za deblokiranje naloga.',
         variant: 'destructive',
       })
       return

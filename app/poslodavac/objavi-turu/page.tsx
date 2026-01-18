@@ -118,7 +118,7 @@ export default function ObjaviTuruPage() {
       })
 
       router.push('/poslodavac')
-      router.refresh()
+      // router.refresh() - UKLONJENO da spreči reload loop
     } catch (error) {
       toast({
         title: 'Greška',

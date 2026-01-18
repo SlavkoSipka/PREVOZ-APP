@@ -258,33 +258,25 @@ export function DashboardContent({ initialData, userId }: DashboardContentProps)
           </Card>
         ) : (
           <Tabs defaultValue="aktivne" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-1">
-              <TabsTrigger value="aktivne" className="text-xs md:text-sm">
-                <span className="hidden sm:inline">Aktivne</span>
-                <span className="sm:hidden">Aktiv.</span>
-                <span className="ml-1">({aktivneTureLista.length})</span>
-              </TabsTrigger>
-              <TabsTrigger value="na_cekanju" className="text-xs md:text-sm">
-                <span className="hidden sm:inline">Na čekanju</span>
-                <span className="sm:hidden">Čeka</span>
-                <span className="ml-1">({naCekanjuTure.length})</span>
-              </TabsTrigger>
-              <TabsTrigger value="dodeljene" className="text-xs md:text-sm">
-                <span className="hidden sm:inline">Dodeljene</span>
-                <span className="sm:hidden">Dodel.</span>
-                <span className="ml-1">({dodeljena.length})</span>
-              </TabsTrigger>
-              <TabsTrigger value="zavrsene" className="text-xs md:text-sm">
-                <span className="hidden sm:inline">Završene</span>
-                <span className="sm:hidden">Završ.</span>
-                <span className="ml-1">({zavrsene.length})</span>
-              </TabsTrigger>
-              <TabsTrigger value="odbijene" className="text-xs md:text-sm">
-                <span className="hidden sm:inline">Odbijene</span>
-                <span className="sm:hidden">Odbij.</span>
-                <span className="ml-1">({odbijene.length})</span>
-              </TabsTrigger>
-            </TabsList>
+            <div className="w-full overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+              <TabsList className="inline-flex w-auto min-w-full md:grid md:w-full md:grid-cols-5 gap-1">
+                <TabsTrigger value="aktivne" className="text-xs md:text-sm whitespace-nowrap flex-shrink-0">
+                  Aktiv. ({aktivneTureLista.length})
+                </TabsTrigger>
+                <TabsTrigger value="dodeljene" className="text-xs md:text-sm whitespace-nowrap flex-shrink-0">
+                  Dodel. ({dodeljena.length})
+                </TabsTrigger>
+                <TabsTrigger value="odbijene" className="text-xs md:text-sm whitespace-nowrap flex-shrink-0">
+                  Odbij. ({odbijene.length})
+                </TabsTrigger>
+                <TabsTrigger value="na_cekanju" className="text-xs md:text-sm whitespace-nowrap flex-shrink-0">
+                  Čeka ({naCekanjuTure.length})
+                </TabsTrigger>
+                <TabsTrigger value="zavrsene" className="text-xs md:text-sm whitespace-nowrap flex-shrink-0">
+                  Završ. ({zavrsene.length})
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             {/* Aktivne ture */}
             <TabsContent value="aktivne" className="mt-6">

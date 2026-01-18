@@ -18,7 +18,7 @@ import { formatVreme } from '@/lib/utils'
 interface ZavrsiTuruButtonProps {
   turaId: string
   vozacId: string
-  iznos: number
+  iznos?: number // Optional - više se ne koristi
 }
 
 export function ZavrsiTuruButton({ turaId, vozacId, iznos }: ZavrsiTuruButtonProps) {
@@ -70,24 +70,8 @@ export function ZavrsiTuruButton({ turaId, vozacId, iznos }: ZavrsiTuruButtonPro
         return
       }
 
-      // Kreiranje zapisa uplate
-      const { error: uplataError } = await supabase
-        .from('uplate')
-        .insert({
-          vozac_id: vozacId,
-          tura_id: turaId,
-          iznos: iznos,
-          status: 'u_toku',
-        })
-
-      if (uplataError) {
-        toast({
-          title: 'Greška',
-          description: uplataError.message,
-          variant: 'destructive',
-        })
-        return
-      }
+      // UKLONJENA LOGIKA ZA PLAĆANJE - Aplikacija je u beta verziji i besplatna
+      // Više ne kreiramo zapise u tabeli 'uplate'
 
       // Pošalji notifikaciju poslodavcu da je tura završena
       if (turaData?.firma_id) {
@@ -116,15 +100,15 @@ export function ZavrsiTuruButton({ turaId, vozacId, iznos }: ZavrsiTuruButtonPro
         console.warn('⚠️ turaData.firma_id nije pronađen, notifikacija NIJE kreirana!')
       }
 
-      // Samo prebaci vozača na plaćanje - BEZ blokiranja
+      // Uspešno završeno - prebacujemo na zahvalnicu
       toast({
-        title: '✅ Tura označena kao završena',
-        description: 'Molimo izvršite uplatu provizije kako biste nastavili sa korišćenjem platforme.',
+        title: '✅ Tura uspešno završena!',
+        description: 'Hvala što koristite PreveziMe platformu.',
       })
 
-      // Zatvaranje modala i preusmeravanje
+      // Zatvaranje modala i preusmeravanje na zahvalnicu
       setShowModal(false)
-      router.push('/uplata-obavezna')
+      router.push('/tura-zavrsena')
       router.refresh()
     } catch (error) {
       toast({
@@ -155,12 +139,14 @@ export function ZavrsiTuruButton({ turaId, vozacId, iznos }: ZavrsiTuruButtonPro
               <p>
                 Da li ste sigurni da ste završili ovu turu?
               </p>
-              <p className="font-semibold text-foreground">
-                Nakon potvrde, biće vam potrebno da platite proviziju od {iznos} €.
-              </p>
-              <p className="text-sm">
-                Nećete moći da prihvatite nove ture dok ne izvršite uplatu provizije.
-              </p>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-3">
+                <p className="font-semibold text-green-800 text-sm">
+                  🎉 Beta verzija - Besplatno!
+                </p>
+                <p className="text-xs text-green-700 mt-1">
+                  PreveziMe je trenutno u beta fazi. Nema provizije ni dodatnih troškova.
+                </p>
+              </div>
             </div>
           </DialogHeader>
           <DialogFooter className="gap-2">
@@ -175,7 +161,7 @@ export function ZavrsiTuruButton({ turaId, vozacId, iznos }: ZavrsiTuruButtonPro
               onClick={handleZavrsi}
               disabled={loading}
             >
-              {loading ? 'Obrada...' : 'Potvrdi i nastavi na plaćanje'}
+              {loading ? 'Obrada...' : 'Potvrdi završetak ture'}
             </Button>
           </DialogFooter>
         </DialogContent>

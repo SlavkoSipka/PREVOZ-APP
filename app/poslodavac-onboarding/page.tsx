@@ -99,7 +99,7 @@ export default function PoslodavacOnboardingPage() {
       })
 
       router.push('/poslodavac')
-      router.refresh()
+      // router.refresh() - UKLONJENO da spreči reload loop
     } catch (error: any) {
       toast({
         title: 'Greška',

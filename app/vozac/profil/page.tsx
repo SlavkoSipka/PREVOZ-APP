@@ -100,9 +100,9 @@ export default async function VozacProfilPage() {
               <p className="text-sm text-blue-100">Izvezenih tura</p>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-              <XCircle className="h-6 w-6 mb-2 text-red-300" />
-              <p className="text-2xl font-bold">{neplaceneProvizije.toFixed(2)}€</p>
-              <p className="text-sm text-blue-100">Neplaćene provizije</p>
+              <CheckCircle className="h-6 w-6 mb-2 text-green-300" />
+              <p className="text-2xl font-bold">0€</p>
+              <p className="text-sm text-blue-100">Beta - Besplatno! 🎉</p>
             </div>
           </div>
         </div>
@@ -121,19 +121,12 @@ export default async function VozacProfilPage() {
                 <div className="space-y-4">
                   <div className="bg-white border border-red-200 rounded-lg p-4">
                     <p className="font-semibold text-red-900 mb-2">Razlog blokiranja:</p>
-                    <p className="text-sm text-red-800">{profile.razlog_blokiranja || 'Neplaćena provizija. Kontaktirajte administratora.'}</p>
+                    <p className="text-sm text-red-800">{profile.razlog_blokiranja || 'Kontaktirajte administratora.'}</p>
                   </div>
-                  {neplaceneProvizije > 0 && (
-                    <div className="bg-white border border-red-200 rounded-lg p-4">
-                      <p className="font-semibold text-red-900 mb-2">💰 Neplaćena provizija:</p>
-                      <p className="text-2xl font-bold text-red-700">{neplaceneProvizije.toFixed(2)}€</p>
-                    </div>
-                  )}
-                  <Button asChild variant="destructive" size="lg" className="w-full">
-                    <Link href="/uplata-obavezna">
-                      Plati proviziju i deblokiraj nalog
-                    </Link>
-                  </Button>
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <p className="font-semibold text-green-900 mb-2">🎉 Beta verzija - Besplatno!</p>
+                    <p className="text-sm text-green-800">PreveziMe je trenutno u beta fazi. Nema provizije ni dodatnih troškova. Kontaktirajte podršku za deblokiranje naloga.</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>

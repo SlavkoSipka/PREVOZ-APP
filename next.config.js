@@ -1,11 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    turbo: {
-      root: __dirname,
-    },
+    // Turbo samo za dev, ne za production build
+    ...(process.env.NODE_ENV === 'development' && {
+      turbo: {
+        root: __dirname,
+      },
+    }),
     optimizePackageImports: ['lucide-react', '@supabase/supabase-js'],
   },
+  // Windows file locking fix - onesposobi file tracing
+  outputFileTracing: false,
   // Generiši unique build ID za svaki deploy
   generateBuildId: async () => {
     return `build-${Date.now()}`

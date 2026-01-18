@@ -225,7 +225,7 @@ export default function VozacOnboardingPage() {
       })
 
       router.push('/vozac')
-      router.refresh()
+      // router.refresh() - UKLONJENO da spreči reload loop
     } catch (error: any) {
       toast({
         title: 'Greška',

@@ -89,7 +89,7 @@ export default function ObjaviTuruPage() {
       })
 
       router.push('/firma')
-      router.refresh()
+      // router.refresh() - UKLONJENO da spreči reload loop
     } catch (error) {
       toast({
         title: 'Greška',

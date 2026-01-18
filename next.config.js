@@ -9,8 +9,8 @@ const nextConfig = {
     }),
     optimizePackageImports: ['lucide-react', '@supabase/supabase-js'],
   },
-  // Windows file locking fix - onesposobi file tracing
-  outputFileTracing: false,
+  // Omogući file tracing samo na Netlify (Linux), isključi za Windows lokalno
+  outputFileTracing: process.platform !== 'win32',
   // Generiši unique build ID za svaki deploy
   generateBuildId: async () => {
     return `build-${Date.now()}`
